@@ -36,6 +36,17 @@
                 packages =
                   with pkgs;
                   [
+                    libGL
+
+                    # X11 dependencies
+                    xorg.libX11
+                    xorg.libX11.dev
+                    xorg.libXcursor
+                    xorg.libXi
+                    xorg.libXinerama
+                    xorg.libXrandr
+
+
                     clang-tools
                     cmake
                     codespell
@@ -46,6 +57,8 @@
                     lcov
                     vcpkg
                     vcpkg-tool
+
+                    raylib
                   ]
                   ++ (if system == "aarch64-darwin" then [ ] else [ gdb ]);
               };
