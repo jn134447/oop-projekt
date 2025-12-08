@@ -58,7 +58,7 @@
                     vcpkg
                     vcpkg-tool
 
-                    raylib
+                    # raylib
                   ]
                   ++ (if system == "aarch64-darwin" then [ ] else [ gdb ]);
               };

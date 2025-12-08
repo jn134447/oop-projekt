@@ -1,0 +1,9 @@
+_deps
+.direnv
+.vscode
+build
+CMakeFiles
+cmake_install.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CMakeCache.txt
