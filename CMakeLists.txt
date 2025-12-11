@@ -34,8 +34,9 @@ include_directories(include external)
 # This is the main part:
 set(SOURCES 
     src/main.cpp
-    # src/temp.cpp
+    src/text_adventure.cpp
     )
+
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib raylib_cpp)
