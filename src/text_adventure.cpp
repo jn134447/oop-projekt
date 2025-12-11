@@ -6,8 +6,10 @@
 RPGText::RPGText(const std::string &text,
                  float fontSize,
                  const raylib::Color &color,
-                 unsigned short speed)
-    : raylib::Text(text, fontSize, color),
+                 unsigned short speed,
+                 const raylib::Font &font,
+                 float spacing)
+    : raylib::Text(text, fontSize, color, font, spacing),
       fullText(text),
       speed(speed)
 {
@@ -15,41 +17,39 @@ RPGText::RPGText(const std::string &text,
 
 void RPGText::Update(unsigned short incrementValue)
 {
-    // Only increment frames if we haven't reached full text length
-    if (framesCounter / speed < fullText.length())
+    if (isPaused || isComplete)
+        return;
+
+    if (framesCounter / speed >= fullText.length())
     {
-        framesCounter += incrementValue;
+        isComplete = true;
+        return;
     }
+
+    framesCounter += incrementValue;
 }
+void RPGText::Draw(int posX, int posY) const
+{
+    std::string visibleText = fullText.substr(0, framesCounter / speed);
+    raylib::Text::Draw(visibleText, posX, posY, fontSize, color);
+}
+
+void RPGText::Pause() { isPaused = true; }
+void RPGText::Resume() { isPaused = false; }
+bool RPGText::IsPaused() const { return isPaused; }
+bool RPGText::IsComplete() const { return isComplete; }
 
 void RPGText::Reset()
 {
     framesCounter = 0;
+    isComplete = false;
 }
-
-void RPGText::SetSpeed(unsigned short newSpeed)
-{
-    speed = newSpeed;
-}
-
-bool RPGText::IsComplete() const
-{
-    return framesCounter / speed >= fullText.length();
-}
-
-void RPGText::ForceComplete()
+void RPGText::Skip()
 {
     framesCounter = fullText.length() * speed;
+    isComplete = true;
 }
 
-void RPGText::Draw(int posX, int posY) const
-{
-    std::string visibleText = fullText.substr(0, framesCounter / speed);
+void RPGText::SetSpeed(unsigned short newSpeed) { speed = newSpeed; }
 
-    raylib::Text::Draw(visibleText, posX, posY, fontSize, color);
-}
-
-std::string RPGText::GetVisibleText() const
-{
-    return fullText.substr(0, framesCounter / speed);
-}
+std::string RPGText::GetVisibleText() const { return fullText.substr(0, framesCounter / speed); }
