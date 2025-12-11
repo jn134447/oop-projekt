@@ -29,7 +29,7 @@ if (NOT raylib_cpp_FOUND)
     FetchContent_MakeAvailable(raylib_cpp)
 endif()
 
-include_directories(include)
+include_directories(include external)
 
 # This is the main part:
 set(SOURCES 
