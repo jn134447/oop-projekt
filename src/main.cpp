@@ -9,7 +9,7 @@ constexpr unsigned int FPS = 60;
 
 int main(void)
 {
-    const int screenWidth = 800;
+    const int screenWidth = 1200;
     const int screenHeight = 800;
 
     raylib::Window w(screenWidth, screenHeight, "raylib [text] example - writing anim");
@@ -17,7 +17,7 @@ int main(void)
     RPGText msg("bla bla bla bla bla bla bla bla bla bla\n"
                 "bla bla bla bla bla bla bla bla bla bla\n"
                 "bla bla bla bla bla bla bla bla bla bla\n",
-                20, MAROON, 15);
+                20, MAROON, 10);
 
     SetTargetFPS(FPS);
     while (!w.ShouldClose())
@@ -35,13 +35,14 @@ int main(void)
             msg.Skip();
         if (raylib::Keyboard::IsKeyPressed(KEY_BACKSPACE))
             msg.Reset();
-        if (raylib::Keyboard::IsKeyPressed(KEY_P))
+        if (raylib::Keyboard::IsKeyPressed(KEY_P)) 
         {
             if (msg.IsPaused())
                 msg.Resume();
             else
                 msg.Pause();
         }
+        
 
         // draw
         w.BeginDrawing();

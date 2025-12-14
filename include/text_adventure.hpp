@@ -2,13 +2,16 @@
 #define TEXT_ADVENTURE
 
 #include <vector>
+#include <array>
 #include "raylib-cpp.hpp"
 
 class RPGText : public raylib::Text
 {
+    std::string fullText;
+
     std::size_t framesCounter = 0;
     unsigned short speed;
-    std::string fullText;
+
     bool isPaused = false;
     bool isComplete = false;
 
