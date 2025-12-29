@@ -29,7 +29,11 @@ if (NOT raylib_cpp_FOUND)
     FetchContent_MakeAvailable(raylib_cpp)
 endif()
 
-include_directories(include external)
+include_directories(
+    include
+    external
+    include/text_adventure
+    )
 
 # This is the main part:
 set(SOURCES 

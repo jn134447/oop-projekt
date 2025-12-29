@@ -1,5 +1,5 @@
-#ifndef TEXT_ADVENTURE
-#define TEXT_ADVENTURE
+#ifndef RPG_TEXT_H
+#define RPG_TEXT_H
 
 #include <vector>
 #include <array>
