@@ -38,7 +38,7 @@ include_directories(
 # This is the main part:
 set(SOURCES 
     src/main.cpp
-    src/text_adventure.cpp
+    src/rpg_text.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

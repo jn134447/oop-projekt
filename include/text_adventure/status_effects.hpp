@@ -1,25 +1,28 @@
 #ifndef STATUS_EFFECTS_H
 #define STATUS_EFFECTS_H
 
+#include <raylib-cpp.hpp>
+
 #include <unordered_map>
 #include <string>
 
-class StatusEffects
+class StatusEffectsDatabase
 {
-    std::unordered_map<std::string, Effect> effects;
-    void AddEffect(std::string &effectId,
-                   const bool active = false,
-                   const int strenght = 1);
-    
+    std::unordered_map<std::string, StatusEffectInfo> definitions;
+
+public:
+    void LoadJSON();
+    StatusEffectInfo &GetInfo(const std::string &effectId);
 };
 
-class Effect
+struct StatusEffectInfo
 {
-    bool active = false;
-    int strenght;
+    std::string displayName;
+    std::string displayDescription;
+    Color displayColor;
 
-    void modifyStrenght(const int delta);
-
+    int baseStacks;
+    bool isDebuff;
 };
 
 #endif
