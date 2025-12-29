@@ -1,4 +1,4 @@
-#include "text_adventure.hpp"
+#include "rpg_text.hpp"
 
 #include <vector>
 #include "raylib-cpp.hpp"
@@ -41,11 +41,15 @@ bool RPGText::IsComplete() const { return isComplete; }
 
 void RPGText::Reset()
 {
+    if (IsPaused())
+        return;
     framesCounter = 0;
     isComplete = false;
 }
 void RPGText::Skip()
 {
+    if (IsPaused())
+        return;
     framesCounter = fullText.length() * speed;
     isComplete = true;
 }

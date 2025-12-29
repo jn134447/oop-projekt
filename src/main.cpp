@@ -3,7 +3,7 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-#include "text_adventure.hpp"
+#include "rpg_text.hpp"
 
 constexpr unsigned int FPS = 60;
 
