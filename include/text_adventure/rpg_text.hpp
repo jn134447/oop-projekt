@@ -1,5 +1,6 @@
 #ifndef RPG_TEXT_H
 #define RPG_TEXT_H
+#pragma once
 
 #include <vector>
 #include <array>
@@ -23,7 +24,7 @@ public:
             const raylib::Font &font = GetFontDefault(),
             float spacing = 0);
 
-    void Update(unsigned short incrementValue = 1);
+    void Update(unsigned short delta = 1);
     void Draw(int posX, int posY) const;
 
     void Skip();

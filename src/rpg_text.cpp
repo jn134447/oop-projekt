@@ -15,7 +15,7 @@ RPGText::RPGText(const std::string &text,
 {
 }
 
-void RPGText::Update(unsigned short incrementValue)
+void RPGText::Update(unsigned short delta)
 {
     if (isPaused || isComplete)
         return;
@@ -26,7 +26,7 @@ void RPGText::Update(unsigned short incrementValue)
         return;
     }
 
-    framesCounter += incrementValue;
+    framesCounter += delta;
 }
 void RPGText::Draw(int posX, int posY) const
 {
