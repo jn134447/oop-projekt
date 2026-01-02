@@ -5,14 +5,12 @@
 #include <unordered_map>
 #include <string>
 
-#include "inventory.hpp"
-
 class GameState
 {
     std::unordered_map<std::string, bool> worldFlags;
     std::unordered_map<std::string, int> worldVariables;
 
-    std::unordered_map<std::string, std::string> locations;
+    std::unordered_map<std::string, LocationInfo> locations;
     std::string currentLocationId;
 
     std::unordered_map<std::string, CharacterData> characters;
@@ -22,8 +20,16 @@ public:
     void LoadJSON();
     void ToJSON();
 
+    bool GetFlag(const std::string &flagId) const;
+    void SetFlag(const std::string &flagId);
+    void ToggleFlag(const std::string &flagId);
+
+    int GetVariable(const std::string &variableId) const;
+    void SetVariable(const std::string &variableId);
+    void ModifyVariable(const std::string &variableId, const int delta);
+
     CharacterData &currentCharacter();
-    std::string &getCurrentLocationName() const;
+    LocationInfo &currentLocation();
 };
 
 class CharacterData
@@ -36,17 +42,17 @@ class CharacterData
 public:
     void AddItem(const std::string &itemId, const int quantity);
     void RemoveItem(const std::string &itemId, const int quantity);
-    void HasItem(const std::string &itemId, const int minQuantity = 1) const;
+    bool HasItem(const std::string &itemId, const int minQuantity = 1) const;
     void ClearItem(const std::string &itemId);
     void ClearAllItems();
 
     void AddEffect(const std::string &effectId);
-    void AddEffectStack(const std::string &effectId);
-    void RemoveEffectStack(const std::string &effectId);
+    void ModifyEffectStack(const std::string &effectId, const int delta);
+    bool HasEffect(const std::string &effectId);
     void ClearEffect(const std::string &effectId);
     void ClearAllEffects();
 
-    Stats &GetStatsData();
+    Stats &StatsData();
 
     void AddRelationship(const std::string &relationshipId);
     void ChangeAffinity(const std::string &relationshipId);
@@ -60,11 +66,17 @@ class ActiveStatusEffectInfo
     int stacks;
 };
 
-struct Stats
+class Stats
 {
     int health;
     int stamina;
     bool isAlive;
+};
+
+class LocationInfo
+{
+    std::string name;
+    bool isVisited;
 };
 
 #endif

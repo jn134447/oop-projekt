@@ -1,7 +1,6 @@
 #ifndef TEMPLATE_H
 #define TEMPLATE_H
 
-#include "game_state.hpp"
 
 class Game
 {

@@ -32,8 +32,12 @@ endif()
 include_directories(
     include
     external
+
     include/text_adventure
-    )
+    include/text_adventure/dialogue
+    include/text_adventure/states
+    include/text_adventure/ui
+)
 
 # This is the main part:
 set(SOURCES 
