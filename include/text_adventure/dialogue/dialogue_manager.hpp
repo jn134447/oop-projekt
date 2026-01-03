@@ -12,17 +12,22 @@ class DialogueManager
 {
     // Graph storage
     std::unordered_map<std::string, std::unique_ptr<DialogueNode>> nodes;
-public:
-    // private:
-    void LoadFromFile(const std::string& filename);
-    DialogueNode* GetNode(const std::string& nodeId);
 
-    // Current state
-    // DialogueNode* currentNode = nullptr;
-    // int currentTextIndex = 0;  // Which text block we're showing
+    DialogueNode *currentNode = nullptr;
+    int currentTextIndex = 0;
+
+    DialogueNode *startNode = nullptr;
+
+    bool showingChoices = false;
 
     // References (not owned)
     // GameState& gameState;
+
+public:
+    // private:
+    void LoadFromFile(const std::string &filename);
+    DialogueNode *GetNode(const std::string &nodeId);
+    DialogueNode *GetCurrentNode();
 
     // Control flags
     // bool isWaitingForChoice = false;
@@ -33,7 +38,7 @@ public:
 
     // Graph management
     // void AddNode(std::unique_ptr<DialogueNode> node);
-    // void SetStartNode(const std::string &nodeId);
+    void SetStartNode(const std::string &nodeId);
 
     // // Current session
     // void StartDialogue(const std::string &nodeId);
@@ -41,26 +46,31 @@ public:
     // bool IsInDialogue() const;
 
     // // Text progression
-    // void Update();      // Call each frame
+    void Update();      // Call each frame
+    void Advance();
     // void AdvanceText(); // Player clicked to advance
     // void SkipToEnd();   // Skip current text animation
 
     // // Choice handling
-    // const std::vector<Choice *> &GetAvailableChoices() const;
-    // void SelectChoice(int choiceIndex);
-    // void SelectChoice(const std::string &choiceText);
+    const std::vector<Choice> &GetChoices() const;
+    int GetChoicesCount() const;
+    void SelectChoice(int choiceIndex);
+    void SelectChoice(const std::string &choiceText);
 
     // // Getters for UI
-    // RPGText *GetCurrentRPGText() const;
+    RPGText *GetCurrentText() const;
+    int GetCurrentTextIndex() const;
     // bool IsWaitingForPlayerChoice() const;
     // bool IsTextAnimationComplete() const;
+    bool isShowingChoices() const;
+    // void ResetCurrentNodeAllText();
 
     // // Navigation
-    // void GoToNode(const std::string &nodeId);
+    void GoToNode(const std::string &nodeId);
     // bool CanGoBack() const;
     // void GoBack(); // Optional: backtrack
 
-// private:
+    // private:
     // void ExecuteCurrentTextActions();
     // void UpdateChoiceAvailability();
     // void TransitionToNode(const std::string &nodeId);

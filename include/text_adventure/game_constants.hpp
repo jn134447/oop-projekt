@@ -4,7 +4,7 @@
 namespace GameConsts {
     // JSON field names
     namespace JSON {
-        // const std::string TEXT = "text";
+        const std::string TEXT = "text";
         const std::string CONTENT = "content";
         const std::string COLOR = "color";
         const std::string FONT_SIZE = "font_size";
@@ -12,6 +12,7 @@ namespace GameConsts {
         const std::string CHOICES = "choices";
         const std::string TARGET = "target";
         const std::string TEXTS = "texts";
+        const std::string DEFAULT_NEXT = "default_next";
     }
     
     // Item IDs

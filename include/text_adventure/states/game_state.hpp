@@ -5,6 +5,10 @@
 #include <unordered_map>
 #include <string>
 
+class ActiveStatusEffectInfo;
+class Stats;
+class LocationInfo;
+
 class GameState
 {
     std::unordered_map<std::string, bool> worldFlags;

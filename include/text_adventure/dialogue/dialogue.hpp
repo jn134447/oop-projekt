@@ -19,10 +19,13 @@ class DialogueNode
     // std::vector<TextWithActions> texts;
     std::vector<Choice> choices;
 
+    std::string defaultNextNodeId;
+
     bool visited;
 
 public:
-    DialogueNode(const std::string nodeId);
+    DialogueNode(const std::string nodeId,
+                 const std::string defaultNextNodeId);
     // bool AllTextCompleted() const;
     void AddText(std::unique_ptr<RPGText> text);
     void AddChoice(const std::string &text, const std::string &targetId);
@@ -31,6 +34,12 @@ public:
     RPGText *GetText(int index);
     int GetTextCount() const;
     const std::vector<Choice> &GetChoices() const;
+
+    const std::string &GetDefaultNext() const;
+    bool HasDefaultNext() const;
+    // void SetDefaultNext(std::string& nodeId);
+
+    void ResetAllTexts() ;
 };
 
 #endif

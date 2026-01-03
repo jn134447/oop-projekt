@@ -1,7 +1,9 @@
 #include "dialogue.hpp"
+#include <iostream>
 
-DialogueNode::DialogueNode(const std::string nodeId)
-    : nodeId(nodeId)
+DialogueNode::DialogueNode(const std::string nodeId,
+                           const std::string defaultNextNodeId)
+    : nodeId(nodeId), defaultNextNodeId(defaultNextNodeId)
 {
 }
 
@@ -27,6 +29,26 @@ int DialogueNode::GetTextCount() const
 {
     return texts.size();
 }
-const std::vector<Choice> &DialogueNode::GetChoices() const {
+const std::vector<Choice> &DialogueNode::GetChoices() const
+{
     return choices;
+}
+
+// void DialogueNode::SetDefaultNext(std::string &nodeId)
+// {
+//     defaultNextNodeId = nodeId;
+// }
+
+bool DialogueNode::HasDefaultNext() const
+{
+    return !defaultNextNodeId.empty();
+}
+void DialogueNode::ResetAllTexts()
+{
+    for (auto &text : texts)
+        text->Reset();
+}
+const std::string &DialogueNode::GetDefaultNext() const
+{
+    return defaultNextNodeId;
 }

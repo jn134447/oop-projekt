@@ -12,7 +12,8 @@ void DialogueManager::LoadFromFile(const std::string &filename)
 
     for (auto &[nodeId, nodeData] : data.items())
     {
-        auto node = std::make_unique<DialogueNode>(nodeId);
+        auto node = std::make_unique<DialogueNode>(nodeId,
+                                                   nodeData.value(GameConsts::JSON::DEFAULT_NEXT, ""));
 
         // Load texts
         for (auto &textData : nodeData[GameConsts::JSON::TEXTS])
@@ -43,4 +44,101 @@ void DialogueManager::LoadFromFile(const std::string &filename)
 DialogueNode *DialogueManager::GetNode(const std::string &nodeId)
 {
     return nodes.at(nodeId).get();
+}
+
+DialogueNode *DialogueManager::GetCurrentNode()
+{
+    return currentNode;
+}
+
+void DialogueManager::SetStartNode(const std::string &nodeId)
+{
+    startNode = GetNode(nodeId);
+}
+
+void DialogueManager::Update()
+{
+    if (!currentNode)
+        return;
+
+    if (!showingChoices)
+    {
+        // Update current text animation
+        GetCurrentText()->Update();
+    }
+}
+
+void DialogueManager::Advance()
+{
+    if (GetCurrentText()->IsComplete())
+    {
+        currentTextIndex++;
+        if (currentTextIndex >= currentNode->GetTextCount())
+        {
+            if (currentNode->GetChoices().empty() &&
+                currentNode->HasDefaultNext())
+            {
+                // Auto-go to next node
+                GoToNode(currentNode->GetDefaultNext());
+            }
+            else
+            {
+                showingChoices = true;
+            }
+        }
+    }
+    else
+    {
+        GetCurrentText()->Skip();
+    }
+}
+
+int DialogueManager::GetChoicesCount() const
+{
+    if (!currentNode)
+        return 0;
+    return currentNode->GetChoices().size();
+}
+
+const std::vector<Choice> &DialogueManager::GetChoices() const
+{
+    static std::vector<Choice> empty;
+    if (!currentNode)
+        return empty;
+    return currentNode->GetChoices();
+}
+
+void DialogueManager::SelectChoice(int choiceIndex)
+{
+    GoToNode(currentNode->GetChoices().at(choiceIndex).targetNodeID);
+    currentTextIndex = 0;
+    showingChoices = false;
+}
+
+RPGText *DialogueManager::GetCurrentText() const
+{
+    return currentNode->GetText(currentTextIndex);
+}
+
+int DialogueManager::GetCurrentTextIndex() const
+{
+    return currentTextIndex;
+}
+
+bool DialogueManager::isShowingChoices() const
+{
+    return showingChoices;
+}
+
+void DialogueManager::GoToNode(const std::string &nodeId)
+{
+    DialogueNode *newNode = GetNode(nodeId);
+    if (!newNode)
+        return;
+
+    // Reset for new node
+    currentNode = newNode;
+    currentTextIndex = 0;
+    showingChoices = false;
+    currentNode->ResetAllTexts();
 }

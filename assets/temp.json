@@ -2,16 +2,60 @@
   "start": {
     "texts": [
       {
-        "content": "You stand before a wooden door.",
+        "content": "There is a key on the ground",
         "color": [180, 150, 100, 255],
         "font_size": 20,
         "speed": 10
       },
       {
-        "content": "A sign reads: 'Enter at your own risk.'",
+        "content": "Pick it up?",
         "color": [220, 100, 50, 255],
         "font_size": 20,
-        "speed": 8
+        "speed": 30
+      }
+    ],
+    "choices": [
+      {
+        "text": "Pick up the key",
+        "target": "pickup_key"
+      },
+      {
+        "text": "Leave it",
+        "target": "didnt_pickup_key"
+      }
+    ]
+  },
+  "didnt_pickup_key": {
+    "texts": [
+      {
+        "content": "You ignore the key",
+        "color": [40, 40, 240, 255],
+        "font_size": 20,
+        "speed": 10
+      }
+    ],
+    "default_next": "door_open",
+    "choices": []
+  },
+  "pickup_key": {
+    "texts": [
+      {
+        "content": "You picked up the key",
+        "color": [40, 40, 240, 255],
+        "font_size": 20,
+        "speed": 10
+      }
+    ],
+    "default_next": "door_open",
+    "choices": []
+  },
+  "door_open": {
+    "texts": [
+      {
+        "content": "The door stands before you",
+        "color": [180, 150, 100, 255],
+        "font_size": 20,
+        "speed": 10
       }
     ],
     "choices": [
@@ -20,12 +64,11 @@
         "target": "inside_room"
       },
       {
-        "text": "Walk away",
-        "target": "game_over"
+        "text": "Go back to the key",
+        "target": "start"
       }
     ]
   },
-  
   "inside_room": {
     "texts": [
       {
@@ -35,6 +78,11 @@
         "speed": 10
       }
     ],
-    "choices": []
+    "choices": [
+      {
+        "text": "go back",
+        "target": "door_open"
+      }
+    ]
   }
 }
