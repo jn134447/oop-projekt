@@ -1,7 +1,8 @@
 #include <raylib-cpp.hpp>
 #include "rpg_text.hpp"
-#include "dialogue_node.hpp"
-#include "json_loader.hpp"
+// #include "dialogue_node.hpp"
+// #include "json_loader.hpp"
+#include "dialogue_manager.hpp"
 
 constexpr unsigned int FPS = 60;
 
@@ -11,12 +12,14 @@ int main(void)
     const int screenHeight = 800;
     raylib::Window w(screenWidth, screenHeight, "Text Adventure");
 
+    DialogueManager dialmng;
+
     // 1. LOAD STORY
-    auto nodes = DialogueLoader::LoadFromFile("../assets/temp.json");
+    dialmng.LoadFromFile("../assets/temp.json");
     
     // 2. START AT FIRST NODE
     std::string currentNodeId = "start";
-    DialogueNode* currentNode = nodes[currentNodeId].get();
+    DialogueNode* currentNode = dialmng.GetNode(currentNodeId);
     int currentTextIndex = 0;
     bool showingChoices = false;
     
@@ -56,8 +59,8 @@ int main(void)
             for (int i = 0; i < choices.size(); i++) {
                 if (raylib::Keyboard::IsKeyPressed(KEY_ONE + i)) {
                     // Change node
-                    currentNodeId = choices[i].target;
-                    currentNode = nodes[currentNodeId].get();
+                    currentNodeId = choices[i].targetNodeID;
+                    currentNode = dialmng.GetNode(currentNodeId);
                     currentTextIndex = 0;
                     showingChoices = false;
                     break;

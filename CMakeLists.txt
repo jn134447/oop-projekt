@@ -34,7 +34,7 @@ include_directories(
     include
     external
 
-    include/simple
+    # include/simple
 
     include/text_adventure
     include/text_adventure/dialogue
@@ -50,6 +50,9 @@ set(SOURCES
     # src/main.cpp
     src/simple_main.cpp
     src/rpg_text.cpp
+    src/text_adventure/dialogue/dialogue_manager.cpp
+    src/text_adventure/dialogue/dialogue.cpp
+    src/text_adventure/helper.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
