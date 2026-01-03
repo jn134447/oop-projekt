@@ -5,7 +5,7 @@
 
 #include "rpg_text.hpp"
 
-#include "game_state.hpp"
+// #include "game_state.hpp"
 
 constexpr unsigned int FPS = 60;
 

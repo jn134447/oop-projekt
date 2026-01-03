@@ -59,6 +59,12 @@
                     vcpkg-tool
 
                     # raylib
+
+                    gdb
+                    lldb
+
+                    nil
+                    nixfmt
                   ]
                   ++ (if system == "aarch64-darwin" then [ ] else [ gdb ]);
               };
