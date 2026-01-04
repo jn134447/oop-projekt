@@ -121,7 +121,7 @@ const std::vector<Choice> &DialogueManager::GetChoices() const
 
 void DialogueManager::SelectChoice(int choiceIndex)
 {
-    GoToNode(currentNode->GetChoices().at(choiceIndex).targetNodeID);
+    GoToNode(currentNode->GetChoices().at(choiceIndex).GetTargetNodeId());
     currentTextIndex = 0;
     showingChoices = false;
 }

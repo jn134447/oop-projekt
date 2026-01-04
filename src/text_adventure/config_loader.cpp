@@ -1,8 +1,10 @@
 #include "config_loader.hpp"
+
 #include "json.hpp"
-#include <fstream>
 #include "game_constants.hpp"
 #include "helper.hpp"
+
+#include <fstream>
 
 void ConfigLoader::LoadFromFile(const std::string &filename)
 {

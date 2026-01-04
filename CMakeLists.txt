@@ -49,12 +49,15 @@ include_directories(
 set(SOURCES 
     # src/main.cpp
     src/simple_main.cpp
-    src/rpg_text.cpp
+
+    src/text_adventure/dialogue/choice.cpp
     src/text_adventure/dialogue/dialogue_manager.cpp
     src/text_adventure/dialogue/dialogue.cpp
-    src/text_adventure/helper.cpp
+
+    src/text_adventure/ui/rpg_text.cpp
+
     src/text_adventure/config_loader.cpp
-    # src/text_adventure/story_loader.cpp
+    src/text_adventure/helper.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
