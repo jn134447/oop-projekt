@@ -57,10 +57,6 @@ int main(void)
                 }
             }
         }
-        if (raylib::Keyboard::IsKeyPressed(KEY_F5))
-        {
-            dialogueManager.ReloadStory();
-        }
 
         // DRAW
         w.BeginDrawing();

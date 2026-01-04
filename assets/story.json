@@ -10,11 +10,18 @@
     ]
   },
   "didnt_pickup_key": {
-    "texts": [{ "speaker": "player", "text": "You ignore the key" }],
+    "texts": [
+      {
+        "speaker": "player",
+        "text": "You ignore the key",
+        "color": [255, 0, 0, 255],
+        "speed": 20
+      }
+    ],
     "default_next": "door_open"
   },
   "pickup_key": {
-    "texts": [{ "speaker": "player", "text": "You picked up the key" }],
+    "texts": [{ "text": "You picked up the key" }],
     "default_next": "door_open",
     "actions": [{ "give_item": "rusty_key" }]
   },
@@ -26,7 +33,7 @@
     ]
   },
   "inside_room": {
-    "texts": [{ "speaker": "narrative", "text": "The room is dark and cold." }],
+    "texts": [{ "speaker": "room_narrative", "text": "The room is dark and cold." }],
     "choices": [{ "text": "go back", "target": "door_open" }]
   }
 }

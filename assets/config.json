@@ -16,6 +16,11 @@
           "color": [0, 180, 140, 255],
           "font_size": 20,
           "speed": 8
+        },
+        "room_narrative": {
+          "color": [20, 100, 20, 255],
+          "font_size": 60,
+          "speed": 30
         }
       }
     }
