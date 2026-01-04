@@ -5,11 +5,21 @@
 #include <unordered_map>
 #include <string>
 
-struct TextStyle
+#include "json.hpp"
+using json = nlohmann::json;
+
+class TextStyle
 {
     raylib::Color color;
     float fontSize;
     unsigned short speed;
+
+public:
+    void LoadFromJSON(const json &textData, const TextStyle &fallback);
+
+    const raylib::Color &GetColor() const;
+    float GetFontSize() const;
+    unsigned short GetSpeed() const;
 };
 
 class ConfigLoader
@@ -19,6 +29,7 @@ class ConfigLoader
 
 public:
     void LoadFromFile(const std::string &filename);
+
     const TextStyle &GetDefaultTextStyle() const;
     const TextStyle &GetSpeakerStyle(const std::string &speaker) const;
 };

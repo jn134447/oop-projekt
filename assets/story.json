@@ -19,7 +19,7 @@
     "actions": [{ "give_item": "rusty_key" }]
   },
   "door_open": {
-    "texts": [{ "speaker": "narrative", "text": "The door stands before you" }],
+    "texts": [{ "speaker": "narrative", "text": "The door STANDS before you" }],
     "choices": [
       { "text": "Open the door", "target": "inside_room" },
       { "text": "Go back to the key", "target": "start" }

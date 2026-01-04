@@ -2,43 +2,54 @@
 #include "helper.hpp"
 #include "game_constants.hpp"
 #include "json.hpp"
+// #include "config_loader.hpp"
+
+void DialogueManager::LoadGame(const std::string &storyFile, const std::string &configFile)
+{
+    config.LoadFromFile(configFile);
+    LoadFromFile(storyFile);
+}
 
 void DialogueManager::LoadFromFile(const std::string &filename)
 {
+    currentStoryFile = filename;
     std::ifstream file(filename);
     nlohmann::json data = nlohmann::json::parse(file);
-
-    // std::unordered_map<std::string, std::unique_ptr<DialogueNode>> nodes;
 
     for (auto &[nodeId, nodeData] : data.items())
     {
         auto node = std::make_unique<DialogueNode>(nodeId,
-                                                   nodeData.value(GameConsts::JSON::DEFAULT_NEXT, ""));
+                                                   nodeData.value(GameConsts::node::DEFAULT_NEXT, ""));
 
         // Load texts
-        for (auto &textData : nodeData[GameConsts::JSON::TEXTS])
+        for (auto &textData : nodeData[GameConsts::node::TEXTS])
         {
+            // Get base style from config
+            std::string speaker = textData.value(GameConsts::node::SPEAKER, "");
+            const TextStyle &baseStyle = config.GetSpeakerStyle(speaker);
+
+            TextStyle finalStyle;
+            finalStyle.LoadFromJSON(textData, baseStyle);
+
             auto rpgText = std::make_unique<RPGText>(
-                textData[GameConsts::JSON::CONTENT],
-                textData[GameConsts::JSON::FONT_SIZE],
-                LoadColorFromJSON(textData[GameConsts::JSON::COLOR]),
-                textData.value(GameConsts::JSON::SPEED, 10));
+                textData[GameConsts::node::TEXT],
+                finalStyle.GetFontSize(),
+                finalStyle.GetColor(),
+                finalStyle.GetSpeed());
 
             node->AddText(std::move(rpgText));
         }
 
         // Load choices
-        for (auto &choiceData : nodeData[GameConsts::JSON::CHOICES])
+        for (auto &choiceData : nodeData[GameConsts::node::CHOICES])
         {
             node->AddChoice(
-                choiceData[GameConsts::JSON::TEXT],
-                choiceData[GameConsts::JSON::TARGET]);
+                choiceData[GameConsts::node::TEXT],
+                choiceData[GameConsts::node::TARGET]);
         }
 
         nodes[nodeId] = std::move(node);
     }
-
-    // return nodes;
 }
 
 DialogueNode *DialogueManager::GetNode(const std::string &nodeId)

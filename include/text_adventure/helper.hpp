@@ -7,5 +7,7 @@
 using json = nlohmann::json;
 
 raylib::Color LoadColorFromJSON(const json &colorData);
+raylib::Color GetColorFromJSON(const json& colorData, const raylib::Color& fallback);
+raylib::Color GetColorFromJSON(const json& colorData);
 
 #endif

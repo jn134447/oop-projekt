@@ -15,7 +15,9 @@ int main(void)
     DialogueManager dialogueManager;
 
     // 1. LOAD STORY
-    dialogueManager.LoadFromFile("../assets/temp.json");
+    // dialogueManager.LoadFromFile("assets/temp.json");
+    dialogueManager.LoadGame(GameConsts::Files::STORY,
+                             GameConsts::Files::CONFIG);
 
     // 2. START AT FIRST NODE
     dialogueManager.SetStartNode("start");
@@ -54,6 +56,10 @@ int main(void)
                     break;
                 }
             }
+        }
+        if (raylib::Keyboard::IsKeyPressed(KEY_F5))
+        {
+            dialogueManager.ReloadStory();
         }
 
         // DRAW

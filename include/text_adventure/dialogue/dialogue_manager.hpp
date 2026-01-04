@@ -1,5 +1,6 @@
 #ifndef DIALOGUE_MANAGER_H
 #define DIALOGUE_MANAGER_H
+#pragma once
 
 #include <unordered_map>
 #include <fstream>
@@ -7,9 +8,11 @@
 #include "dialogue.hpp"
 // #include "game_state.hpp"
 #include "game_constants.hpp"
+#include "config_loader.hpp"
 
 class DialogueManager
 {
+    ConfigLoader config;
     // Graph storage
     std::unordered_map<std::string, std::unique_ptr<DialogueNode>> nodes;
 
@@ -20,11 +23,14 @@ class DialogueManager
 
     bool showingChoices = false;
 
+    std::string currentStoryFile;
     // References (not owned)
     // GameState& gameState;
 
 public:
     // private:
+    void LoadGame(const std::string &storyFile,
+                  const std::string &configFile);
     void LoadFromFile(const std::string &filename);
     DialogueNode *GetNode(const std::string &nodeId);
     DialogueNode *GetCurrentNode();
@@ -46,7 +52,7 @@ public:
     // bool IsInDialogue() const;
 
     // // Text progression
-    void Update();      // Call each frame
+    void Update(); // Call each frame
     void Advance();
     // void AdvanceText(); // Player clicked to advance
     // void SkipToEnd();   // Skip current text animation

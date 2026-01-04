@@ -3,7 +3,7 @@
 
 namespace GameConsts {
     // JSON field names
-    namespace JSON {
+    namespace node {
         const std::string TEXT = "text";
         // const std::string CONTENT = "content";
         const std::string COLOR = "color";
@@ -14,10 +14,16 @@ namespace GameConsts {
         const std::string TEXTS = "texts";
         const std::string DEFAULT_NEXT = "default_next";
         const std::string SPEAKER = "speaker";
-        const std::string CONFIG = "config";
     }
+    namespace config {
+        const std::string CONFIG = "config";
+        const std::string TEXT_STYLE = "text_style";
+        const std::string DEFAULT = "default";
+        const std::string SPEAKERS = "speakers";
+    };
     namespace Files{
-        const std::string CONFIG = "config.json";
+        const std::string CONFIG = "../assets/config.json";
+        const std::string STORY = "../assets/story.json";
     }
     
     // Item IDs

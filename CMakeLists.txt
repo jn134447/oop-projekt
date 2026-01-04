@@ -53,7 +53,8 @@ set(SOURCES
     src/text_adventure/dialogue/dialogue_manager.cpp
     src/text_adventure/dialogue/dialogue.cpp
     src/text_adventure/helper.cpp
-    src/text_adventure/story_loader.cpp
+    src/text_adventure/config_loader.cpp
+    # src/text_adventure/story_loader.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
