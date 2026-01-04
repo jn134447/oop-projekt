@@ -21,7 +21,7 @@
     "default_next": "door_open"
   },
   "pickup_key": {
-    "texts": [{ "text": "You picked up the key" }],
+    "texts": [{ "text": "You picked up the key", "font_size": 50 }],
     "default_next": "door_open",
     "actions": [{ "give_item": "rusty_key" }]
   },
@@ -33,7 +33,9 @@
     ]
   },
   "inside_room": {
-    "texts": [{ "speaker": "room_narrative", "text": "The room is dark and cold." }],
+    "texts": [
+      { "speaker": "room_narrative", "text": "The room is dark and cold." }
+    ],
     "choices": [{ "text": "go back", "target": "door_open" }]
   }
 }
