@@ -16,6 +16,9 @@ namespace GameConsts {
         const std::string SPEAKER = "speaker";
         const std::string CONFIG = "config";
     }
+    namespace Files{
+        const std::string CONFIG = "config.json";
+    }
     
     // Item IDs
     namespace Items {
@@ -31,10 +34,4 @@ namespace GameConsts {
         // const std::string BLESSED = "blessed";
     }
     
-    // Dialogue node IDs
-    namespace Nodes {
-        const std::string START = "start";
-        const std::string TAVERN = "tavern";
-        const std::string GAME_OVER = "game_over";
-    }
 }

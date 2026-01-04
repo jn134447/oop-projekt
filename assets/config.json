@@ -1,10 +1,15 @@
 {
   "config": {
+    "chapters": [
+      { "id": "prologue", "file": "prologue.json", "prefix": "prologue_" },
+      { "id": "chapter1", "file": "chapter1.json", "prefix": "ch1_" },
+      { "id": "chapter2", "file": "chapters/chapter2.json", "prefix": "ch2_" }
+    ],
     "text_style": {
       "default": {
-          "color": [0, 0, 0, 255],
-          "font_size": 20,
-          "speed": 10
+        "color": [0, 0, 0, 255],
+        "font_size": 20,
+        "speed": 10
       },
       "speakers": {
         "narrative": {
