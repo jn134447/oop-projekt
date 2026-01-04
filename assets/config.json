@@ -1,0 +1,23 @@
+{
+  "config": {
+    "text_style": {
+      "default": {
+          "color": [0, 0, 0, 255],
+          "font_size": 20,
+          "speed": 10
+      },
+      "speakers": {
+        "narrative": {
+          "color": [180, 150, 100, 255],
+          "font_size": 20,
+          "speed": 10
+        },
+        "player": {
+          "color": [220, 180, 140, 255],
+          "font_size": 20,
+          "speed": 8
+        }
+      }
+    }
+  }
+}

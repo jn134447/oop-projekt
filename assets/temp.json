@@ -1,88 +1,32 @@
 {
   "start": {
     "texts": [
-      {
-        "content": "There is a key on the ground",
-        "color": [180, 150, 100, 255],
-        "font_size": 20,
-        "speed": 10
-      },
-      {
-        "content": "Pick it up?",
-        "color": [220, 100, 50, 255],
-        "font_size": 20,
-        "speed": 30
-      }
+      { "speaker": "narrative", "text": "There is a key on the ground..." },
+      { "speaker": "player", "text": "Pick up the key", "font_size": 40 }
     ],
     "choices": [
-      {
-        "text": "Pick up the key",
-        "target": "pickup_key"
-      },
-      {
-        "text": "Leave it",
-        "target": "didnt_pickup_key"
-      }
+      { "text": "Pick up the key", "target": "pickup_key" },
+      { "text": "Leave it", "target": "didnt_pickup_key" }
     ]
   },
   "didnt_pickup_key": {
-    "texts": [
-      {
-        "content": "You ignore the key",
-        "color": [40, 40, 240, 255],
-        "font_size": 20,
-        "speed": 10
-      }
-    ],
-    "default_next": "door_open",
-    "choices": []
+    "texts": [{ "speaker": "player", "text": "You ignore the key" }],
+    "default_next": "door_open"
   },
   "pickup_key": {
-    "texts": [
-      {
-        "content": "You picked up the key",
-        "color": [40, 40, 240, 255],
-        "font_size": 20,
-        "speed": 10
-      }
-    ],
+    "texts": [{ "speaker": "player", "text": "You picked up the key" }],
     "default_next": "door_open",
-    "choices": []
+    "actions": [{ "give_item": "rusty_key" }]
   },
   "door_open": {
-    "texts": [
-      {
-        "content": "The door stands before you",
-        "color": [180, 150, 100, 255],
-        "font_size": 20,
-        "speed": 10
-      }
-    ],
+    "texts": [{ "speaker": "narrative", "text": "The door stands before you" }],
     "choices": [
-      {
-        "text": "Open the door",
-        "target": "inside_room"
-      },
-      {
-        "text": "Go back to the key",
-        "target": "start"
-      }
+      { "text": "Open the door", "target": "inside_room" },
+      { "text": "Go back to the key", "target": "start" }
     ]
   },
   "inside_room": {
-    "texts": [
-      {
-        "content": "The room is dark and cold.",
-        "color": [180, 150, 100, 255],
-        "font_size": 20,
-        "speed": 10
-      }
-    ],
-    "choices": [
-      {
-        "text": "go back",
-        "target": "door_open"
-      }
-    ]
+    "texts": [{ "speaker": "narrative", "text": "The room is dark and cold." }],
+    "choices": [{ "text": "go back", "target": "door_open" }]
   }
 }
