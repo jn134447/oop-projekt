@@ -37,31 +37,31 @@ public:
     void Execute(GameState &gamestate) override;
 };
 
-class SetFlagAction : public DialogueAction
-{
-private:
-    std::string flagId;
-    bool value;
+// class SetFlagAction : public DialogueAction
+// {
+// private:
+//     std::string flagId;
+//     bool value;
 
-public:
-    SetFlagAction(const std::string flagId, bool value);
-    void Execute(GameState &gamestate) override;
-};
+// public:
+//     SetFlagAction(const std::string flagId, bool value);
+//     void Execute(GameState &gamestate) override;
+// };
 
-class ModifyStatAction : public DialogueAction
-{
-private:
-    std::string statId;
-    int delta;
-    int minValue;
-    int maxValue;
+// class ModifyStatAction : public DialogueAction
+// {
+// private:
+//     std::string statId;
+//     int delta;
+//     int minValue;
+//     int maxValue;
 
-public:
-    ModifyStatAction(const std::string &statId,
-                     int delta,
-                     int min = INT_MIN,
-                     int max = INT_MAX);
-    void Execute(GameState &gamestate) override;
-};
+// public:
+//     ModifyStatAction(const std::string &statId,
+//                      int delta,
+//                      int min = INT_MIN,
+//                      int max = INT_MAX);
+//     void Execute(GameState &gamestate) override;
+// };
 
 #endif

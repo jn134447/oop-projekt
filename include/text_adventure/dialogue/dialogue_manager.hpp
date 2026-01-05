@@ -6,13 +6,15 @@
 #include <fstream>
 
 #include "dialogue.hpp"
-// #include "game_state.hpp"
+#include "game_state.hpp"
 #include "game_constants.hpp"
 #include "config_loader.hpp"
 
 class DialogueManager
 {
     ConfigLoader config;
+    GameState& gameState;
+
     // Graph storage
     std::unordered_map<std::string, std::unique_ptr<DialogueNode>> nodes;
 
@@ -24,11 +26,11 @@ class DialogueManager
     bool showingChoices = false;
 
     std::string currentStoryFile;
-    // References (not owned)
-    // GameState& gameState;
 
 public:
     // private:
+    DialogueManager(GameState &state);
+
     void LoadGame(const std::string &storyFile,
                   const std::string &configFile);
     void LoadFromFile(const std::string &filename);
@@ -40,7 +42,6 @@ public:
     // bool isTextAnimating = true;
 
     // public:
-    // DialogueManager(GameState &state);
 
     // Graph management
     // void AddNode(std::unique_ptr<DialogueNode> node);
@@ -64,7 +65,7 @@ public:
     void SelectChoice(const std::string &choiceText);
 
     // // Getters for UI
-    RPGText *GetCurrentText() const;
+    RPGText &GetCurrentText() const;
     int GetCurrentTextIndex() const;
     // bool IsWaitingForPlayerChoice() const;
     // bool IsTextAnimationComplete() const;

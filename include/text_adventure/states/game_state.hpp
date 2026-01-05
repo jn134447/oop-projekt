@@ -5,24 +5,26 @@
 #include <unordered_map>
 #include <string>
 
-class ActiveStatusEffectInfo;
-class Stats;
-class LocationInfo;
+// class ActiveStatusEffectInfo;
+// class Stats;
+// class LocationInfo;
+class CharacterData;
 
 class GameState
 {
     std::unordered_map<std::string, bool> worldFlags;
     std::unordered_map<std::string, int> worldVariables;
 
-    std::unordered_map<std::string, LocationInfo> locations;
-    std::string currentLocationId;
+    // std::unordered_map<std::string, LocationInfo> locations;
+    // std::string currentLocationId;
 
-    std::unordered_map<std::string, CharacterData> characters;
+    // std::unordered_map<std::string, CharacterData> characters;
+    CharacterData player;
     std::string currentCharacterId;
 
 public:
-    void LoadJSON();
-    void ToJSON();
+    // void LoadJSON(const std::string &filename);
+    // void ToJSON();
 
     bool GetFlag(const std::string &flagId) const;
     void SetFlag(const std::string &flagId);
@@ -33,54 +35,55 @@ public:
     void ModifyVariable(const std::string &variableId, const int delta);
 
     CharacterData &currentCharacter();
-    LocationInfo &currentLocation();
+    // LocationInfo &currentLocation();
 };
 
 class CharacterData
 {
     std::unordered_map<std::string, int> inventory;
-    std::unordered_map<std::string, ActiveStatusEffectInfo> effects;
-    Stats stats;
-    std::unordered_map<std::string, int> relationships;
+    // std::unordered_map<std::string, ActiveStatusEffectInfo> effects;
+    // Stats stats;
+    // std::unordered_map<std::string, int> relationships;
 
 public:
     void AddItem(const std::string &itemId, const int quantity);
     void RemoveItem(const std::string &itemId, const int quantity);
     bool HasItem(const std::string &itemId, const int minQuantity = 1) const;
+    int GetItemCount(const std::string& itemId) const;
     void ClearItem(const std::string &itemId);
     void ClearAllItems();
 
-    void AddEffect(const std::string &effectId);
-    void ModifyEffectStack(const std::string &effectId, const int delta);
-    bool HasEffect(const std::string &effectId);
-    void ClearEffect(const std::string &effectId);
-    void ClearAllEffects();
+    // void AddEffect(const std::string &effectId);
+    // void ModifyEffectStack(const std::string &effectId, const int delta);
+    // bool HasEffect(const std::string &effectId);
+    // void ClearEffect(const std::string &effectId);
+    // void ClearAllEffects();
 
-    Stats &StatsData();
+    // Stats &StatsData();
 
-    void AddRelationship(const std::string &relationshipId);
-    void ChangeAffinity(const std::string &relationshipId);
-    void GetAffinity(const std::string &relationshipId);
-    void ClearAllAffinities();
+    // void AddRelationship(const std::string &relationshipId);
+    // void ChangeAffinity(const std::string &relationshipId);
+    // void GetAffinity(const std::string &relationshipId);
+    // void ClearAllAffinities();
 };
 
-class ActiveStatusEffectInfo
-{
-    std::string effectId;
-    int stacks;
-};
+// class ActiveStatusEffectInfo
+// {
+//     std::string effectId;
+//     int stacks;
+// };
 
-class Stats
-{
-    int health;
-    int stamina;
-    bool isAlive;
-};
+// class Stats
+// {
+//     int health;
+//     int stamina;
+//     bool isAlive;
+// };
 
-class LocationInfo
-{
-    std::string name;
-    bool isVisited;
-};
+// class LocationInfo
+// {
+//     std::string name;
+//     bool isVisited;
+// };
 
 #endif

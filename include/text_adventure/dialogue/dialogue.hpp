@@ -6,17 +6,25 @@
 #include "choice.hpp"
 #include <vector>
 #include <memory>
+#include <functional>
 
+using ActionFunc = std::function<void()>;
+class DialogueEntry
+{
+    RPGText text;
+    std::vector<ActionFunc> actions;
+
+public:
+    DialogueEntry(RPGText text, std::vector<ActionFunc> actions);
+    RPGText &GetText();
+    std::vector<ActionFunc> &GetActions();
+};
 class DialogueNode
 {
-    // struct TextWithActions{
-    //     RPGText text;
-    //     std::vector<std::unique_ptr<DialogueAction>> actions;
-    // };
 
     std::string nodeId;
-    std::vector<std::unique_ptr<RPGText>> texts;
-    // std::vector<TextWithActions> texts;
+    // std::vector<std::unique_ptr<RPGText>> texts;
+    std::vector<DialogueEntry> entries;
     std::vector<Choice> choices;
 
     std::string defaultNextNodeId;
@@ -27,19 +35,23 @@ public:
     DialogueNode(const std::string nodeId,
                  const std::string defaultNextNodeId);
     // bool AllTextCompleted() const;
-    void AddText(std::unique_ptr<RPGText> text);
-    void AddChoice(const std::string &text, const std::string &targetId);
+    void AddEntry(std::unique_ptr<RPGText> text, std::vector<ActionFunc> actions = {});
+    const std::string &GetNodeId() const;
 
-    const std::string &GetId() const;
-    RPGText *GetText(int index);
-    int GetTextCount() const;
+    DialogueEntry &GetEntry(int index);
+    int GetEntryCount() const;
+
+    void AddChoice(const std::string &text, const std::string &targetId);
     const std::vector<Choice> &GetChoices() const;
 
     const std::string &GetDefaultNext() const;
     bool HasDefaultNext() const;
     // void SetDefaultNext(std::string& nodeId);
 
-    void ResetAllTexts() ;
+    void ResetAllTexts();
+
+    // Actions
+    void ExecuteEntryActions(const int index);
 };
 
 #endif

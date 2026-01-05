@@ -1,11 +1,14 @@
 #pragma once
 #include <string>
 
-namespace GameConsts {
+namespace GameConsts
+{
     // JSON field names
-    namespace node {
+    namespace node
+    {
+        const std::string STORY = "story";
         const std::string TEXT = "text";
-        // const std::string CONTENT = "content";
+        const std::string CONTENT = "content";
         const std::string COLOR = "color";
         const std::string FONT_SIZE = "font_size";
         const std::string SPEED = "speed";
@@ -14,30 +17,39 @@ namespace GameConsts {
         const std::string TEXTS = "texts";
         const std::string DEFAULT_NEXT = "default_next";
         const std::string SPEAKER = "speaker";
+
     }
-    namespace config {
+    namespace action
+    {
+        const std::string ACTIONS = "actions";
+        const std::string TYPE = "type";
+        const std::string GIVE_ITEM = "give_item";
+    }
+    namespace item
+    {
+        const std::string ITEM = "item";
+        const std::string QUANTITY = "quantity";
+        const int QUANTITY_DEFAULT = 1;
+    }
+    namespace config
+    {
         const std::string CONFIG = "config";
         const std::string TEXT_STYLE = "text_style";
         const std::string DEFAULT = "default";
         const std::string SPEAKERS = "speakers";
     };
-    namespace Files{
+    namespace files
+    {
         const std::string CONFIG = "../assets/config.json";
-        const std::string STORY = "../assets/story.json";
+        const std::string STORY = "../assets/debug_story.json";
     }
-    
-    // Item IDs
-    namespace Items {
-        // const std::string HEALTH_POTION = "health_potion";
-        // const std::string RUSTY_KEY = "rusty_key";
-        // const std::string GOLD_COINS = "gold_coins";
+
+    namespace state
+    {
+        const std::string STATES = "states";
+        const std::string ITEMS = "items";
+        const std::string DISPLAY_NAME = "display_name";
+        const std::string DESCRIPTION = "description";
     }
-    
-    // Status effect IDs
-    namespace Effects {
-        // const std::string DREAD = "dread";
-        // const std::string POISON = "poison";
-        // const std::string BLESSED = "blessed";
-    }
-    
+
 }

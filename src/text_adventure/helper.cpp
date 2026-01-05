@@ -23,15 +23,3 @@ raylib::Color GetColorFromJSON(const json &colorData, const raylib::Color &fallb
     }
     return fallback;
 }
-
-raylib::Color GetColorFromJSON(const json &colorData)
-{
-    if (colorData.is_array() && colorData.size() >= 3)
-    {
-        return raylib::Color(
-            colorData[0].get<int>(),
-            colorData[1].get<int>(),
-            colorData[2].get<int>(),
-            colorData.size() > 3 ? colorData[3].get<int>() : 255);
-    }
-}

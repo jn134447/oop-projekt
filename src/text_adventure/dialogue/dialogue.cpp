@@ -7,9 +7,9 @@ DialogueNode::DialogueNode(const std::string nodeId,
 {
 }
 
-void DialogueNode::AddText(std::unique_ptr<RPGText> text)
+void DialogueNode::AddEntry(std::unique_ptr<RPGText> text, std::vector<ActionFunc> actions)
 {
-    texts.push_back(std::move(text));
+    entries.emplace_back(std::move(text), actions);
 }
 
 void DialogueNode::AddChoice(const std::string &text, const std::string &target)
@@ -17,18 +17,21 @@ void DialogueNode::AddChoice(const std::string &text, const std::string &target)
     choices.emplace_back(text, target);
 }
 
-const std::string &DialogueNode::GetId() const
+const std::string &DialogueNode::GetNodeId() const
 {
     return nodeId;
 }
-RPGText *DialogueNode::GetText(int index)
+
+DialogueEntry &DialogueNode::GetEntry(int index)
 {
-    return texts.at(index).get();
+    return entries.at(index);
 }
-int DialogueNode::GetTextCount() const
+
+int DialogueNode::GetEntryCount() const
 {
-    return texts.size();
+    return entries.size();
 }
+
 const std::vector<Choice> &DialogueNode::GetChoices() const
 {
     return choices;
@@ -45,10 +48,35 @@ bool DialogueNode::HasDefaultNext() const
 }
 void DialogueNode::ResetAllTexts()
 {
-    for (auto &text : texts)
-        text->Reset();
+    for (auto &text : entries)
+        text.GetText().Reset();
 }
+
+void DialogueNode::ExecuteEntryActions(const int index)
+{
+    for (auto &action : GetEntry(index).GetActions())
+    {
+        if (action)
+        {             // Check if valid function
+            action(); // Execute it!
+        }
+    }
+}
+
 const std::string &DialogueNode::GetDefaultNext() const
 {
     return defaultNextNodeId;
+}
+
+DialogueEntry::DialogueEntry(RPGText text, std::vector<ActionFunc> actions)
+    : text(text), actions(actions) {}
+
+RPGText &DialogueEntry::GetText()
+{
+    return text;
+}
+
+std::vector<ActionFunc> &DialogueEntry::GetActions()
+{
+    return actions;
 }

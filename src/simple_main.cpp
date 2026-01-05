@@ -12,12 +12,13 @@ int main(void)
     const int screenHeight = 800;
     raylib::Window w(screenWidth, screenHeight, "Text Adventure");
 
-    DialogueManager dialogueManager;
+    GameState gameState;
+    DialogueManager dialogueManager(gameState);
 
     // 1. LOAD STORY
     // dialogueManager.LoadFromFile("assets/temp.json");
-    dialogueManager.LoadGame(GameConsts::Files::STORY,
-                             GameConsts::Files::CONFIG);
+    dialogueManager.LoadGame(GameConsts::files::STORY,
+                             GameConsts::files::CONFIG);
 
     // 2. START AT FIRST NODE
     dialogueManager.SetStartNode("start");
@@ -68,9 +69,9 @@ int main(void)
             for (int i = 0; i <= dialogueManager.GetCurrentTextIndex(); i++)
             {
                 // Only draw if this text exists
-                if (i < dialogueManager.GetCurrentNode()->GetTextCount())
+                if (i < dialogueManager.GetCurrentNode()->GetEntryCount())
                 {
-                    dialogueManager.GetCurrentNode()->GetText(i)->Draw(50, 50 + (i * 40));
+                    dialogueManager.GetCurrentNode()->GetEntry(i)->Draw(50, 50 + (i * 40));
                 }
             }
         }

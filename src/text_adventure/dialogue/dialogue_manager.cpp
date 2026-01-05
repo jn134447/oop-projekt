@@ -3,6 +3,10 @@
 #include "game_constants.hpp"
 #include "json.hpp"
 // #include "config_loader.hpp"
+#include <iostream>
+
+DialogueManager::DialogueManager(GameState &state)
+    : gameState(state) {}
 
 void DialogueManager::LoadGame(const std::string &storyFile, const std::string &configFile)
 {
@@ -16,39 +20,69 @@ void DialogueManager::LoadFromFile(const std::string &filename)
     std::ifstream file(filename);
     nlohmann::json data = nlohmann::json::parse(file);
 
-    for (auto &[nodeId, nodeData] : data.items())
     {
-        auto node = std::make_unique<DialogueNode>(nodeId,
-                                                   nodeData.value(GameConsts::node::DEFAULT_NEXT, ""));
+        using namespace GameConsts;
 
-        // Load texts
-        for (auto &textData : nodeData[GameConsts::node::TEXTS])
+        for (auto &[nodeId, nodeData] : data[node::STORY].items())
         {
-            // Get base style from config
-            std::string speaker = textData.value(GameConsts::node::SPEAKER, "");
-            const TextStyle &baseStyle = config.GetSpeakerStyle(speaker);
+            auto node = std::make_unique<DialogueNode>(nodeId,
+                                                       nodeData.value(node::DEFAULT_NEXT, ""));
 
-            TextStyle finalStyle;
-            finalStyle.LoadFromJSON(textData, baseStyle);
+            // Load texts
+            for (auto &textData : nodeData[node::TEXTS])
+            {
+                // Get base style from config
+                std::string speaker = textData.value(node::SPEAKER, "");
+                const TextStyle &baseStyle = config.GetSpeakerStyle(speaker);
 
-            auto rpgText = std::make_unique<RPGText>(
-                textData[GameConsts::node::TEXT],
-                finalStyle.GetFontSize(),
-                finalStyle.GetColor(),
-                finalStyle.GetSpeed());
+                TextStyle finalStyle;
+                finalStyle.LoadFromJSON(textData, baseStyle);
 
-            node->AddText(std::move(rpgText));
+                auto rpgText = std::make_unique<RPGText>(
+                    textData[node::CONTENT],
+                    finalStyle.GetFontSize(),
+                    finalStyle.GetColor(),
+                    finalStyle.GetSpeed());
+
+                // Load node actions
+                std::vector<ActionFunc> actions;
+                if (nodeData.contains(action::ACTIONS))
+                {
+                    for (auto &actionData : nodeData[action::ACTIONS])
+                    {
+                        std::string actionType = actionData[action::TYPE];
+
+                        if (actionType == action::GIVE_ITEM)
+                        {
+                            std::string itemId = actionData[item::ITEM];
+                            int quantity = actionData.value(item::QUANTITY, item::QUANTITY_DEFAULT);
+
+                            // Store action to execute later
+                            // Create action function
+                            actions.push_back(
+                                [this, itemId, quantity]()
+                                {
+                                    std::cout << "ACTION: Giving " << quantity << " " << itemId << std::endl;
+                                    gameState.currentCharacter().AddItem(itemId, quantity);
+                                });
+                        }
+                        // TODO: Add more action types here later
+                    }
+                }
+
+                node->AddEntry(std::move(rpgText), actions);
+            }
+
+            // Load choices
+            for (auto &choiceData : nodeData[node::CHOICES])
+            {
+                node->AddChoice(
+                    choiceData[node::TEXT],
+                    choiceData[node::TARGET]);
+            }
+
+            nodes[nodeId] = std::move(node);
         }
-
-        // Load choices
-        for (auto &choiceData : nodeData[GameConsts::node::CHOICES])
-        {
-            node->AddChoice(
-                choiceData[GameConsts::node::TEXT],
-                choiceData[GameConsts::node::TARGET]);
-        }
-
-        nodes[nodeId] = std::move(node);
     }
 }
 
@@ -75,32 +109,45 @@ void DialogueManager::Update()
     if (!showingChoices)
     {
         // Update current text animation
-        GetCurrentText()->Update();
+        GetCurrentText().Update();
     }
 }
 
 void DialogueManager::Advance()
 {
-    if (GetCurrentText()->IsComplete())
+    if (!currentNode)
+        return;
+
+    // Get current text entry
+    auto &currentEntry = currentNode->GetEntry(currentTextIndex);
+
+    // If text is still animating, skip it
+    if (!currentEntry.GetText().IsComplete())
     {
-        currentTextIndex++;
-        if (currentTextIndex >= currentNode->GetTextCount())
-        {
-            if (currentNode->GetChoices().empty() &&
-                currentNode->HasDefaultNext())
-            {
-                // Auto-go to next node
-                GoToNode(currentNode->GetDefaultNext());
-            }
-            else
-            {
-                showingChoices = true;
-            }
-        }
+        currentEntry.GetText().Skip();
+        return;
     }
-    else
+
+    // Text is complete → EXECUTE ITS ACTIONS
+    currentNode->ExecuteEntryActions(currentTextIndex);
+
+    // Move to next text
+    currentTextIndex++;
+
+    // Check if we finished all texts
+    if (currentTextIndex >= currentNode->GetEntryCount())
     {
-        GetCurrentText()->Skip();
+        if (currentNode->GetChoices().empty() &&
+            currentNode->HasDefaultNext())
+        {
+            // Auto-advance to next node
+            GoToNode(currentNode->GetDefaultNext());
+        }
+        else
+        {
+            // Show choices
+            showingChoices = true;
+        }
     }
 }
 
@@ -122,13 +169,11 @@ const std::vector<Choice> &DialogueManager::GetChoices() const
 void DialogueManager::SelectChoice(int choiceIndex)
 {
     GoToNode(currentNode->GetChoices().at(choiceIndex).GetTargetNodeId());
-    currentTextIndex = 0;
-    showingChoices = false;
 }
 
-RPGText *DialogueManager::GetCurrentText() const
+RPGText &DialogueManager::GetCurrentText() const
 {
-    return currentNode->GetText(currentTextIndex);
+    return currentNode->GetEntry(currentTextIndex).GetText();
 }
 
 int DialogueManager::GetCurrentTextIndex() const

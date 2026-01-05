@@ -1,2 +1,40 @@
 {
+  "states": {
+    "items": {
+      "rusty_key": {
+        "display_name": "Rusty key",
+        "description": "A door key, very rusty."
+      },
+      "shilling": {
+        "display_name": "Shilling",
+        "description": "Money"
+      }
+    },
+    "effects": {
+      "dread": {
+        "display_name": "Dread",
+        "description": "At x9 stacks you die"
+      }
+    },
+    "flags": {
+      "opened_room": false,
+      "left_room": false
+    },
+    "variables": {},
+    "characters": {
+      "player_one": {
+        "stats": {
+          "health": 1,
+          "stamina": 1,
+          "isAlive": true
+        },
+        "items": {
+          "shilling": 30
+        },
+        "effects": {
+          "dread": 3
+        }
+      }
+    }
+  }
 }
