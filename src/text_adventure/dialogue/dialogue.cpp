@@ -14,7 +14,7 @@ void DialogueNode::AddText(std::unique_ptr<RPGText> text)
 
 void DialogueNode::AddChoice(const std::string &text, const std::string &target)
 {
-    choices.push_back({text, target});
+    choices.emplace_back(text, target);
 }
 
 const std::string &DialogueNode::GetId() const

@@ -8,9 +8,10 @@ class Choice
     std::string text;
     std::string targetNodeId;
 
-    public:
-    const std::string& GetText() const;
-    const std::string& GetTargetNodeId() const;
+public:
+    Choice(std::string text, std::string targetNodeId);
+    const std::string &GetText() const;
+    const std::string &GetTargetNodeId() const;
 };
 
 #endif

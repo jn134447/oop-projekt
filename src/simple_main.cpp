@@ -80,7 +80,7 @@ int main(void)
             auto &choices = dialogueManager.GetCurrentNode()->GetChoices();
             for (int i = 0; i < choices.size(); i++)
             {
-                DrawText(TextFormat("[%d] %s", i + 1, choices[i].text.c_str()),
+                DrawText(TextFormat("[%d] %s", i + 1, choices[i].GetText().c_str()),
                          50, 100 + (i * 40), 20, BLACK);
             }
         }
