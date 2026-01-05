@@ -14,10 +14,10 @@ ConditionPtr ConditionFactory::CreateFromJSON(const nlohmann::json &data)
                 data.value(item::QUANTITY, item::QUANTITY_DEFAULT),
                 data.value(condition::COMP, condition::comp::GREATER_EQUAL));
         }
-        else if (type == "flag_set") {
+        else if (type == condition::FLAG_SET) {
             return std::make_unique<FlagSetCondition>(
-                data["flag"],
-                data.value("value", true)
+                data[flag::FLAG],
+                data.value(flag::VALUE, flag::VALUE_DEFAULT)
             );
         }
         // Add more types...

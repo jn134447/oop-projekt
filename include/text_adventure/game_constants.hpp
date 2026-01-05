@@ -23,7 +23,15 @@ namespace GameConsts
     {
         const std::string ACTIONS = "actions";
         const std::string TYPE = "type";
+
         const std::string GIVE_ITEM = "give_item";
+
+        const std::string SET_FLAG = "set_flag";
+    }
+    namespace flag{
+        const std::string FLAG = "flag";
+        const std::string VALUE = "value";
+        const bool VALUE_DEFAULT = true;
     }
     namespace item
     {
@@ -59,9 +67,10 @@ namespace GameConsts
         const std::string FLAG_SET = "flag_set";
         const std::string VAR_COMP = "variable_compare";
 
+        const std::string FLAG = "flag";
         const std::string ITEM = "item";
-        const std::string COMP = "op";
 
+        const std::string COMP = "op";
         namespace comp
         {
             const std::string EQUAL = "==";

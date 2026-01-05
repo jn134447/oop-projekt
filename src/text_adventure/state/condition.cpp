@@ -34,3 +34,17 @@ std::unique_ptr<Condition> HasItemCondition::Clone() const
 {
     return std::make_unique<HasItemCondition>(*this);
 }
+
+FlagSetCondition::FlagSetCondition(
+    const std::string &flagId, const bool value)
+    : flagId(flagId), value(value) {}
+
+bool FlagSetCondition::Evaluate(const GameState &gameState) const
+{
+    return gameState.GetFlag(flagId) == value;
+}
+
+std::unique_ptr<Condition> FlagSetCondition::Clone() const
+{
+    return std::make_unique<FlagSetCondition>(*this);
+}

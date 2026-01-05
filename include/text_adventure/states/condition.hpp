@@ -31,4 +31,18 @@ public:
     std::unique_ptr<Condition> Clone() const override;
 };
 
+class FlagSetCondition : public Condition
+{
+private:
+    std::string flagId;
+    bool value;
+
+public:
+    FlagSetCondition(const std::string &flagId,
+                     const bool value = true);
+
+    bool Evaluate(const GameState &gameState) const override;
+    std::unique_ptr<Condition> Clone() const override;
+};
+
 #endif

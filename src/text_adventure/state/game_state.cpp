@@ -5,6 +5,19 @@
 #include <fstream>
 #include <iostream>
 
+bool GameState::GetFlag(const std::string &flagId) const
+{
+    auto it = worldFlags.find(flagId);
+    return it != worldFlags.end() && it->second;
+}
+
+void GameState::SetFlag(const std::string &flagId, const bool value)
+{
+    std::cout << "[GameState] Added flag " << flagId << " " << value
+              << std::endl;
+    worldFlags[flagId] = value;
+}
+
 CharacterData &GameState::currentCharacter()
 {
     return player;

@@ -68,6 +68,20 @@ void DialogueManager::LoadFromFile(const std::string &filename)
                                     gameState.currentCharacter().AddItem(itemId, quantity);
                                 });
                         }
+                        else if (actionType == action::SET_FLAG)
+                        {
+                            std::string flagId = actionData[flag::FLAG];
+                            bool value = actionData.value(flag::VALUE, flag::VALUE_DEFAULT);
+
+                            // Store action to execute later
+                            // Create action function
+                            actions.push_back(
+                                [this, flagId, value]()
+                                {
+                                    std::cout << "ACTION: Setting flag: " << flagId << " " << value << std::endl;
+                                    gameState.SetFlag(flagId, value);
+                                });
+                        }
                         // TODO: Add more action types here later
                     }
                 }

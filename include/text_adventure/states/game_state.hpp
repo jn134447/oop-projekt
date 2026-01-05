@@ -40,7 +40,7 @@ public:
     // void ToJSON();
 
     bool GetFlag(const std::string &flagId) const;
-    void SetFlag(const std::string &flagId);
+    void SetFlag(const std::string &flagId, const bool value);
     void ToggleFlag(const std::string &flagId);
 
     int GetVariable(const std::string &variableId) const;

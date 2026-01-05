@@ -21,7 +21,8 @@
         {
           "text": "Leave it",
           "target": "no_key"
-        }
+        },
+        { "text": "Touch marking on the floor", "target": "door", "conditions": [{ "type": "flag_set", "flag": "entered_inside", "value": true }] }
       ]
     },
 
@@ -32,8 +33,7 @@
           "actions": [
             {
               "type": "give_item",
-              "item": "rusty_key",
-              "quantity": 1
+              "item": "rusty_key"
             }
           ]
         }
@@ -78,10 +78,11 @@
     "inside": {
       "texts": [
         {
-          "content": "You're inside."
+          "content": "You're inside.",
+          "actions": [{ "type": "set_flag", "flag": "entered_inside", "value": true }]
         }
       ],
-      "choices": []
+      "choices": [{ "text": "Go back", "target": "door" }]
     }
   }
 }
