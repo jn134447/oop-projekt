@@ -10,19 +10,6 @@ CharacterData &GameState::currentCharacter()
     return player;
 }
 
-void GameState::LoadJSON(const std::string &filename)
-{
-    nlohmann::json data = nlohmann::json::parse(std::ifstream(filename));
-    {
-
-        using namespace GameConsts;
-
-        //  load items
-        for (auto &[itemId, itemData] : data[state::ITEMS].items())
-        {
-        }
-    }
-}
 
 void CharacterData::AddItem(const std::string &itemId, const int quantity)
 {

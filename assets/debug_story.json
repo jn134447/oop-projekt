@@ -1,20 +1,16 @@
 {
-  "test_node": {
-    "texts": [
-      {
-        "content": "You get a test item.",
-        "actions": [
-          {"type": "give_item", "item": "test_item", "quantity": 1}
-        ]
-      }
-    ],
-    "choices": [
-      {"text": "Continue", "target": "next_node"}
-    ]
-  },
-  "next_node": {
-    "texts": [
-      {"content": "Item should be in inventory now."}
-    ]
+  "story": {
+    "start": {
+      "texts": [
+        {
+          "content": "You get a test item.",
+          "actions": [{ "type": "give_item", "item": "test_item", "quantity": 1 }]
+        }
+      ],
+      "choices": [{ "text": "Continue", "target": "next_node" }]
+    },
+    "next_node": {
+      "texts": [{ "content": "Item should be in inventory now." }]
+    }
   }
 }

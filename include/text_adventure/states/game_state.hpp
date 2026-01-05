@@ -8,8 +8,21 @@
 // class ActiveStatusEffectInfo;
 // class Stats;
 // class LocationInfo;
-class CharacterData;
+class CharacterData
+{
+    std::unordered_map<std::string, int> inventory;
+    // std::unordered_map<std::string, ActiveStatusEffectInfo> effects;
+    // Stats stats;
+    // std::unordered_map<std::string, int> relationships;
 
+public:
+    void AddItem(const std::string &itemId, const int quantity);
+    void RemoveItem(const std::string &itemId, const int quantity);
+    bool HasItem(const std::string &itemId, const int minQuantity = 1) const;
+    int GetItemCount(const std::string &itemId) const;
+    void ClearItem(const std::string &itemId);
+    void ClearAllItems();
+};
 class GameState
 {
     std::unordered_map<std::string, bool> worldFlags;
@@ -36,35 +49,6 @@ public:
 
     CharacterData &currentCharacter();
     // LocationInfo &currentLocation();
-};
-
-class CharacterData
-{
-    std::unordered_map<std::string, int> inventory;
-    // std::unordered_map<std::string, ActiveStatusEffectInfo> effects;
-    // Stats stats;
-    // std::unordered_map<std::string, int> relationships;
-
-public:
-    void AddItem(const std::string &itemId, const int quantity);
-    void RemoveItem(const std::string &itemId, const int quantity);
-    bool HasItem(const std::string &itemId, const int minQuantity = 1) const;
-    int GetItemCount(const std::string& itemId) const;
-    void ClearItem(const std::string &itemId);
-    void ClearAllItems();
-
-    // void AddEffect(const std::string &effectId);
-    // void ModifyEffectStack(const std::string &effectId, const int delta);
-    // bool HasEffect(const std::string &effectId);
-    // void ClearEffect(const std::string &effectId);
-    // void ClearAllEffects();
-
-    // Stats &StatsData();
-
-    // void AddRelationship(const std::string &relationshipId);
-    // void ChangeAffinity(const std::string &relationshipId);
-    // void GetAffinity(const std::string &relationshipId);
-    // void ClearAllAffinities();
 };
 
 // class ActiveStatusEffectInfo

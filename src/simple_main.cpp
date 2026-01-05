@@ -36,7 +36,7 @@ int main(void)
             // Space to speed up
             if (raylib::Keyboard::IsKeyDown(KEY_SPACE))
             {
-                dialogueManager.GetCurrentText()->Update(8);
+                dialogueManager.GetCurrentText().Update(8);
             }
 
             // Enter to advance text or go to choices
@@ -71,7 +71,7 @@ int main(void)
                 // Only draw if this text exists
                 if (i < dialogueManager.GetCurrentNode()->GetEntryCount())
                 {
-                    dialogueManager.GetCurrentNode()->GetEntry(i)->Draw(50, 50 + (i * 40));
+                    dialogueManager.GetCurrentNode()->GetEntry(i).GetText().Draw(50, 50 + (i * 40));
                 }
             }
         }

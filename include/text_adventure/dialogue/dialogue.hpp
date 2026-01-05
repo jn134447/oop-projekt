@@ -35,7 +35,7 @@ public:
     DialogueNode(const std::string nodeId,
                  const std::string defaultNextNodeId);
     // bool AllTextCompleted() const;
-    void AddEntry(std::unique_ptr<RPGText> text, std::vector<ActionFunc> actions = {});
+    void AddEntry(RPGText text, std::vector<ActionFunc> actions = {});
     const std::string &GetNodeId() const;
 
     DialogueEntry &GetEntry(int index);

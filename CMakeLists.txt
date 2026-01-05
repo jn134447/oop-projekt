@@ -54,6 +54,8 @@ set(SOURCES
     src/text_adventure/dialogue/dialogue_manager.cpp
     src/text_adventure/dialogue/dialogue.cpp
 
+    src/text_adventure/state/game_state.cpp
+
     src/text_adventure/ui/rpg_text.cpp
 
     src/text_adventure/config_loader.cpp

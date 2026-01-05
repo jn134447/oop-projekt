@@ -7,9 +7,9 @@ DialogueNode::DialogueNode(const std::string nodeId,
 {
 }
 
-void DialogueNode::AddEntry(std::unique_ptr<RPGText> text, std::vector<ActionFunc> actions)
+void DialogueNode::AddEntry(RPGText text, std::vector<ActionFunc> actions)
 {
-    entries.emplace_back(std::move(text), actions);
+    entries.emplace_back(std::move(text), std::move(actions));
 }
 
 void DialogueNode::AddChoice(const std::string &text, const std::string &target)
@@ -69,7 +69,7 @@ const std::string &DialogueNode::GetDefaultNext() const
 }
 
 DialogueEntry::DialogueEntry(RPGText text, std::vector<ActionFunc> actions)
-    : text(text), actions(actions) {}
+    : text(std::move(text)), actions(std::move(actions)) {}
 
 RPGText &DialogueEntry::GetText()
 {

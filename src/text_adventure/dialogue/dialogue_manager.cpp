@@ -38,7 +38,7 @@ void DialogueManager::LoadFromFile(const std::string &filename)
                 TextStyle finalStyle;
                 finalStyle.LoadFromJSON(textData, baseStyle);
 
-                auto rpgText = std::make_unique<RPGText>(
+                RPGText rpgText(
                     textData[node::CONTENT],
                     finalStyle.GetFontSize(),
                     finalStyle.GetColor(),
@@ -46,9 +46,9 @@ void DialogueManager::LoadFromFile(const std::string &filename)
 
                 // Load node actions
                 std::vector<ActionFunc> actions;
-                if (nodeData.contains(action::ACTIONS))
+                if (textData.contains(action::ACTIONS))
                 {
-                    for (auto &actionData : nodeData[action::ACTIONS])
+                    for (auto &actionData : textData[action::ACTIONS])
                     {
                         std::string actionType = actionData[action::TYPE];
 
