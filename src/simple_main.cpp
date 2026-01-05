@@ -30,6 +30,7 @@ int main(void)
     {
         // UPDATE
         dialogueManager.Update();
+        // In the choice selection part:
 
         if (!dialogueManager.isShowingChoices())
         {
@@ -43,19 +44,6 @@ int main(void)
             if (raylib::Keyboard::IsKeyPressed(KEY_ENTER))
             {
                 dialogueManager.Advance();
-            }
-        }
-        else
-        {
-            // Number keys to select choice
-            for (int i = 0; i < dialogueManager.GetChoicesCount(); i++)
-            {
-                if (raylib::Keyboard::IsKeyPressed(KEY_ONE + i))
-                {
-                    // Change node
-                    dialogueManager.SelectChoice(i);
-                    break;
-                }
             }
         }
 
@@ -77,12 +65,22 @@ int main(void)
         }
         else
         {
-            // Draw choices
-            auto &choices = dialogueManager.GetCurrentNode()->GetChoices();
-            for (int i = 0; i < choices.size(); i++)
+            const auto &choices = dialogueManager.GetChoices();
+
+            // Draw all choices, grey out unavailable ones
+            for (int i = 0; i < choices.size() && i < 9; i++)
             {
+                bool available = choices[i].IsAvailable(gameState);
+
+                Color textColor = available ? BLACK : GRAY;
                 DrawText(TextFormat("[%d] %s", i + 1, choices[i].GetText().c_str()),
-                         50, 100 + (i * 40), 20, BLACK);
+                         50, 100 + (i * 40), 20, textColor);
+
+                // Input check for THIS specific choice
+                if (available && IsKeyPressed(KEY_ONE + i))
+                {
+                    dialogueManager.SelectChoice(i);
+                }
             }
         }
 

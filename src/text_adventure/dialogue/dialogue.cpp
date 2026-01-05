@@ -32,6 +32,11 @@ int DialogueNode::GetEntryCount() const
     return entries.size();
 }
 
+void DialogueNode::AddChoice(Choice choice)
+{
+    choices.push_back(std::move(choice));
+}
+
 const std::vector<Choice> &DialogueNode::GetChoices() const
 {
     return choices;

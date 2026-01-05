@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 project(game)
 
-
 # raylib
 find_package(raylib QUIET)
 if (NOT raylib_FOUND)
@@ -55,6 +54,8 @@ set(SOURCES
     src/text_adventure/dialogue/dialogue.cpp
 
     src/text_adventure/state/game_state.cpp
+    src/text_adventure/state/condition.cpp
+    src/text_adventure/state/condition_factory.cpp
 
     src/text_adventure/ui/rpg_text.cpp
 

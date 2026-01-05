@@ -10,6 +10,10 @@ CharacterData &GameState::currentCharacter()
     return player;
 }
 
+const CharacterData &GameState::currentCharacter() const
+{
+    return player;
+}
 
 void CharacterData::AddItem(const std::string &itemId, const int quantity)
 {

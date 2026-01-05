@@ -1,0 +1,9 @@
+{
+  "items": {
+    "rusty_key": {
+      "display_name": "Rusty key",
+      "description": "An old, corroded key. Might still work.",
+      "type": "key"
+    }
+  }
+}

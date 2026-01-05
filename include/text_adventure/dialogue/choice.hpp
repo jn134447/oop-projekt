@@ -2,16 +2,26 @@
 #define CHOICE_H
 #pragma once
 
+#include "condition.hpp"
+
 #include <string>
+#include <vector>
+
 class Choice
 {
     std::string text;
     std::string targetNodeId;
+    std::vector<ConditionPtr> conditions;
 
 public:
     Choice(std::string text, std::string targetNodeId);
     const std::string &GetText() const;
     const std::string &GetTargetNodeId() const;
+
+    // conditions
+    void AddCondition(ConditionPtr condition);
+
+    bool IsAvailable(const GameState &gameState) const;
 };
 
 #endif

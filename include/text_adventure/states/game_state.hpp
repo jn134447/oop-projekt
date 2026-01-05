@@ -48,6 +48,7 @@ public:
     void ModifyVariable(const std::string &variableId, const int delta);
 
     CharacterData &currentCharacter();
+    const CharacterData &currentCharacter() const;
     // LocationInfo &currentLocation();
 };
 

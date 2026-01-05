@@ -3,6 +3,8 @@
 #include "game_constants.hpp"
 #include "json.hpp"
 // #include "config_loader.hpp"
+#include "condition_factory.hpp"
+
 #include <iostream>
 
 DialogueManager::DialogueManager(GameState &state)
@@ -76,9 +78,21 @@ void DialogueManager::LoadFromFile(const std::string &filename)
             // Load choices
             for (auto &choiceData : nodeData[node::CHOICES])
             {
-                node->AddChoice(
-                    choiceData[node::TEXT],
-                    choiceData[node::TARGET]);
+                Choice choice(choiceData[node::TEXT], choiceData[node::TARGET]);
+
+                if (choiceData.contains("conditions"))
+                {
+                    for (auto &condData : choiceData["conditions"])
+                    {
+                        auto condition = ConditionFactory::CreateFromJSON(condData);
+                        if (condition)
+                        {
+                            choice.AddCondition(std::move(condition));
+                        }
+                    }
+                }
+
+                node->AddChoice(std::move(choice));
             }
 
             nodes[nodeId] = std::move(node);
@@ -160,7 +174,7 @@ int DialogueManager::GetChoicesCount() const
 
 const std::vector<Choice> &DialogueManager::GetChoices() const
 {
-    static std::vector<Choice> empty;
+    static const std::vector<Choice> empty;
     if (!currentNode)
         return empty;
     return currentNode->GetChoices();

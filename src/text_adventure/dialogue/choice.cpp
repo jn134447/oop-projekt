@@ -11,3 +11,21 @@ const std::string &Choice::GetTargetNodeId() const
 {
     return targetNodeId;
 }
+
+void Choice::AddCondition(ConditionPtr condition)
+{
+    conditions.push_back(std::move(condition));
+}
+
+bool Choice::IsAvailable(const GameState &gameState) const
+{
+
+    for (const auto &condition : conditions)
+    {
+        if (condition && !condition->Evaluate(gameState))
+        {
+            return false;
+        }
+    }
+    return true;
+}

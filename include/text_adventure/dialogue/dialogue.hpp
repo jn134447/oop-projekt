@@ -41,6 +41,7 @@ public:
     DialogueEntry &GetEntry(int index);
     int GetEntryCount() const;
 
+    void AddChoice(Choice choice) ;
     void AddChoice(const std::string &text, const std::string &targetId);
     const std::vector<Choice> &GetChoices() const;
 

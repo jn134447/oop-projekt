@@ -1,0 +1,87 @@
+{
+  "story": {
+    "start": {
+      "texts": [
+        { "speaker": "narrative", "content": "A key on the ground." },
+        { "speaker": "player", "content": "Pick it up?" }
+      ],
+      "choices": [
+        {
+          "text": "Pick up",
+          "target": "got_key",
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "rusty_key",
+              "quantity": 0,
+              "op": "=="
+            }
+          ]
+        },
+        {
+          "text": "Leave it",
+          "target": "no_key"
+        }
+      ]
+    },
+
+    "got_key": {
+      "texts": [
+        {
+          "content": "You got the key.",
+          "actions": [
+            {
+              "type": "give_item",
+              "item": "rusty_key",
+              "quantity": 1
+            }
+          ]
+        }
+      ],
+      "default_next": "door"
+    },
+
+    "no_key": {
+      "texts": [
+        {
+          "content": "You left the key."
+        }
+      ],
+      "default_next": "door"
+    },
+
+    "door": {
+      "texts": [
+        {
+          "content": "A locked door."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Open door",
+          "target": "inside",
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "rusty_key",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "text": "Go back",
+          "target": "start"
+        }
+      ]
+    },
+
+    "inside": {
+      "texts": [
+        {
+          "content": "You're inside."
+        }
+      ],
+      "choices": []
+    }
+  }
+}

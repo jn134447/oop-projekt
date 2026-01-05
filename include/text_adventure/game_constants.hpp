@@ -41,7 +41,7 @@ namespace GameConsts
     namespace files
     {
         const std::string CONFIG = "../assets/config.json";
-        const std::string STORY = "../assets/debug_story.json";
+        const std::string STORY = "../assets/debug_condition_story.json";
     }
 
     namespace state
@@ -50,6 +50,27 @@ namespace GameConsts
         const std::string ITEMS = "items";
         const std::string DISPLAY_NAME = "display_name";
         const std::string DESCRIPTION = "description";
+    }
+    namespace condition
+    {
+        const std::string TYPE = "type";
+
+        const std::string HAS_ITEM = "has_item";
+        const std::string FLAG_SET = "flag_set";
+        const std::string VAR_COMP = "variable_compare";
+
+        const std::string ITEM = "item";
+        const std::string COMP = "op";
+
+        namespace comp
+        {
+            const std::string EQUAL = "==";
+            const std::string NOT_EQUAL = "!=";
+            const std::string GREATER_THAN = ">";
+            const std::string GREATER_EQUAL = ">=";
+            const std::string LESS_THAN = "<";
+            const std::string LESS_EQUAL = "<=";
+        }
     }
 
 }
