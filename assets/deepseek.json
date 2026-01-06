@@ -116,7 +116,7 @@
       "choices": [
         {
           "text": "Check flag (should work)",
-          "target": "test_flags_check",
+          "target": "test_start",
           "conditions": [
             {
               "type": "flag_set",
@@ -127,7 +127,7 @@
         },
         {
           "text": "Try wrong flag (should be greyed out)",
-          "target": "test_flags_check",
+          "target": "test_start",
           "conditions": [
             {
               "type": "flag_set",
@@ -165,7 +165,7 @@
       "choices": [
         {
           "text": "Check karma >= 50 (should work)",
-          "target": "test_vars_check",
+          "target": "test_start",
           "conditions": [
             {
               "type": "variable_compare",
@@ -177,7 +177,7 @@
         },
         {
           "text": "Check gold > 125 (should fail, default 100 + 25 = 125)",
-          "target": "test_vars_check",
+          "target": "test_start",
           "conditions": [
             {
               "type": "variable_compare",

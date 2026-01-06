@@ -1,5 +1,6 @@
 #ifndef FLAG_REGISTRY_H
 #define FLAG_REGISTRY_H
+#pragma once
 
 #include <unordered_map>
 #include <string>

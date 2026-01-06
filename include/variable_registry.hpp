@@ -1,5 +1,6 @@
 #ifndef VARIABLE_REGISTRY_H
 #define VARIABLE_REGISTRY_H
+#pragma once
 
 #include <unordered_map>
 #include <unordered_set>

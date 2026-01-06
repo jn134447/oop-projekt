@@ -14,12 +14,13 @@ class CharacterData
     std::unordered_map<std::string, int> inventory;
 
 public:
-    void ModifyItem(const std::string &itemId, const int quantity);
-    void RemoveItem(const std::string &itemId, const int quantity);
+    void ModifyItem(const std::string &itemId, const int delta);
+    // void RemoveItem(const std::string &itemId, const int quantity);
     bool HasItem(const std::string &itemId, const int minQuantity = 1) const;
     int GetItemCount(const std::string &itemId) const;
-    void ClearItem(const std::string &itemId);
-    void ClearAllItems();
+    // void ClearItem(const std::string &itemId);
+    const std::unordered_map<std::string, int> &GetInventory() const;
+    void ClearInventory();
 };
 class GameState
 {
@@ -44,6 +45,7 @@ public:
     // void ToJSON();
 
     bool GetFlag(const std::string &flagId) const;
+    const std::unordered_map<std::string, bool> &GetCurrentFlags() const;
     void SetFlag(const std::string &flagId, const bool value);
     void ToggleFlag(const std::string &flagId);
     // void LoadInitialFlags(const std::string& filename) ;

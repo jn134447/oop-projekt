@@ -26,6 +26,11 @@ bool GameState::GetFlag(const std::string &flagId) const
     return flagRegistry.GetDefaultValue(flagId);
 }
 
+const std::unordered_map<std::string, bool> &GameState::GetCurrentFlags() const
+{
+    return currentFlags;
+}
+
 void GameState::SetFlag(const std::string &flagId, const bool value)
 {
     if (!flagRegistry.IsRegistered(flagId))
@@ -103,4 +108,14 @@ int CharacterData::GetItemCount(const std::string &itemId) const
 {
     auto it = inventory.find(itemId);
     return it != inventory.end() ? it->second : 0;
+}
+
+const std::unordered_map<std::string, int> &CharacterData::GetInventory() const
+{
+    return inventory;
+}
+
+void CharacterData::ClearInventory()
+{
+    inventory.clear();
 }

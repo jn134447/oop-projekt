@@ -2,13 +2,11 @@
 #define CONDITION_H
 #pragma once
 
-// #include "game_state.hpp"
+#include "game_state.hpp"
 // #include "game_constants.hpp"
 
 #include <memory>
 #include <string>
-
-class GameState;
 
 class Condition
 {
