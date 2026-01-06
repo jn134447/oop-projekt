@@ -80,7 +80,10 @@
         {
           "content": "You're inside.",
           "actions": [{ "type": "set_flag", "flag": "entered_inside", "value": true }]
-        }
+        },
+        { "content": "you found some shillings on the ground" },
+        { "content": "Collected 23 shillings", "actions": [{ "type": "give_item", "item": "shilling", "quantity": 23 }] },
+        { "content": "they feel cold on touch" }
       ],
       "choices": [{ "text": "Go back", "target": "door" }]
     }

@@ -15,9 +15,9 @@ public:
     ItemDefinition(std::string id,
                    std::string displayName,
                    std::string description);
-    std::string GetId() const;
-    std::string GetDisplayName() const;
-    std::string GetDescription() const;
+    const std::string &GetId() const;
+    const std::string &GetDisplayName() const;
+    const std::string &GetDescription() const;
 };
 
 class ItemLoader
@@ -25,7 +25,7 @@ class ItemLoader
     std::unordered_map<std::string, ItemDefinition> items;
 
 public:
-    void LoadFromFile(std::string &filename);
+    void LoadFromFile(const std::string &filename);
     const ItemDefinition &GetItem(const std::string &itemId) const;
     bool ItemExists(const std::string &itemId) const;
 };

@@ -5,6 +5,14 @@
 #include <fstream>
 #include <iostream>
 
+GameState::GameState(ItemLoader &itemLoader)
+    : itemLoader(itemLoader) {}
+
+const ItemLoader &GameState::GetItemLoader() const
+{
+    return itemLoader;
+}
+
 bool GameState::GetFlag(const std::string &flagId) const
 {
     auto it = worldFlags.find(flagId);
@@ -26,6 +34,16 @@ CharacterData &GameState::currentCharacter()
 const CharacterData &GameState::currentCharacter() const
 {
     return player;
+}
+
+void GameState::AddItem(const std::string &itemId, int quantity)
+{
+    if (!itemLoader.ItemExists(itemId))
+    {
+        std::cerr << "WARNING: Adding unknown item: " << itemId << std::endl;
+    }
+
+    player.AddItem(itemId, quantity);
 }
 
 void CharacterData::AddItem(const std::string &itemId, const int quantity)

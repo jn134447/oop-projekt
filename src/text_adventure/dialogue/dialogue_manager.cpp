@@ -59,13 +59,21 @@ void DialogueManager::LoadFromFile(const std::string &filename)
                             std::string itemId = actionData[item::ITEM];
                             int quantity = actionData.value(item::QUANTITY, item::QUANTITY_DEFAULT);
 
+                            // ✅ VALIDATION:
+                            if (!gameState.GetItemLoader().ItemExists(itemId))
+                            {
+                                std::cerr << "ERROR in node '" << nodeId << "': Unknown item '"
+                                          << itemId << "' in action" << std::endl;
+                                // Option: skip, throw, or use default
+                            }
+
                             // Store action to execute later
                             // Create action function
                             actions.push_back(
                                 [this, itemId, quantity]()
                                 {
                                     std::cout << "ACTION: Giving " << quantity << " " << itemId << std::endl;
-                                    gameState.currentCharacter().AddItem(itemId, quantity);
+                                    gameState.AddItem(itemId, quantity);
                                 });
                         }
                         else if (actionType == action::SET_FLAG)

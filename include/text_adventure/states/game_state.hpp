@@ -2,6 +2,8 @@
 #define GAME_STATE_H
 #pragma once
 
+#include "item_loader.hpp"
+
 #include <unordered_map>
 #include <string>
 
@@ -25,6 +27,7 @@ public:
 };
 class GameState
 {
+    ItemLoader &itemLoader;
     std::unordered_map<std::string, bool> worldFlags;
     std::unordered_map<std::string, int> worldVariables;
 
@@ -36,6 +39,8 @@ class GameState
     std::string currentCharacterId;
 
 public:
+    GameState(ItemLoader &itemLoader);
+    const ItemLoader& GetItemLoader() const;
     // void LoadJSON(const std::string &filename);
     // void ToJSON();
 
@@ -46,6 +51,8 @@ public:
     int GetVariable(const std::string &variableId) const;
     void SetVariable(const std::string &variableId);
     void ModifyVariable(const std::string &variableId, const int delta);
+
+    void AddItem(const std::string &itemId, int quantity);
 
     CharacterData &currentCharacter();
     const CharacterData &currentCharacter() const;

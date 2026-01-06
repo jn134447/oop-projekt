@@ -38,6 +38,11 @@ namespace GameConsts
         const std::string ITEM = "item";
         const std::string QUANTITY = "quantity";
         const int QUANTITY_DEFAULT = 1;
+
+        const std::string DISPLAY_NAME = "display_name";
+        const std::string DESCRIPTION = "description";
+        const std::string DESCRIPTION_DEFAULT = "default_description";
+
     }
     namespace config
     {
@@ -50,6 +55,7 @@ namespace GameConsts
     {
         const std::string CONFIG = "../assets/config.json";
         const std::string STORY = "../assets/debug_condition_story.json";
+        const std::string ITEMS = "../assets/items.json";
     }
 
     namespace state

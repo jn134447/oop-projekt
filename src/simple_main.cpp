@@ -12,7 +12,10 @@ int main(void)
     const int screenHeight = 800;
     raylib::Window w(screenWidth, screenHeight, "Text Adventure");
 
-    GameState gameState;
+    ItemLoader itemLoader;
+    itemLoader.LoadFromFile(GameConsts::files::ITEMS);
+
+    GameState gameState(itemLoader);
     DialogueManager dialogueManager(gameState);
 
     // 1. LOAD STORY
