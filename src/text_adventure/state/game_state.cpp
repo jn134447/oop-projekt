@@ -5,8 +5,10 @@
 #include <fstream>
 #include <iostream>
 
-GameState::GameState(ItemLoader &itemLoader)
-    : itemLoader(itemLoader) {}
+GameState::GameState(FlagRegistry &flagRegistry, ItemLoader &itemLoader, VariableRegistry &varRegistry)
+    : flagRegistry(flagRegistry), itemLoader(itemLoader), varRegistry(varRegistry)
+{
+}
 
 const ItemLoader &GameState::GetItemLoader() const
 {
@@ -15,15 +17,25 @@ const ItemLoader &GameState::GetItemLoader() const
 
 bool GameState::GetFlag(const std::string &flagId) const
 {
-    auto it = worldFlags.find(flagId);
-    return it != worldFlags.end() && it->second;
+    auto it = currentFlags.find(flagId);
+    if (it != currentFlags.end())
+    {
+        return it->second;
+    }
+    // Return default if not set yet
+    return flagRegistry.GetDefaultValue(flagId);
 }
 
 void GameState::SetFlag(const std::string &flagId, const bool value)
 {
+    if (!flagRegistry.IsRegistered(flagId))
+    {
+        std::cerr << "WARNING: Unknown flag: " << flagId << std::endl;
+    }
+
     std::cout << "[GameState] Added flag " << flagId << " " << value
               << std::endl;
-    worldFlags[flagId] = value;
+    currentFlags[flagId] = value;
 }
 
 CharacterData &GameState::currentCharacter()
@@ -34,6 +46,34 @@ CharacterData &GameState::currentCharacter()
 const CharacterData &GameState::currentCharacter() const
 {
     return player;
+}
+
+int GameState::GetVariable(const std::string &varId) const
+{
+    auto it = currentVariables.find(varId);
+    if (it != currentVariables.end())
+    {
+        return it->second;
+    }
+    // Return default if not set yet
+    return varRegistry.GetDefaultValue(varId);
+}
+
+void GameState::SetVariable(const std::string &varId, const int value)
+{
+    if (!varRegistry.IsRegistered(varId))
+    {
+        std::cerr << "WARNING: Setting unregistered variable: " << varId << std::endl;
+    }
+    currentVariables[varId] = value;
+}
+
+void GameState::ModifyVariable(const std::string &varId, const int delta)
+{
+    int current = GetVariable(varId);
+    SetVariable(varId, current + delta);
+    std::cout << "[GameState] Modifies " << varId << " " << delta
+              << " (total: " << currentVariables[varId] << ")" << std::endl;
 }
 
 void GameState::AddItem(const std::string &itemId, int quantity)

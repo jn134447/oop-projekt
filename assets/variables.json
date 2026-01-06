@@ -1,0 +1,6 @@
+{
+  "variables": {
+    "player_karma": 30,
+    "gold_amount": 100
+  }
+}

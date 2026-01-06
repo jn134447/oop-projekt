@@ -27,8 +27,12 @@ namespace GameConsts
         const std::string GIVE_ITEM = "give_item";
 
         const std::string SET_FLAG = "set_flag";
+
+        const std::string SET_VAR = "set_variable";
+        const std::string MODIFY_VAR = "modify_variable";
     }
-    namespace flag{
+    namespace flag
+    {
         const std::string FLAG = "flag";
         const std::string VALUE = "value";
         const bool VALUE_DEFAULT = true;
@@ -44,6 +48,14 @@ namespace GameConsts
         const std::string DESCRIPTION_DEFAULT = "default_description";
 
     }
+    namespace var
+    {
+        const std::string VARIABLE = "variable";
+        const std::string VALUE = "value";
+        const int VALUE_DEFAULT = 0;
+
+        const std::string CHANGE = "change";
+    }
     namespace config
     {
         const std::string CONFIG = "config";
@@ -54,16 +66,21 @@ namespace GameConsts
     namespace files
     {
         const std::string CONFIG = "../assets/config.json";
-        const std::string STORY = "../assets/debug_condition_story.json";
+        const std::string STORY = "../assets/deepseek.json";
         const std::string ITEMS = "../assets/items.json";
+        const std::string FLAGS = "../assets/flags.json";
+        const std::string VARIABLES = "../assets/variables.json";
     }
 
     namespace state
     {
         const std::string STATES = "states";
         const std::string ITEMS = "items";
-        const std::string DISPLAY_NAME = "display_name";
-        const std::string DESCRIPTION = "description";
+        const std::string FLAGS = "flags";
+        const std::string VARIABLES = "variables";
+
+        // const std::string DISPLAY_NAME = "display_name";
+        // const std::string DESCRIPTION = "description";
     }
     namespace condition
     {
@@ -76,7 +93,7 @@ namespace GameConsts
         const std::string FLAG = "flag";
         const std::string ITEM = "item";
 
-        const std::string COMP = "op";
+        const std::string COMP = "comparison";
         namespace comp
         {
             const std::string EQUAL = "==";

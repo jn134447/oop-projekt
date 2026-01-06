@@ -15,7 +15,7 @@ public:
 
 using ConditionPtr = std::unique_ptr<Condition>;
 
-class HasItemCondition : public Condition
+class ItemCondition : public Condition
 {
 private:
     std::string itemId;
@@ -23,23 +23,41 @@ private:
     std::string comparison;
 
 public:
-    HasItemCondition(const std::string &itemId,
-                     int quantity = 1,
-                     const std::string &comp = GameConsts::condition::comp::GREATER_EQUAL);
+    ItemCondition(const std::string &itemId,
+                  int quantity,
+                  const std::string &comp);
 
     bool Evaluate(const GameState &gameState) const override;
     std::unique_ptr<Condition> Clone() const override;
 };
 
-class FlagSetCondition : public Condition
+class FlagCondition : public Condition
 {
 private:
     std::string flagId;
     bool value;
+    std::string comparison;
 
 public:
-    FlagSetCondition(const std::string &flagId,
-                     const bool value = true);
+    FlagCondition(const std::string &flagId,
+                  const bool value,
+                  std::string comp);
+
+    bool Evaluate(const GameState &gameState) const override;
+    std::unique_ptr<Condition> Clone() const override;
+};
+
+class VariableCondition : public Condition
+{
+private:
+    std::string varId;
+    int value;
+    std::string comparison;
+
+public:
+    VariableCondition(const std::string &varId,
+                      const int value,
+                      const std::string &comp);
 
     bool Evaluate(const GameState &gameState) const override;
     std::unique_ptr<Condition> Clone() const override;

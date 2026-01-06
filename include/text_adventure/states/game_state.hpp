@@ -3,6 +3,8 @@
 #pragma once
 
 #include "item_loader.hpp"
+#include "flag_registry.hpp"
+#include "variable_registry.hpp"
 
 #include <unordered_map>
 #include <string>
@@ -27,9 +29,12 @@ public:
 };
 class GameState
 {
+    FlagRegistry &flagRegistry;
     ItemLoader &itemLoader;
-    std::unordered_map<std::string, bool> worldFlags;
-    std::unordered_map<std::string, int> worldVariables;
+    VariableRegistry &varRegistry;
+
+    std::unordered_map<std::string, bool> currentFlags;
+    std::unordered_map<std::string, int> currentVariables;
 
     // std::unordered_map<std::string, LocationInfo> locations;
     // std::string currentLocationId;
@@ -39,23 +44,25 @@ class GameState
     std::string currentCharacterId;
 
 public:
-    GameState(ItemLoader &itemLoader);
-    const ItemLoader& GetItemLoader() const;
+    GameState(FlagRegistry &flagRegistry, ItemLoader &itemLoader, VariableRegistry &varRegistry);
+    const ItemLoader &GetItemLoader() const;
     // void LoadJSON(const std::string &filename);
     // void ToJSON();
 
     bool GetFlag(const std::string &flagId) const;
     void SetFlag(const std::string &flagId, const bool value);
     void ToggleFlag(const std::string &flagId);
+    // void LoadInitialFlags(const std::string& filename) ;
 
-    int GetVariable(const std::string &variableId) const;
-    void SetVariable(const std::string &variableId);
-    void ModifyVariable(const std::string &variableId, const int delta);
+    int GetVariable(const std::string &varId) const;
+    void SetVariable(const std::string &varId, const int value);
+    void ModifyVariable(const std::string &varId, const int delta);
 
     void AddItem(const std::string &itemId, int quantity);
 
     CharacterData &currentCharacter();
     const CharacterData &currentCharacter() const;
+
     // LocationInfo &currentLocation();
 };
 

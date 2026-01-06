@@ -1,50 +1,51 @@
 #include "condition.hpp"
 #include "game_constants.hpp"
+#include "helper.hpp"
 
-HasItemCondition::HasItemCondition(const std::string &itemId,
-                                   int quantity,
-                                   const std::string &comp)
+ItemCondition::ItemCondition(const std::string &itemId,
+                             int quantity,
+                             const std::string &comp)
     : itemId(itemId), quantity(quantity), comparison(comp) {}
 
-bool HasItemCondition::Evaluate(const GameState &gameState) const
+bool ItemCondition::Evaluate(const GameState &gameState) const
 {
     int current = gameState.currentCharacter().GetItemCount(itemId);
-
-    {
-        using namespace GameConsts::condition;
-
-        if (comparison == comp::EQUAL)
-            return current == quantity;
-        if (comparison == comp::NOT_EQUAL)
-            return current != quantity;
-        if (comparison == comp::GREATER_THAN)
-            return current > quantity;
-        if (comparison == comp::LESS_THAN)
-            return current < quantity;
-        if (comparison == comp::GREATER_EQUAL)
-            return current >= quantity;
-        if (comparison == comp::LESS_EQUAL)
-            return current <= quantity;
-    }
-
-    return current >= quantity; // Default
+    return Compare<int>(current, quantity, comparison);
 }
 
-std::unique_ptr<Condition> HasItemCondition::Clone() const
+std::unique_ptr<Condition> ItemCondition::Clone() const
 {
-    return std::make_unique<HasItemCondition>(*this);
+    return std::make_unique<ItemCondition>(*this);
 }
 
-FlagSetCondition::FlagSetCondition(
-    const std::string &flagId, const bool value)
-    : flagId(flagId), value(value) {}
+FlagCondition::FlagCondition(const std::string &flagId, const bool value, std::string comp)
+    : flagId(flagId), value(value), comparison(comp) {}
 
-bool FlagSetCondition::Evaluate(const GameState &gameState) const
+bool FlagCondition::Evaluate(const GameState &gameState) const
 {
-    return gameState.GetFlag(flagId) == value;
+    bool current = gameState.GetFlag(flagId);
+    return Compare<bool>(current, value, comparison);
 }
 
-std::unique_ptr<Condition> FlagSetCondition::Clone() const
+std::unique_ptr<Condition> FlagCondition::Clone() const
 {
-    return std::make_unique<FlagSetCondition>(*this);
+    return std::make_unique<FlagCondition>(*this);
+}
+
+VariableCondition::VariableCondition(const std::string &varId,
+                                     const int value,
+                                     const std::string &comp)
+    : varId(varId), value(value), comparison(comp)
+{
+}
+
+bool VariableCondition::Evaluate(const GameState &gameState) const
+{
+    int current = gameState.GetVariable(varId);
+    return Compare<int>(current, value, comparison);
+}
+
+std::unique_ptr<Condition> VariableCondition::Clone() const
+{
+    return std::make_unique<VariableCondition>(*this);
 }

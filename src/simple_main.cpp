@@ -14,18 +14,21 @@ int main(void)
 
     ItemLoader itemLoader;
     itemLoader.LoadFromFile(GameConsts::files::ITEMS);
+    FlagRegistry flagRegistry;
+    flagRegistry.LoadFromFile(GameConsts::files::FLAGS);
+    VariableRegistry varRegistry;
+    varRegistry.LoadFromFile(GameConsts::files::VARIABLES);
 
-    GameState gameState(itemLoader);
+    GameState gameState(flagRegistry, itemLoader, varRegistry);
     DialogueManager dialogueManager(gameState);
 
     // 1. LOAD STORY
-    // dialogueManager.LoadFromFile("assets/temp.json");
     dialogueManager.LoadGame(GameConsts::files::STORY,
                              GameConsts::files::CONFIG);
 
     // 2. START AT FIRST NODE
-    dialogueManager.SetStartNode("start");
-    dialogueManager.GoToNode("start");
+    dialogueManager.SetStartNode("test_start");
+    dialogueManager.GoToNode("test_start");
 
     SetTargetFPS(FPS);
 

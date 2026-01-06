@@ -22,7 +22,7 @@
           "text": "Leave it",
           "target": "no_key"
         },
-        { "text": "Touch marking on the floor", "target": "door", "conditions": [{ "type": "flag_set", "flag": "entered_inside", "value": true }] }
+        { "text": "Touch marking on the floor", "target": "inside", "conditions": [{ "type": "flag_set", "flag": "entered_inside", "value": true }] }
       ]
     },
 
@@ -71,6 +71,18 @@
         {
           "text": "Go back",
           "target": "start"
+        },
+        {
+          "text": "has >=80 karma",
+          "target": "no_key",
+          "conditions": [
+            {
+              "type": "variable_compare",
+              "variable": "player_karma",
+              "value": 50,
+              "comparison": ">="
+            }
+          ]
         }
       ]
     },

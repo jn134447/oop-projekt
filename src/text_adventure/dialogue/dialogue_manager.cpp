@@ -59,7 +59,6 @@ void DialogueManager::LoadFromFile(const std::string &filename)
                             std::string itemId = actionData[item::ITEM];
                             int quantity = actionData.value(item::QUANTITY, item::QUANTITY_DEFAULT);
 
-                            // ✅ VALIDATION:
                             if (!gameState.GetItemLoader().ItemExists(itemId))
                             {
                                 std::cerr << "ERROR in node '" << nodeId << "': Unknown item '"
@@ -88,6 +87,30 @@ void DialogueManager::LoadFromFile(const std::string &filename)
                                 {
                                     std::cout << "ACTION: Setting flag: " << flagId << " " << value << std::endl;
                                     gameState.SetFlag(flagId, value);
+                                });
+                        }
+                        else if (actionType == action::SET_VAR)
+                        {
+                            std::string varId = actionData[var::VARIABLE];
+                            int value = actionData[var::VALUE];
+
+                            actions.push_back(
+                                [this, varId, value]()
+                                {
+                                    std::cout << "ACTION: Set variable " << varId << " = " << value << std::endl;
+                                    gameState.SetVariable(varId, value);
+                                });
+                        }
+                        else if (actionType == action::MODIFY_VAR)
+                        {
+                            std::string varId = actionData[var::VARIABLE];
+                            int change = actionData[var::CHANGE];
+
+                            actions.push_back(
+                                [this, varId, change]()
+                                {
+                                    std::cout << "ACTION: Modify variable " << varId << " by " << change << std::endl;
+                                    gameState.ModifyVariable(varId, change);
                                 });
                         }
                         // TODO: Add more action types here later
@@ -124,7 +147,14 @@ void DialogueManager::LoadFromFile(const std::string &filename)
 
 DialogueNode *DialogueManager::GetNode(const std::string &nodeId)
 {
-    return nodes.at(nodeId).get();
+    auto it = nodes.find(nodeId);
+    if (it != nodes.end())
+    {
+        return it->second.get();
+    }
+
+    std::cerr << "ERROR: Node '" << nodeId << "' not found!" << std::endl;
+    return nullptr;
 }
 
 DialogueNode *DialogueManager::GetCurrentNode()
@@ -204,7 +234,15 @@ const std::vector<Choice> &DialogueManager::GetChoices() const
 
 void DialogueManager::SelectChoice(int choiceIndex)
 {
-    GoToNode(currentNode->GetChoices().at(choiceIndex).GetTargetNodeId());
+    const auto &choices = currentNode->GetChoices();
+
+    if (choiceIndex < 0 || choiceIndex >= choices.size())
+    {
+        std::cerr << "ERROR: Invalid choice index " << choiceIndex << std::endl;
+        return;
+    }
+
+    GoToNode(choices[choiceIndex].GetTargetNodeId());
 }
 
 RPGText &DialogueManager::GetCurrentText() const

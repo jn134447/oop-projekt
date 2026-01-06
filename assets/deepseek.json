@@ -1,0 +1,224 @@
+{
+  "story": {
+    "test_start": {
+      "texts": [
+        {
+          "speaker": "narrative",
+          "content": "=== TESTING ENGINE ==="
+        },
+        {
+          "speaker": "narrative",
+          "content": "This tests all systems. Check console for logs."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Test Items System",
+          "target": "test_items"
+        },
+        {
+          "text": "Test Flags System", 
+          "target": "test_flags"
+        },
+        {
+          "text": "Test Variables System",
+          "target": "test_variables"
+        },
+        {
+          "text": "Test All Conditions",
+          "target": "test_conditions"
+        }
+      ]
+    },
+    
+    "test_items": {
+      "texts": [
+        {
+          "content": "Item Test: You have 0 keys.",
+          "actions": [
+            {
+              "type": "give_item",
+              "item": "rusty_key",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Now you have 1 key. Adding another...",
+          "actions": [
+            {
+              "type": "give_item",
+              "item": "rusty_key",
+              "quantity": 1
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "Check inventory (should have 2 keys)",
+          "target": "test_items_check",
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "rusty_key",
+              "quantity": 2,
+              "comparison": "=="
+            }
+          ]
+        },
+        {
+          "text": "Back to start",
+          "target": "test_start"
+        }
+      ]
+    },
+    
+    "test_items_check": {
+      "texts": [
+        {
+          "content": "Item condition passed! You have exactly 2 keys."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Try to pick up another (should fail)",
+          "target": "test_items_check_fail",
+          "conditions": [
+            {
+              "type": "has_item", 
+              "item": "rusty_key",
+              "quantity": 0,
+              "comparison": "=="
+            }
+          ]
+        },
+        {
+          "text": "Back to start",
+          "target": "test_start"
+        }
+      ]
+    },
+    
+    "test_flags": {
+      "texts": [
+        {
+          "content": "Setting flag 'test_flag' to true.",
+          "actions": [
+            {
+              "type": "set_flag",
+              "flag": "test_flag",
+              "value": true
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "Check flag (should work)",
+          "target": "test_flags_check",
+          "conditions": [
+            {
+              "type": "flag_set",
+              "flag": "test_flag", 
+              "value": true
+            }
+          ]
+        },
+        {
+          "text": "Try wrong flag (should be greyed out)",
+          "target": "test_flags_check",
+          "conditions": [
+            {
+              "type": "flag_set",
+              "flag": "test_flag",
+              "value": false
+            }
+          ]
+        }
+      ]
+    },
+    
+    "test_variables": {
+      "texts": [
+        {
+          "content": "Setting karma to 75.",
+          "actions": [
+            {
+              "type": "set_variable",
+              "variable": "player_karma",
+              "value": 75
+            }
+          ]
+        },
+        {
+          "content": "Adding 25 gold.",
+          "actions": [
+            {
+              "type": "modify_variable",
+              "variable": "gold_amount",
+              "change": 25
+            }
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "text": "Check karma >= 50 (should work)",
+          "target": "test_vars_check",
+          "conditions": [
+            {
+              "type": "variable_compare",
+              "variable": "player_karma",
+              "value": 50,
+              "comparison": ">="
+            }
+          ]
+        },
+        {
+          "text": "Check gold > 125 (should fail, default 100 + 25 = 125)",
+          "target": "test_vars_check",
+          "conditions": [
+            {
+              "type": "variable_compare",
+              "variable": "gold_amount",
+              "value": 125,
+              "comparison": ">"
+            }
+          ]
+        }
+      ]
+    },
+    
+    "test_conditions": {
+      "texts": [
+        {
+          "content": "Complex condition test."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Need key AND flag (should fail)",
+          "target": "test_start",
+          "conditions": [
+            {
+              "type": "has_item",
+              "item": "rusty_key",
+              "quantity": 1,
+              "comparison": ">="
+            },
+            {
+              "type": "flag_set",
+              "flag": "test_flag",
+              "value": true
+            }
+          ]
+        },
+        {
+          "text": "Back to start",
+          "target": "test_start"
+        }
+      ]
+    }
+  }
+}

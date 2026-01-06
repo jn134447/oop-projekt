@@ -61,6 +61,9 @@ set(SOURCES
 
     src/text_adventure/config_loader.cpp
     src/text_adventure/item_loader.cpp
+    src/text_adventure/flag_registry.cpp
+    src/text_adventure/variable_registry.cpp
+
     src/text_adventure/helper.cpp
     )
 

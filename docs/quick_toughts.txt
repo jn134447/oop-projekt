@@ -1,32 +1,4 @@
-narrative choice: https://peerdh.com/blogs/programming-insights/building-an-interactive-narrative-engine-for-video-games
-
-DialogueNode:
-  Text: vec<RB::customText> (+ LBL speed) 
-  Choices: vec<Choice>
-
-Choice:
-  Desc: string
-  Next Node: *DialogueNode
-  Action: TODO
-
-Player:
-  inv: Inventory
-  status: Status
-
-Status:
-  data: vec<buffs/debuffs>
-
-Buff/Debuff:
-  
-
-Inventory:
-  data: vec<Item>
-  removeitem(item): 
-  additem(item):
-
-Item:
-  id: size_t
-  Name: rb::text
-  amnt: unsigned short
-
-
+items done
+effects not
+conditions done (only for choices not text)
+flags done
