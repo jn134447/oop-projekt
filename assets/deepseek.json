@@ -7,7 +7,7 @@
           "content": "=== TESTING ENGINE ==="
         },
         {
-          "speaker": "narrative",
+          "speaker": "player",
           "content": "This tests all systems. Check console for logs."
         }
       ],
@@ -57,7 +57,7 @@
             {
               "type": "modify_item",
               "item": "shilling",
-              "delta": 23
+              "amount": 23
             }
           ]
         },
@@ -67,7 +67,7 @@
             {
               "type": "modify_item",
               "item": "rusty_key",
-              "delta": -1
+              "amount": -1
             }
           ]
         }
@@ -80,8 +80,7 @@
             {
               "type": "has_item",
               "item": "rusty_key",
-              "delta": 2,
-              "comparison": "=="
+              "amount": 2
             }
           ]
         },
@@ -106,7 +105,7 @@
             {
               "type": "has_item",
               "item": "rusty_key",
-              "delta": 0,
+              "amount": 0,
               "comparison": "=="
             }
           ]
@@ -226,8 +225,7 @@
             {
               "type": "has_item",
               "item": "rusty_key",
-              "delta": 1,
-              "comparison": ">="
+              "amount": 1
             },
             {
               "type": "flag_set",

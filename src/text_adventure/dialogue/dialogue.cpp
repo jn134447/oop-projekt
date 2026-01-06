@@ -122,6 +122,11 @@ RPGText &DialogueEntry::GetText()
     return text;
 }
 
+const RPGText &DialogueEntry::GetText() const
+{
+    return text;
+}
+
 std::vector<ActionFunc> &DialogueEntry::GetActions()
 {
     return actions;

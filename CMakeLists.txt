@@ -33,9 +33,8 @@ include_directories(
     include
     external
 
-    # include/simple
-
     include/text_adventure
+    include/text_adventure/databases
     include/text_adventure/dialogue
     include/text_adventure/states
     include/text_adventure/ui
@@ -46,8 +45,7 @@ include_directories(
 
 # This is the main part:
 set(SOURCES 
-    # src/main.cpp
-    src/simple_main.cpp
+    src/main.cpp
 
     src/text_adventure/dialogue/choice.cpp
     src/text_adventure/dialogue/dialogue_manager.cpp
@@ -59,6 +57,7 @@ set(SOURCES
     src/text_adventure/state/game_state.cpp
 
     src/text_adventure/ui/rpg_text.cpp
+    src/text_adventure/ui/ui_manager.cpp
 
     src/text_adventure/databases/config_loader.cpp
     src/text_adventure/databases/item_loader.cpp
@@ -66,6 +65,7 @@ set(SOURCES
     src/text_adventure/databases/variable_registry.cpp
 
     src/text_adventure/helper.cpp
+    src/text_adventure/ke_engine.cpp
     )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

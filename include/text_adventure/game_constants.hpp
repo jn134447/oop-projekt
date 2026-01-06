@@ -40,8 +40,8 @@ namespace GameConsts
     namespace item
     {
         const std::string ITEM = "item";
-        const std::string DELTA = "delta";
-        const int DELTA_DEFAULT = 1;
+        const std::string AMOUNT = "amount";
+        const int AMOUNT_DEFAULT = 1;
 
         const std::string DISPLAY_NAME = "display_name";
         const std::string DESCRIPTION = "description";
@@ -78,9 +78,6 @@ namespace GameConsts
         const std::string ITEMS = "items";
         const std::string FLAGS = "flags";
         const std::string VARIABLES = "variables";
-
-        // const std::string DISPLAY_NAME = "display_name";
-        // const std::string DESCRIPTION = "description";
     }
     namespace condition
     {

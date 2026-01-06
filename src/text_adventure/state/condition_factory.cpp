@@ -19,7 +19,7 @@ ConditionPtr ConditionFactory::CreateFromJSON(const nlohmann::json &data)
         {
             return std::make_unique<ItemCondition>(
                 data[item::ITEM],
-                data.value(item::DELTA, item::DELTA_DEFAULT),
+                data.value(item::AMOUNT, item::AMOUNT_DEFAULT),
                 data.value(condition::COMP, condition::comp::GREATER_EQUAL));
         }
         else if (type == condition::FLAG_SET)

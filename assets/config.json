@@ -9,13 +9,13 @@
       "speakers": {
         "narrative": {
           "color": [180, 150, 100, 255],
-          "font_size": 20,
+          "font_size": 80,
           "speed": 10
         },
         "player": {
           "color": [0, 180, 140, 255],
           "font_size": 20,
-          "speed": 8
+          "speed": 40
         },
         "room_narrative": {
           "color": [20, 100, 20, 255],

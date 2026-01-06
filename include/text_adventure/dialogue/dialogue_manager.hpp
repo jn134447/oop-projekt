@@ -9,7 +9,7 @@
 #include "game_state.hpp"
 #include "game_constants.hpp"
 #include "config_loader.hpp"
-#include "action.hpp"
+#include "action_factory.hpp"
 #include "json.hpp"
 
 class DialogueManager

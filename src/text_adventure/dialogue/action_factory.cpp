@@ -1,4 +1,4 @@
-#include "action.hpp"
+#include "action_factory.hpp"
 #include "game_constants.hpp"
 
 #include <iostream>
@@ -27,7 +27,7 @@ ActionFunc ActionFactory::CreateModifyItem(const nlohmann::json &data)
     using namespace GameConsts::item;
 
     std::string itemId = data[ITEM];
-    int quantity = data.value(DELTA, DELTA_DEFAULT);
+    int quantity = data.value(AMOUNT, AMOUNT_DEFAULT);
 
     return [itemId, quantity](GameState &gameState)
     {

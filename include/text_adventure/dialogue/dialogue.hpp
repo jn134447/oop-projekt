@@ -2,7 +2,7 @@
 #define DIALOGUE_NODE_H
 
 #include "rpg_text.hpp"
-#include "action.hpp"
+#include "action_factory.hpp"
 #include "choice.hpp"
 #include <vector>
 #include <memory>
@@ -16,6 +16,7 @@ class DialogueEntry
 public:
     DialogueEntry(RPGText text, std::vector<ActionFunc> actions);
     RPGText &GetText();
+    const RPGText &GetText() const;
     std::vector<ActionFunc> &GetActions();
 };
 class DialogueNode
