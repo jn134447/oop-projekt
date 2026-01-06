@@ -23,8 +23,8 @@ int main(void)
     DialogueManager dialogueManager(gameState);
 
     // 1. LOAD STORY
-    dialogueManager.LoadGame(GameConsts::files::STORY,
-                             GameConsts::files::CONFIG);
+    dialogueManager.LoadStory(GameConsts::files::STORY,
+                              GameConsts::files::CONFIG);
 
     // 2. START AT FIRST NODE
     dialogueManager.SetStartNode("test_start");
@@ -36,7 +36,6 @@ int main(void)
     {
         // UPDATE
         dialogueManager.Update();
-        // In the choice selection part:
 
         if (!dialogueManager.isShowingChoices())
         {
@@ -57,19 +56,17 @@ int main(void)
         w.BeginDrawing();
         w.ClearBackground(RAYWHITE);
 
-        if (!dialogueManager.isShowingChoices())
+        // Draw ALL texts up to current index
+        for (int i = 0; i <= dialogueManager.GetCurrentTextIndex(); i++)
         {
-            // Draw ALL texts up to current index
-            for (int i = 0; i <= dialogueManager.GetCurrentTextIndex(); i++)
+            // Only draw if this text exists
+            if (i < dialogueManager.GetCurrentNode()->GetEntryCount())
             {
-                // Only draw if this text exists
-                if (i < dialogueManager.GetCurrentNode()->GetEntryCount())
-                {
-                    dialogueManager.GetCurrentNode()->GetEntry(i).GetText().Draw(50, 50 + (i * 40));
-                }
+                dialogueManager.GetCurrentNode()->GetEntry(i).GetText().Draw(50, 50 + (i * 40));
             }
         }
-        else
+
+        if (dialogueManager.isShowingChoices())
         {
             const auto &choices = dialogueManager.GetChoices();
 
@@ -80,7 +77,7 @@ int main(void)
 
                 Color textColor = available ? BLACK : GRAY;
                 DrawText(TextFormat("[%d] %s", i + 1, choices[i].GetText().c_str()),
-                         50, 100 + (i * 40), 20, textColor);
+                         50, 500 + (i * 40), 20, textColor);
 
                 // Input check for THIS specific choice
                 if (available && IsKeyPressed(KEY_ONE + i))

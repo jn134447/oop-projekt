@@ -10,7 +10,7 @@
 DialogueManager::DialogueManager(GameState &state)
     : gameState(state) {}
 
-void DialogueManager::LoadGame(const std::string &storyFile, const std::string &configFile)
+void DialogueManager::LoadStory(const std::string &storyFile, const std::string &configFile)
 {
     config.LoadFromFile(configFile);
     LoadFromFile(storyFile);
