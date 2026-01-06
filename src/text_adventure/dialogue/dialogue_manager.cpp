@@ -54,52 +54,52 @@ void DialogueManager::LoadFromFile(const std::string &filename)
                     {
                         std::string actionType = actionData[action::TYPE];
 
-                        if (actionType == action::GIVE_ITEM)
+                        if (actionType == action::MODIFY_ITEM)
                         {
-                            std::string itemId = actionData[item::ITEM];
-                            int quantity = actionData.value(item::QUANTITY, item::QUANTITY_DEFAULT);
+                            // std::string itemId = actionData[item::ITEM];
+                            // int quantity = actionData.value(item::DELTA, item::DELTA_DEFAULT);
 
-                            if (!gameState.GetItemLoader().ItemExists(itemId))
-                            {
-                                std::cerr << "ERROR in node '" << nodeId << "': Unknown item '"
-                                          << itemId << "' in action" << std::endl;
-                                // Option: skip, throw, or use default
-                            }
+                            // if (!gameState.GetItemLoader().ItemExists(itemId))
+                            // {
+                            //     std::cerr << "ERROR in node '" << nodeId << "': Unknown item '"
+                            //               << itemId << "' in action" << std::endl;
+                            //     // Option: skip, throw, or use default
+                            // }
 
-                            // Store action to execute later
-                            // Create action function
-                            actions.push_back(
-                                [this, itemId, quantity]()
-                                {
-                                    std::cout << "ACTION: Giving " << quantity << " " << itemId << std::endl;
-                                    gameState.AddItem(itemId, quantity);
-                                });
+                            // // Store action to execute later
+                            // // Create action function
+                            // actions.push_back(
+                            //     [this, itemId, quantity]()
+                            //     {
+                            //         std::cout << "ACTION: Giving " << quantity << " " << itemId << std::endl;
+                            //         gameState.ModifyItem(itemId, quantity);
+                            //     });
                         }
                         else if (actionType == action::SET_FLAG)
                         {
-                            std::string flagId = actionData[flag::FLAG];
-                            bool value = actionData.value(flag::VALUE, flag::VALUE_DEFAULT);
+                            // std::string flagId = actionData[flag::FLAG];
+                            // bool value = actionData.value(flag::VALUE, flag::VALUE_DEFAULT);
 
-                            // Store action to execute later
-                            // Create action function
-                            actions.push_back(
-                                [this, flagId, value]()
-                                {
-                                    std::cout << "ACTION: Setting flag: " << flagId << " " << value << std::endl;
-                                    gameState.SetFlag(flagId, value);
-                                });
+                            // // Store action to execute later
+                            // // Create action function
+                            // actions.push_back(
+                            //     [this, flagId, value]()
+                            //     {
+                            //         std::cout << "ACTION: Setting flag: " << flagId << " " << value << std::endl;
+                            //         gameState.SetFlag(flagId, value);
+                            //     });
                         }
                         else if (actionType == action::SET_VAR)
                         {
-                            std::string varId = actionData[var::VARIABLE];
-                            int value = actionData[var::VALUE];
+                            // std::string varId = actionData[var::VARIABLE];
+                            // int value = actionData[var::VALUE];
 
-                            actions.push_back(
-                                [this, varId, value]()
-                                {
-                                    std::cout << "ACTION: Set variable " << varId << " = " << value << std::endl;
-                                    gameState.SetVariable(varId, value);
-                                });
+                            // actions.push_back(
+                            //     [this, varId, value]()
+                            //     {
+                            //         std::cout << "ACTION: Set variable " << varId << " = " << value << std::endl;
+                            //         gameState.SetVariable(varId, value);
+                            //     });
                         }
                         else if (actionType == action::MODIFY_VAR)
                         {
@@ -195,7 +195,7 @@ void DialogueManager::Advance()
     }
 
     // Text is complete → EXECUTE ITS ACTIONS
-    currentNode->ExecuteEntryActions(currentTextIndex);
+    currentNode->ExecuteEntryActions(gameState, currentTextIndex);
 
     // Move to next text
     currentTextIndex++;

@@ -1,17 +1,25 @@
 #include "condition_factory.hpp"
 #include "game_constants.hpp"
 
+#include <iostream>
+
 ConditionPtr ConditionFactory::CreateFromJSON(const nlohmann::json &data)
 {
+    using namespace GameConsts;
+
+    if (!data.contains(condition::TYPE))
+        return nullptr;
+
+    std::string type = data[condition::TYPE];
+
+    try
     {
-        using namespace GameConsts;
-        std::string type = data[condition::TYPE];
 
         if (type == condition::HAS_ITEM)
         {
             return std::make_unique<ItemCondition>(
                 data[item::ITEM],
-                data.value(item::QUANTITY, item::QUANTITY_DEFAULT),
+                data.value(item::DELTA, item::DELTA_DEFAULT),
                 data.value(condition::COMP, condition::comp::GREATER_EQUAL));
         }
         else if (type == condition::FLAG_SET)
@@ -29,7 +37,15 @@ ConditionPtr ConditionFactory::CreateFromJSON(const nlohmann::json &data)
                 data.value(condition::COMP, condition::comp::GREATER_EQUAL));
         }
         // Add more types...
-
-        return nullptr; // Unknown condition type
     }
+    catch (const nlohmann::json::exception &e)
+    {
+        std::cerr << "JSON parsing error in condition: " << e.what() << std::endl;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error creating condition: " << e.what() << std::endl;
+    }
+
+    return nullptr; // Unknown condition type
 }

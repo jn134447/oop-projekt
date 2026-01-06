@@ -37,9 +37,8 @@
           "content": "Item Test: You have 0 keys.",
           "actions": [
             {
-              "type": "give_item",
-              "item": "rusty_key",
-              "quantity": 1
+              "type": "modify_item",
+              "item": "rusty_key"
             }
           ]
         },
@@ -47,9 +46,8 @@
           "content": "Now you have 1 key. Adding another...",
           "actions": [
             {
-              "type": "give_item",
-              "item": "rusty_key",
-              "quantity": 1
+              "type": "modify_item",
+              "item": "rusty_key"
             }
           ]
         },
@@ -57,9 +55,19 @@
           "content": "Giving you some shillings...",
           "actions": [
             {
-              "type": "give_item",
+              "type": "modify_item",
               "item": "shilling",
-              "quantity": 23
+              "delta": 23
+            }
+          ]
+        },
+        {
+          "content": "You dropped a key!",
+          "actions": [
+            {
+              "type": "modify_item",
+              "item": "rusty_key",
+              "delta": -1
             }
           ]
         }
@@ -72,7 +80,7 @@
             {
               "type": "has_item",
               "item": "rusty_key",
-              "quantity": 2,
+              "delta": 2,
               "comparison": "=="
             }
           ]
@@ -98,7 +106,7 @@
             {
               "type": "has_item",
               "item": "rusty_key",
-              "quantity": 0,
+              "delta": 0,
               "comparison": "=="
             }
           ]
@@ -218,7 +226,7 @@
             {
               "type": "has_item",
               "item": "rusty_key",
-              "quantity": 1,
+              "delta": 1,
               "comparison": ">="
             },
             {

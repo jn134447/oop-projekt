@@ -53,7 +53,7 @@ public:
     void SetVariable(const std::string &varId, const int value);
     void ModifyVariable(const std::string &varId, const int delta);
 
-    void AddItem(const std::string &itemId, int quantity);
+    void ModifyItem(const std::string &itemId, int quantity);
 
     CharacterData &currentCharacter();
     const CharacterData &currentCharacter() const;

@@ -24,7 +24,7 @@ namespace GameConsts
         const std::string ACTIONS = "actions";
         const std::string TYPE = "type";
 
-        const std::string GIVE_ITEM = "give_item";
+        const std::string MODIFY_ITEM = "modify_item";
 
         const std::string SET_FLAG = "set_flag";
 
@@ -40,8 +40,8 @@ namespace GameConsts
     namespace item
     {
         const std::string ITEM = "item";
-        const std::string QUANTITY = "quantity";
-        const int QUANTITY_DEFAULT = 1;
+        const std::string DELTA = "delta";
+        const int DELTA_DEFAULT = 1;
 
         const std::string DISPLAY_NAME = "display_name";
         const std::string DESCRIPTION = "description";

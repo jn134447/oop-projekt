@@ -2,13 +2,12 @@
 #define DIALOGUE_NODE_H
 
 #include "rpg_text.hpp"
-// #include "action.hpp"
+#include "action.hpp"
 #include "choice.hpp"
 #include <vector>
 #include <memory>
 #include <functional>
 
-using ActionFunc = std::function<void()>;
 class DialogueEntry
 {
     RPGText text;
@@ -39,9 +38,10 @@ public:
     const std::string &GetNodeId() const;
 
     DialogueEntry &GetEntry(int index);
+    const DialogueEntry &GetEntry(int index) const;
     int GetEntryCount() const;
 
-    void AddChoice(Choice choice) ;
+    void AddChoice(Choice choice);
     void AddChoice(const std::string &text, const std::string &targetId);
     const std::vector<Choice> &GetChoices() const;
 
@@ -52,7 +52,7 @@ public:
     void ResetAllTexts();
 
     // Actions
-    void ExecuteEntryActions(const int index);
+    void ExecuteEntryActions(GameState &gameState, const int index);
 };
 
 #endif

@@ -2,15 +2,72 @@
 #include "game_constants.hpp"
 #include "helper.hpp"
 
+#include <sstream>
+#include <stdexcept>
+#include <iostream>
+
+bool IsValidComparison(const std::string &comp, const std::string &type)
+{
+    static const std::unordered_set<std::string> numericComparisons =
+        {"==", "!=", "<", "<=", ">", ">="};
+    static const std::unordered_set<std::string> booleanComparisons =
+        {"==", "!="};
+
+    if (type == "int")
+    {
+        return numericComparisons.find(comp) != numericComparisons.end();
+    }
+    else if (type == "bool")
+    {
+        return booleanComparisons.find(comp) != booleanComparisons.end();
+    }
+    return false;
+}
+
 ItemCondition::ItemCondition(const std::string &itemId,
                              int quantity,
                              const std::string &comp)
-    : itemId(itemId), quantity(quantity), comparison(comp) {}
+    : itemId(itemId), quantity(quantity), comparison(comp)
+{
+    if (itemId.empty())
+    {
+        throw std::invalid_argument("ItemCondition: itemId cannot be empty");
+    }
+
+    if (quantity < 0)
+    {
+        throw std::invalid_argument("ItemCondition: quantity cannot be negative");
+    }
+
+    if (!IsValidComparison(comp, "int"))
+    {
+        std::stringstream ss;
+        ss << "ItemCondition: Invalid comparison operator '" << comp
+           << "' for numeric comparison";
+        throw std::invalid_argument(ss.str());
+    }
+}
 
 bool ItemCondition::Evaluate(const GameState &gameState) const
 {
-    int current = gameState.currentCharacter().GetItemCount(itemId);
-    return Compare<int>(current, quantity, comparison);
+    if (!gameState.GetItemLoader().ItemExists(itemId))
+    {
+        std::cerr << "WARNING: ItemCondition evaluating non-existent item: "
+                  << itemId << std::endl;
+        return false;
+    }
+
+    try
+    {
+        int current = gameState.currentCharacter().GetItemCount(itemId);
+        return Compare<int>(current, quantity, comparison);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "ERROR: ItemCondition evaluation failed for item "
+                  << itemId << ": " << e.what() << std::endl;
+        return false; // Or rethrow depending on error handling strategy
+    }
 }
 
 std::unique_ptr<Condition> ItemCondition::Clone() const
@@ -19,12 +76,47 @@ std::unique_ptr<Condition> ItemCondition::Clone() const
 }
 
 FlagCondition::FlagCondition(const std::string &flagId, const bool value, std::string comp)
-    : flagId(flagId), value(value), comparison(comp) {}
+    : flagId(flagId), value(value), comparison(comp)
+{
+    if (flagId.empty())
+    {
+        throw std::invalid_argument("FlagCondition: flagId cannot be empty");
+    }
+
+    if (!IsValidComparison(comparison, "bool"))
+    {
+        std::stringstream ss;
+        ss << "FlagCondition: Invalid comparison operator '" << comparison
+           << "' for boolean comparison. Valid: ==, !=";
+        throw std::invalid_argument(ss.str());
+    }
+}
 
 bool FlagCondition::Evaluate(const GameState &gameState) const
 {
-    bool current = gameState.GetFlag(flagId);
-    return Compare<bool>(current, value, comparison);
+    try
+    {
+        bool current = gameState.GetFlag(flagId);
+
+        // For boolean comparisons, we should only accept == and !=
+        {
+            using namespace GameConsts::condition::comp;
+            if (comparison != EQUAL && comparison != NOT_EQUAL)
+            {
+                std::cerr << "WARNING: FlagCondition using invalid comparison '"
+                          << comparison << "' for boolean value. Defaulting to " << EQUAL << std::endl;
+                return current == value;
+            }
+        }
+
+        return Compare<bool>(current, value, comparison);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "ERROR: FlagCondition evaluation failed for flag "
+                  << flagId << ": " << e.what() << std::endl;
+        return false;
+    }
 }
 
 std::unique_ptr<Condition> FlagCondition::Clone() const
@@ -37,12 +129,33 @@ VariableCondition::VariableCondition(const std::string &varId,
                                      const std::string &comp)
     : varId(varId), value(value), comparison(comp)
 {
+    if (varId.empty())
+    {
+        throw std::invalid_argument("VariableCondition: varId cannot be empty");
+    }
+
+    if (!IsValidComparison(comp, "int"))
+    {
+        std::stringstream ss;
+        ss << "VariableCondition: Invalid comparison operator '" << comp
+           << "' for numeric comparison";
+        throw std::invalid_argument(ss.str());
+    }
 }
 
 bool VariableCondition::Evaluate(const GameState &gameState) const
 {
-    int current = gameState.GetVariable(varId);
-    return Compare<int>(current, value, comparison);
+    try
+    {
+        int current = gameState.GetVariable(varId);
+        return Compare<int>(current, value, comparison);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "ERROR: VariableCondition evaluation failed for variable "
+                  << varId << ": " << e.what() << std::endl;
+        return false;
+    }
 }
 
 std::unique_ptr<Condition> VariableCondition::Clone() const
