@@ -66,6 +66,18 @@ int main(void)
             }
         }
 
+        {
+            int i = 0;
+            for (auto &flag : gameState.GetCurrentFlags())
+            {
+                bool on = flag.second;
+
+                raylib::Color textColor = on ? raylib::Color::Green() : raylib::Color::Red();
+                raylib::DrawText(TextFormat("%s [%d]", flag.first.c_str(), flag.second), 800, 50 + (i * 40), 20, textColor);
+                i++;
+            }
+        }
+
         if (dialogueManager.isShowingChoices())
         {
             const auto &choices = dialogueManager.GetChoices();

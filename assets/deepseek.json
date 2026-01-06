@@ -17,7 +17,7 @@
           "target": "test_items"
         },
         {
-          "text": "Test Flags System", 
+          "text": "Test Flags System",
           "target": "test_flags"
         },
         {
@@ -30,7 +30,7 @@
         }
       ]
     },
-    
+
     "test_items": {
       "texts": [
         {
@@ -73,7 +73,7 @@
         }
       ]
     },
-    
+
     "test_items_check": {
       "texts": [
         {
@@ -86,7 +86,7 @@
           "target": "test_items_check_fail",
           "conditions": [
             {
-              "type": "has_item", 
+              "type": "has_item",
               "item": "rusty_key",
               "quantity": 0,
               "comparison": "=="
@@ -99,7 +99,7 @@
         }
       ]
     },
-    
+
     "test_flags": {
       "texts": [
         {
@@ -111,6 +111,10 @@
               "value": true
             }
           ]
+        },
+        {
+          "content": "Setting flag 'test_flag' to false.",
+          "actions": [{ "type": "set_flag", "flag": "test_flag", "value": false }]
         }
       ],
       "choices": [
@@ -120,7 +124,7 @@
           "conditions": [
             {
               "type": "flag_set",
-              "flag": "test_flag", 
+              "flag": "test_flag",
               "value": true
             }
           ]
@@ -138,7 +142,7 @@
         }
       ]
     },
-    
+
     "test_variables": {
       "texts": [
         {
@@ -189,7 +193,7 @@
         }
       ]
     },
-    
+
     "test_conditions": {
       "texts": [
         {
