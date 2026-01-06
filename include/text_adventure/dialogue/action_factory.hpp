@@ -1,5 +1,5 @@
-#ifndef ACTION_H
-#define ACTION_H
+#ifndef ACTION_FACTORY_H
+#define ACTION_FACTORY_H
 
 #include "json.hpp"
 #include "game_state.hpp"

@@ -1,7 +1,5 @@
 #include <raylib-cpp.hpp>
-#include "rpg_text.hpp"
-// #include "dialogue_node.hpp"
-// #include "json_loader.hpp"
+
 #include "dialogue_manager.hpp"
 
 constexpr unsigned int FPS = 60;

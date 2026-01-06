@@ -52,7 +52,7 @@ set(SOURCES
     src/text_adventure/dialogue/choice.cpp
     src/text_adventure/dialogue/dialogue_manager.cpp
     src/text_adventure/dialogue/dialogue.cpp
-    src/text_adventure/dialogue/action.cpp
+    src/text_adventure/dialogue/action_factory.cpp
 
     src/text_adventure/state/condition_factory.cpp
     src/text_adventure/state/condition.cpp
@@ -60,10 +60,10 @@ set(SOURCES
 
     src/text_adventure/ui/rpg_text.cpp
 
-    src/text_adventure/config_loader.cpp
-    src/text_adventure/item_loader.cpp
-    src/text_adventure/flag_registry.cpp
-    src/text_adventure/variable_registry.cpp
+    src/text_adventure/databases/config_loader.cpp
+    src/text_adventure/databases/item_loader.cpp
+    src/text_adventure/databases/flag_registry.cpp
+    src/text_adventure/databases/variable_registry.cpp
 
     src/text_adventure/helper.cpp
     )
