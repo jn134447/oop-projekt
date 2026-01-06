@@ -9,18 +9,12 @@
 #include <unordered_map>
 #include <string>
 
-// class ActiveStatusEffectInfo;
-// class Stats;
-// class LocationInfo;
 class CharacterData
 {
     std::unordered_map<std::string, int> inventory;
-    // std::unordered_map<std::string, ActiveStatusEffectInfo> effects;
-    // Stats stats;
-    // std::unordered_map<std::string, int> relationships;
 
 public:
-    void AddItem(const std::string &itemId, const int quantity);
+    void ModifyItem(const std::string &itemId, const int quantity);
     void RemoveItem(const std::string &itemId, const int quantity);
     bool HasItem(const std::string &itemId, const int minQuantity = 1) const;
     int GetItemCount(const std::string &itemId) const;
@@ -65,24 +59,5 @@ public:
 
     // LocationInfo &currentLocation();
 };
-
-// class ActiveStatusEffectInfo
-// {
-//     std::string effectId;
-//     int stacks;
-// };
-
-// class Stats
-// {
-//     int health;
-//     int stamina;
-//     bool isAlive;
-// };
-
-// class LocationInfo
-// {
-//     std::string name;
-//     bool isVisited;
-// };
 
 #endif

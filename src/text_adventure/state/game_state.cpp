@@ -76,20 +76,20 @@ void GameState::ModifyVariable(const std::string &varId, const int delta)
               << " (total: " << currentVariables[varId] << ")" << std::endl;
 }
 
-void GameState::AddItem(const std::string &itemId, int quantity)
+void GameState::AddItem(const std::string &itemId, int delta)
 {
     if (!itemLoader.ItemExists(itemId))
     {
         std::cerr << "WARNING: Adding unknown item: " << itemId << std::endl;
     }
 
-    player.AddItem(itemId, quantity);
+    player.ModifyItem(itemId, delta);
 }
 
-void CharacterData::AddItem(const std::string &itemId, const int quantity)
+void CharacterData::ModifyItem(const std::string &itemId, const int delta)
 {
-    inventory[itemId] += quantity;
-    std::cout << "[GameState] Added " << quantity << " " << itemId
+    inventory[itemId] += delta;
+    std::cout << "[GameState] Added " << delta << " " << itemId
               << " (total: " << inventory[itemId] << ")" << std::endl;
 }
 
