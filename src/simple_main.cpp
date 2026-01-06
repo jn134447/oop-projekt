@@ -55,7 +55,9 @@ int main(void)
         // DRAW
         w.BeginDrawing();
         w.ClearBackground(RAYWHITE);
+        // ui.Draw()
 
+        // ui.drawNodes()
         // Draw ALL texts up to current index
         for (int i = 0; i <= dialogueManager.GetCurrentTextIndex(); i++)
         {
@@ -66,6 +68,7 @@ int main(void)
             }
         }
 
+        // ui.drawFlags()
         {
             int i = 0;
             for (auto &flag : gameState.GetCurrentFlags())
@@ -73,11 +76,34 @@ int main(void)
                 bool on = flag.second;
 
                 raylib::Color textColor = on ? raylib::Color::Green() : raylib::Color::Red();
-                raylib::DrawText(TextFormat("%s [%d]", flag.first.c_str(), flag.second), 800, 50 + (i * 40), 20, textColor);
+                raylib::DrawText(TextFormat("%s [%d]", flag.first.c_str(), flag.second), 1000, 50 + (i * 40), 20, textColor);
                 i++;
             }
         }
 
+        // ui.drawInventory()
+        {
+            int i = 0;
+            for (auto &item : gameState.currentCharacter().GetInventory())
+            {
+                const char *displayName = gameState.GetItemLoader().GetItem(item.first).GetDisplayName().c_str();
+                const char *description = gameState.GetItemLoader().GetItem(item.first).GetDescription().c_str();
+                raylib::DrawText(TextFormat("%s [%d]\ndesc: %s", displayName, item.second, description),
+                                 1000, 500 + (i * 80), 20, raylib::Color::DarkBrown());
+                i++;
+            }
+        }
+        {
+            int i = 0;
+            for (auto &var : gameState.GetCurrentVariables())
+            {
+                raylib::DrawText(TextFormat("%s [%d]", var.first.c_str(), var.second),
+                                 1000, 300 + (i * 40), 20, raylib::Color::DarkBrown());
+                i++;
+            }
+        }
+
+        // ui.drawChoices()
         if (dialogueManager.isShowingChoices())
         {
             const auto &choices = dialogueManager.GetChoices();

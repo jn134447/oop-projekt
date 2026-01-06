@@ -31,6 +31,11 @@ const std::unordered_map<std::string, bool> &GameState::GetCurrentFlags() const
     return currentFlags;
 }
 
+const std::unordered_map<std::string, int> &GameState::GetCurrentVariables() const
+{
+    return currentVariables;
+}
+
 void GameState::SetFlag(const std::string &flagId, const bool value)
 {
     if (!flagRegistry.IsRegistered(flagId))

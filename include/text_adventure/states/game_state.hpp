@@ -45,7 +45,6 @@ public:
     // void ToJSON();
 
     bool GetFlag(const std::string &flagId) const;
-    const std::unordered_map<std::string, bool> &GetCurrentFlags() const;
     void SetFlag(const std::string &flagId, const bool value);
     void ToggleFlag(const std::string &flagId);
     // void LoadInitialFlags(const std::string& filename) ;
@@ -58,6 +57,9 @@ public:
 
     CharacterData &currentCharacter();
     const CharacterData &currentCharacter() const;
+
+    const std::unordered_map<std::string, bool> &GetCurrentFlags() const;
+    const std::unordered_map<std::string, int> &GetCurrentVariables() const;
 
     // LocationInfo &currentLocation();
 };

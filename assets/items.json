@@ -3,6 +3,10 @@
     "rusty_key": {
       "display_name": "Rusty Key",
       "description": "An old key."
+    },
+    "shilling": {
+      "display_name": "Shilling",
+      "description": "Currency of Prehevil"
     }
   }
 }

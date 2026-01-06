@@ -52,6 +52,16 @@
               "quantity": 1
             }
           ]
+        },
+        {
+          "content": "Giving you some shillings...",
+          "actions": [
+            {
+              "type": "give_item",
+              "item": "shilling",
+              "quantity": 23
+            }
+          ]
         }
       ],
       "choices": [
@@ -103,6 +113,10 @@
     "test_flags": {
       "texts": [
         {
+          "content": "Setting flag 'test_flag' to false.",
+          "actions": [{ "type": "set_flag", "flag": "test_flag", "value": false }]
+        },
+        {
           "content": "Setting flag 'test_flag' to true.",
           "actions": [
             {
@@ -111,10 +125,6 @@
               "value": true
             }
           ]
-        },
-        {
-          "content": "Setting flag 'test_flag' to false.",
-          "actions": [{ "type": "set_flag", "flag": "test_flag", "value": false }]
         }
       ],
       "choices": [
