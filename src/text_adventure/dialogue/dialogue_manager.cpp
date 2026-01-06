@@ -20,130 +20,336 @@ void DialogueManager::LoadFromFile(const std::string &filename)
 {
     currentStoryFile = filename;
     std::ifstream file(filename);
-    nlohmann::json data = nlohmann::json::parse(file);
 
+    if (!file.is_open())
     {
-        using namespace GameConsts;
+        std::cerr << "ERROR: Could not open file: " << filename << std::endl;
+        return;
+    }
 
-        for (auto &[nodeId, nodeData] : data[node::STORY].items())
+    try
+    {
+        nlohmann::json data = nlohmann::json::parse(file);
+        LoadAllNodes(data);
+    }
+    catch (const nlohmann::json::exception &e)
+    {
+        std::cerr << "ERROR: JSON parsing failed in " << filename << ": " << e.what() << std::endl;
+    }
+}
+
+void DialogueManager::LoadAllNodes(const nlohmann::json &data)
+{
+    using namespace GameConsts;
+
+    if (!data.contains(node::STORY))
+    {
+        std::cerr << "ERROR: JSON missing 'story' section" << std::endl;
+        return;
+    }
+
+    for (auto &[nodeId, nodeData] : data[node::STORY].items())
+    {
+        LoadSingleNode(nodeId, nodeData);
+    }
+}
+
+void DialogueManager::LoadSingleNode(const std::string &nodeId, const nlohmann::json &nodeData)
+{
+    using namespace GameConsts;
+
+    try
+    {
+        std::string defaultNext = nodeData.value(node::DEFAULT_NEXT, "");
+        auto node = std::make_unique<DialogueNode>(nodeId, defaultNext);
+
+        LoadNodeEntries(nodeId, nodeData, *node);
+        LoadNodeChoices(nodeId, nodeData, *node);
+
+        nodes[nodeId] = std::move(node);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "ERROR loading node '" << nodeId << "': " << e.what() << std::endl;
+    }
+}
+
+void DialogueManager::LoadNodeEntries(const std::string &nodeId,
+                                      const nlohmann::json &nodeData,
+                                      DialogueNode &node)
+{
+    using namespace GameConsts;
+
+    if (!nodeData.contains(node::TEXTS))
+    {
+        return; // Node can have no texts (just choices)
+    }
+
+    for (const auto &textData : nodeData[node::TEXTS])
+    {
+        try
         {
-            auto node = std::make_unique<DialogueNode>(nodeId,
-                                                       nodeData.value(node::DEFAULT_NEXT, ""));
-
-            // Load texts
-            for (auto &textData : nodeData[node::TEXTS])
-            {
-                // Get base style from config
-                std::string speaker = textData.value(node::SPEAKER, "");
-                const TextStyle &baseStyle = config.GetSpeakerStyle(speaker);
-
-                TextStyle finalStyle;
-                finalStyle.LoadFromJSON(textData, baseStyle);
-
-                RPGText rpgText(
-                    textData[node::CONTENT],
-                    finalStyle.GetFontSize(),
-                    finalStyle.GetColor(),
-                    finalStyle.GetSpeed());
-
-                // Load node actions
-                std::vector<ActionFunc> actions;
-                if (textData.contains(action::ACTIONS))
-                {
-                    for (auto &actionData : textData[action::ACTIONS])
-                    {
-                        std::string actionType = actionData[action::TYPE];
-
-                        if (actionType == action::MODIFY_ITEM)
-                        {
-                            // std::string itemId = actionData[item::ITEM];
-                            // int quantity = actionData.value(item::DELTA, item::DELTA_DEFAULT);
-
-                            // if (!gameState.GetItemLoader().ItemExists(itemId))
-                            // {
-                            //     std::cerr << "ERROR in node '" << nodeId << "': Unknown item '"
-                            //               << itemId << "' in action" << std::endl;
-                            //     // Option: skip, throw, or use default
-                            // }
-
-                            // // Store action to execute later
-                            // // Create action function
-                            // actions.push_back(
-                            //     [this, itemId, quantity]()
-                            //     {
-                            //         std::cout << "ACTION: Giving " << quantity << " " << itemId << std::endl;
-                            //         gameState.ModifyItem(itemId, quantity);
-                            //     });
-                        }
-                        else if (actionType == action::SET_FLAG)
-                        {
-                            // std::string flagId = actionData[flag::FLAG];
-                            // bool value = actionData.value(flag::VALUE, flag::VALUE_DEFAULT);
-
-                            // // Store action to execute later
-                            // // Create action function
-                            // actions.push_back(
-                            //     [this, flagId, value]()
-                            //     {
-                            //         std::cout << "ACTION: Setting flag: " << flagId << " " << value << std::endl;
-                            //         gameState.SetFlag(flagId, value);
-                            //     });
-                        }
-                        else if (actionType == action::SET_VAR)
-                        {
-                            // std::string varId = actionData[var::VARIABLE];
-                            // int value = actionData[var::VALUE];
-
-                            // actions.push_back(
-                            //     [this, varId, value]()
-                            //     {
-                            //         std::cout << "ACTION: Set variable " << varId << " = " << value << std::endl;
-                            //         gameState.SetVariable(varId, value);
-                            //     });
-                        }
-                        else if (actionType == action::MODIFY_VAR)
-                        {
-                            std::string varId = actionData[var::VARIABLE];
-                            int change = actionData[var::CHANGE];
-
-                            actions.push_back(
-                                [this, varId, change]()
-                                {
-                                    std::cout << "ACTION: Modify variable " << varId << " by " << change << std::endl;
-                                    gameState.ModifyVariable(varId, change);
-                                });
-                        }
-                        // TODO: Add more action types here later
-                    }
-                }
-
-                node->AddEntry(std::move(rpgText), actions);
-            }
-
-            // Load choices
-            for (auto &choiceData : nodeData[node::CHOICES])
-            {
-                Choice choice(choiceData[node::TEXT], choiceData[node::TARGET]);
-
-                if (choiceData.contains("conditions"))
-                {
-                    for (auto &condData : choiceData["conditions"])
-                    {
-                        auto condition = ConditionFactory::CreateFromJSON(condData);
-                        if (condition)
-                        {
-                            choice.AddCondition(std::move(condition));
-                        }
-                    }
-                }
-
-                node->AddChoice(std::move(choice));
-            }
-
-            nodes[nodeId] = std::move(node);
+            RPGText rpgText = CreateRPGTextFromJSON(textData);
+            std::vector<ActionFunc> actions = LoadActionsFromJSON(textData, nodeId);
+            node.AddEntry(std::move(rpgText), std::move(actions));
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "ERROR in node '" << nodeId << "' text entry: " << e.what() << std::endl;
         }
     }
 }
+
+RPGText DialogueManager::CreateRPGTextFromJSON(const nlohmann::json &textData)
+{
+    using namespace GameConsts;
+
+    if (!textData.contains(node::CONTENT))
+    {
+        throw std::invalid_argument("Text entry missing 'content' field");
+    }
+
+    std::string speaker = textData.value(node::SPEAKER, "");
+    const TextStyle &baseStyle = config.GetSpeakerStyle(speaker);
+
+    TextStyle finalStyle;
+    finalStyle.LoadFromJSON(textData, baseStyle);
+
+    return RPGText(
+        textData[node::CONTENT].get<std::string>(),
+        finalStyle.GetFontSize(),
+        finalStyle.GetColor(),
+        finalStyle.GetSpeed());
+}
+
+std::vector<ActionFunc> DialogueManager::LoadActionsFromJSON(const nlohmann::json &textData,
+                                                             const std::string &nodeId)
+{
+    using namespace GameConsts;
+    std::vector<ActionFunc> actions;
+
+    if (!textData.contains(action::ACTIONS))
+    {
+        return actions;
+    }
+
+    for (const auto &actionData : textData[action::ACTIONS])
+    {
+        try
+        {
+            auto action = actionFactory.Create(actionData);
+            if (action)
+            {
+                actions.push_back(std::move(action));
+            }
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "ERROR in node '" << nodeId << "' action: " << e.what() << std::endl;
+        }
+    }
+
+    return actions;
+}
+
+void DialogueManager::LoadNodeChoices(const std::string &nodeId,
+                                      const nlohmann::json &nodeData,
+                                      DialogueNode &node)
+{
+    using namespace GameConsts;
+
+    if (!nodeData.contains(node::CHOICES))
+    {
+        return; // Node can have no choices
+    }
+
+    for (const auto &choiceData : nodeData[node::CHOICES])
+    {
+        try
+        {
+            Choice choice = CreateChoiceFromJSON(choiceData, nodeId);
+            node.AddChoice(std::move(choice));
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "ERROR in node '" << nodeId << "' choice: " << e.what() << std::endl;
+        }
+    }
+}
+Choice DialogueManager::CreateChoiceFromJSON(const nlohmann::json &choiceData,
+                                             const std::string &nodeId)
+{
+    using namespace GameConsts;
+
+    if (!choiceData.contains(node::TEXT))
+    {
+        throw std::invalid_argument("Choice missing 'text' field");
+    }
+    if (!choiceData.contains(node::TARGET))
+    {
+        throw std::invalid_argument("Choice missing 'target' field");
+    }
+
+    std::string text = choiceData[node::TEXT].get<std::string>();
+    std::string target = choiceData[node::TARGET].get<std::string>();
+
+    Choice choice(text, target);
+
+    if (choiceData.contains("conditions"))
+    {
+        LoadChoiceConditions(choiceData["conditions"], choice);
+    }
+
+    return choice;
+}
+
+void DialogueManager::LoadChoiceConditions(const nlohmann::json &conditionsData,
+                                           Choice &choice)
+{
+    for (const auto &condData : conditionsData)
+    {
+        try
+        {
+            auto condition = ConditionFactory::CreateFromJSON(condData);
+            if (condition)
+            {
+                choice.AddCondition(std::move(condition));
+            }
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "ERROR loading condition: " << e.what() << std::endl;
+        }
+    }
+}
+// void DialogueManager::LoadFromFile(const std::string &filename)
+// {
+//     currentStoryFile = filename;
+//     std::ifstream file(filename);
+//     nlohmann::json data = nlohmann::json::parse(file);
+
+//     {
+//         using namespace GameConsts;
+
+//         for (auto &[nodeId, nodeData] : data[node::STORY].items())
+//         {
+//             auto node = std::make_unique<DialogueNode>(nodeId,
+//                                                        nodeData.value(node::DEFAULT_NEXT, ""));
+
+//             // Load texts
+//             for (auto &textData : nodeData[node::TEXTS])
+//             {
+//                 // Get base style from config
+//                 std::string speaker = textData.value(node::SPEAKER, "");
+//                 const TextStyle &baseStyle = config.GetSpeakerStyle(speaker);
+
+//                 TextStyle finalStyle;
+//                 finalStyle.LoadFromJSON(textData, baseStyle);
+
+//                 RPGText rpgText(
+//                     textData[node::CONTENT],
+//                     finalStyle.GetFontSize(),
+//                     finalStyle.GetColor(),
+//                     finalStyle.GetSpeed());
+
+//                 // Load node actions
+//                 std::vector<ActionFunc> actions;
+//                 if (textData.contains(action::ACTIONS))
+//                 {
+//                     for (auto &actionData : textData[action::ACTIONS])
+//                     {
+//                         std::string actionType = actionData[action::TYPE];
+
+//                         if (actionType == action::MODIFY_ITEM)
+//                         {
+//                             // std::string itemId = actionData[item::ITEM];
+//                             // int quantity = actionData.value(item::DELTA, item::DELTA_DEFAULT);
+
+//                             // if (!gameState.GetItemLoader().ItemExists(itemId))
+//                             // {
+//                             //     std::cerr << "ERROR in node '" << nodeId << "': Unknown item '"
+//                             //               << itemId << "' in action" << std::endl;
+//                             //     // Option: skip, throw, or use default
+//                             // }
+
+//                             // // Store action to execute later
+//                             // // Create action function
+//                             // actions.push_back(
+//                             //     [this, itemId, quantity]()
+//                             //     {
+//                             //         std::cout << "ACTION: Giving " << quantity << " " << itemId << std::endl;
+//                             //         gameState.ModifyItem(itemId, quantity);
+//                             //     });
+//                         }
+//                         else if (actionType == action::SET_FLAG)
+//                         {
+//                             // std::string flagId = actionData[flag::FLAG];
+//                             // bool value = actionData.value(flag::VALUE, flag::VALUE_DEFAULT);
+
+//                             // // Store action to execute later
+//                             // // Create action function
+//                             // actions.push_back(
+//                             //     [this, flagId, value]()
+//                             //     {
+//                             //         std::cout << "ACTION: Setting flag: " << flagId << " " << value << std::endl;
+//                             //         gameState.SetFlag(flagId, value);
+//                             //     });
+//                         }
+//                         else if (actionType == action::SET_VAR)
+//                         {
+//                             // std::string varId = actionData[var::VARIABLE];
+//                             // int value = actionData[var::VALUE];
+
+//                             // actions.push_back(
+//                             //     [this, varId, value]()
+//                             //     {
+//                             //         std::cout << "ACTION: Set variable " << varId << " = " << value << std::endl;
+//                             //         gameState.SetVariable(varId, value);
+//                             //     });
+//                         }
+//                         else if (actionType == action::MODIFY_VAR)
+//                         {
+//                             // std::string varId = actionData[var::VARIABLE];
+//                             // int change = actionData[var::CHANGE];
+
+//                             // actions.push_back(
+//                             //     [this, varId, change]()
+//                             //     {
+//                             //         std::cout << "ACTION: Modify variable " << varId << " by " << change << std::endl;
+//                             //         gameState.ModifyVariable(varId, change);
+//                             //     });
+//                         }
+//                         // TODO: Add more action types here later
+//                     }
+//                 }
+
+//                 node->AddEntry(std::move(rpgText), actions);
+//             }
+
+//             // Load choices
+//             for (auto &choiceData : nodeData[node::CHOICES])
+//             {
+//                 Choice choice(choiceData[node::TEXT], choiceData[node::TARGET]);
+
+//                 if (choiceData.contains("conditions"))
+//                 {
+//                     for (auto &condData : choiceData["conditions"])
+//                     {
+//                         auto condition = ConditionFactory::CreateFromJSON(condData);
+//                         if (condition)
+//                         {
+//                             choice.AddCondition(std::move(condition));
+//                         }
+//                     }
+//                 }
+
+//                 node->AddChoice(std::move(choice));
+//             }
+
+//             nodes[nodeId] = std::move(node);
+//         }
+//     }
+// }
 
 DialogueNode *DialogueManager::GetNode(const std::string &nodeId)
 {

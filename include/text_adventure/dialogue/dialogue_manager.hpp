@@ -9,10 +9,13 @@
 #include "game_state.hpp"
 #include "game_constants.hpp"
 #include "config_loader.hpp"
+#include "action.hpp"
+#include "json.hpp"
 
 class DialogueManager
 {
     ConfigLoader config;
+    ActionFactory actionFactory;
     GameState &gameState;
 
     // Graph storage
@@ -27,12 +30,31 @@ class DialogueManager
 
     std::string currentStoryFile;
 
+    void LoadAllNodes(const nlohmann::json &data);
+    void LoadSingleNode(const std::string &nodeId, const nlohmann::json &nodeData);
+    void LoadNodeEntries(const std::string &nodeId,
+                         const nlohmann::json &nodeData,
+                         DialogueNode &node);
+    RPGText CreateRPGTextFromJSON(const nlohmann::json &textData);
+    std::vector<ActionFunc> LoadActionsFromJSON(const nlohmann::json &textData,
+                                                const std::string &nodeId);
+
+    void LoadNodeChoices(const std::string &nodeId,
+                         const nlohmann::json &nodeData,
+                         DialogueNode &node);
+    Choice CreateChoiceFromJSON(const nlohmann::json &choiceData,
+                                const std::string &nodeId);
+
+    void LoadChoiceConditions(const nlohmann::json &conditionsData,
+                              Choice &choice);
+
 public:
     DialogueManager(GameState &state);
 
     void LoadStory(const std::string &storyFile,
                    const std::string &configFile);
     void LoadFromFile(const std::string &filename);
+
     DialogueNode *GetNode(const std::string &nodeId);
     DialogueNode *GetCurrentNode();
 

@@ -52,6 +52,7 @@ set(SOURCES
     src/text_adventure/dialogue/choice.cpp
     src/text_adventure/dialogue/dialogue_manager.cpp
     src/text_adventure/dialogue/dialogue.cpp
+    src/text_adventure/dialogue/action.cpp
 
     src/text_adventure/state/condition_factory.cpp
     src/text_adventure/state/condition.cpp
