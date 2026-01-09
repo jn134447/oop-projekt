@@ -26,8 +26,8 @@ class EffectLoader
 
 public:
     void LoadFromFile(const std::string &filename);
-    const EffectDefinition &GetItem(const std::string &effectId) const;
-    bool ItemExists(const std::string &effectId) const;
+    const EffectDefinition &GetEffect(const std::string &effectId) const;
+    bool EffectExists(const std::string &effectId) const;
 };
 
 #endif

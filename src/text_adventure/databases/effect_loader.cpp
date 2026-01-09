@@ -87,7 +87,7 @@ void EffectLoader::LoadFromFile(const std::string &filename)
     }
 }
 
-const EffectDefinition &EffectLoader::GetItem(const std::string &effectId) const
+const EffectDefinition &EffectLoader::GetEffect(const std::string &effectId) const
 {
     auto it = effects.find(effectId);
     if (it == effects.end())
@@ -97,7 +97,7 @@ const EffectDefinition &EffectLoader::GetItem(const std::string &effectId) const
     return it->second;
 }
 
-bool EffectLoader::ItemExists(const std::string &effectId) const
+bool EffectLoader::EffectExists(const std::string &effectId) const
 {
     return effects.find(effectId) != effects.end();
 }

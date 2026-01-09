@@ -7,14 +7,19 @@
 #include <iostream>
 #include <sstream>
 
-GameState::GameState(FlagRegistry &flagRegistry, ItemLoader &itemLoader, VariableRegistry &varRegistry)
-    : flagRegistry(flagRegistry), itemLoader(itemLoader), varRegistry(varRegistry)
+GameState::GameState(FlagRegistry &flagRegistry, ItemLoader &itemLoader, VariableRegistry &varRegistry, EffectLoader &effectLoader)
+    : flagRegistry(flagRegistry), itemLoader(itemLoader), varRegistry(varRegistry), effectLoader(effectLoader)
 {
 }
 
 const ItemLoader &GameState::GetItemLoader() const
 {
     return itemLoader;
+}
+
+const EffectLoader &GameState::GetEffectLoader() const
+{
+    return effectLoader;
 }
 
 bool GameState::GetFlag(const std::string &flagId) const
@@ -152,7 +157,7 @@ void GameState::ModifyItem(const std::string &itemId, int delta)
     }
     if (delta == 0)
     {
-        std::cerr << "WARNING: AddItem called with delta of 0 for item: " << itemId << std::endl;
+        std::cerr << "WARNING: ModifyItem called with delta of 0 for item: " << itemId << std::endl;
         return;
     }
     if (!itemLoader.ItemExists(itemId))
@@ -162,6 +167,27 @@ void GameState::ModifyItem(const std::string &itemId, int delta)
     }
 
     player.ModifyItem(itemId, delta);
+}
+
+void GameState::ModifyEffect(const std::string &effectId, int delta)
+{
+    if (effectId.empty())
+    {
+        std::cerr << "ERROR: Attempted to add effect with empty ID" << std::endl;
+        return;
+    }
+    if (delta == 0)
+    {
+        std::cerr << "WARNING: ModifyEffect called with delta of 0 for item: " << effectId << std::endl;
+        return;
+    }
+    if (!effectLoader.EffectExists(effectId))
+    {
+        std::cerr << "ERROR: Attempted to add unknown effect: " << effectId << std::endl;
+        return;
+    }
+
+    player.ModifyItem(effectId, delta);
 }
 
 void CharacterData::ModifyItem(const std::string &itemId, const int delta)
@@ -245,4 +271,131 @@ const std::unordered_map<std::string, int> &CharacterData::GetInventory() const
 void CharacterData::ClearInventory()
 {
     inventory.clear();
+}
+
+void CharacterData::ModifyEffect(const std::string &effectId, const int delta)
+{
+    if (effectId.empty())
+    {
+        std::cerr << "ERROR: Attempted to modify effect with empty ID" << std::endl;
+        return;
+    }
+    if (delta == 0)
+    {
+
+        std::cerr << "WARNING: ModifyEffect called with delta of 0 for item: " << effectId << std::endl;
+        return;
+    }
+
+    // Initialize if not present
+    if (effects.find(effectId) == effects.end())
+    {
+        if (delta < 0)
+        {
+            std::cerr << "ERROR: Cannot remove " << -delta
+                      << " of effect " << effectId << " (not in effects)" << std::endl;
+            return;
+        }
+        effects[effectId] = 0;
+    }
+    // Check for overflow
+    if (delta > 0 && effects[effectId] > INT_MAX - delta)
+    {
+        std::cerr << "ERROR: Arithmetic overflow adding effect: " << effectId << std::endl;
+        return;
+    }
+
+    // Check for negative inventory (after removal)
+    int newQuantity = effects[effectId] + delta;
+    if (newQuantity < 0)
+    {
+        effects.erase(effectId);
+    }
+
+    effects[effectId] += delta;
+    std::cout << "[GameState] Added " << delta << " " << effectId
+              << " (total: " << effects[effectId] << ")" << std::endl;
+}
+
+bool CharacterData::HasEffect(const std::string &effectId, const int minQuantity) const
+{
+    if (effectId.empty())
+    {
+        std::cerr << "ERROR: HasEffect called with empty effect ID" << std::endl;
+        return false;
+    }
+    if (minQuantity < 0)
+    {
+        std::cerr << "ERROR: HasEffect called with negative minQuantity: " << minQuantity << std::endl;
+        return false;
+    }
+
+    auto it = effects.find(effectId);
+    return it != effects.end() && it->second >= minQuantity;
+}
+
+int CharacterData::GetEffectCount(const std::string &effectId) const
+{
+    if (effectId.empty())
+    {
+        std::cerr << "ERROR: GetItemCount called with empty item ID" << std::endl;
+        return 0;
+    }
+
+    auto it = effects.find(effectId);
+    return it != effects.end() ? it->second : 0;
+}
+
+const std::unordered_map<std::string, int> &CharacterData::GetEffects() const
+{
+    return effects;
+}
+
+void CharacterData::ClearEffects()
+{
+    effects.clear();
+}
+
+void CharacterData::ModifyItem(const std::string &itemId, const int delta)
+{
+    if (itemId.empty())
+    {
+        std::cerr << "ERROR: Attempted to modify item with empty ID" << std::endl;
+        return;
+    }
+    if (delta == 0)
+    {
+
+        std::cerr << "WARNING: ModifyItem called with delta of 0 for item: " << itemId << std::endl;
+        return;
+    }
+
+    // Initialize if not present
+    if (inventory.find(itemId) == inventory.end())
+    {
+        if (delta < 0)
+        {
+            std::cerr << "ERROR: Cannot remove " << -delta
+                      << " of item " << itemId << " (not in inventory)" << std::endl;
+            return;
+        }
+        inventory[itemId] = 0;
+    }
+    // Check for overflow
+    if (delta > 0 && inventory[itemId] > INT_MAX - delta)
+    {
+        std::cerr << "ERROR: Arithmetic overflow adding item: " << itemId << std::endl;
+        return;
+    }
+
+    // Check for negative inventory (after removal)
+    int newQuantity = inventory[itemId] + delta;
+    if (newQuantity < 0)
+    {
+        inventory.erase(itemId);
+    }
+
+    inventory[itemId] += delta;
+    std::cout << "[GameState] Added " << delta << " " << itemId
+              << " (total: " << inventory[itemId] << ")" << std::endl;
 }
