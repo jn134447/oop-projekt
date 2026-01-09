@@ -18,6 +18,7 @@ private:
     static ActionFunc CreateSetFlag(const nlohmann::json &data);
     static ActionFunc CreateSetVariable(const nlohmann::json &data);
     static ActionFunc CreateModifyVariable(const nlohmann::json &data);
+    static ActionFunc CreateModifyEffect(const nlohmann::json &data);
 };
 
 #endif

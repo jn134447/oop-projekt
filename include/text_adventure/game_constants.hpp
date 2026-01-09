@@ -30,6 +30,8 @@ namespace GameConsts
 
         const std::string SET_VAR = "set_variable";
         const std::string MODIFY_VAR = "modify_variable";
+
+        const std::string MODIFY_EFFECT = "modify_effect";
     }
     namespace flag
     {
@@ -97,6 +99,7 @@ namespace GameConsts
         const std::string HAS_ITEM = "has_item";
         const std::string FLAG_SET = "flag_set";
         const std::string VAR_COMP = "variable_compare";
+        const std::string HAS_EFFECT = "has_effect";
 
         const std::string FLAG = "flag";
         const std::string ITEM = "item";
