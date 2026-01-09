@@ -32,7 +32,10 @@
                 # Override stdenv in order to change compiler:
                 # stdenv = pkgs.clangStdenv;
               }
+
               {
+                NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM = 1;
+
                 packages =
                   with pkgs;
                   [
@@ -45,7 +48,6 @@
                     xorg.libXi
                     xorg.libXinerama
                     xorg.libXrandr
-
 
                     clang-tools
                     cmake
@@ -63,9 +65,14 @@
                     gdb
                     lldb
 
+                    # to test windows
+                    wine
+
+
                     nil
                     nixfmt
                   ]
+                  ++ [pkgsCross.mingwW64.stdenv.cc]
                   ++ (if system == "aarch64-darwin" then [ ] else [ gdb ]);
               };
         }

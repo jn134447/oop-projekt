@@ -65,11 +65,11 @@ namespace GameConsts
     };
     namespace files
     {
-        const std::string CONFIG = "../assets/config.json";
-        const std::string STORY = "../assets/deepseek.json";
-        const std::string ITEMS = "../assets/items.json";
-        const std::string FLAGS = "../assets/flags.json";
-        const std::string VARIABLES = "../assets/variables.json";
+        const std::string CONFIG = "./data/config.json";
+        const std::string STORY = "./data/story.json";
+        const std::string ITEMS = "./data/items.json";
+        const std::string FLAGS = "./data/flags.json";
+        const std::string VARIABLES = "./data/variables.json";
     }
 
     namespace state
