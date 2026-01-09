@@ -12,15 +12,20 @@
 class CharacterData
 {
     std::unordered_map<std::string, int> inventory;
+    std::unordered_map<std::string, int> effects;
 
 public:
     void ModifyItem(const std::string &itemId, const int delta);
-    // void RemoveItem(const std::string &itemId, const int quantity);
     bool HasItem(const std::string &itemId, const int minQuantity = 1) const;
     int GetItemCount(const std::string &itemId) const;
-    // void ClearItem(const std::string &itemId);
     const std::unordered_map<std::string, int> &GetInventory() const;
     void ClearInventory();
+
+    void ModifyEffect(const std::string &effectId, const int delta);
+    bool HasEffect(const std::string &itemId, const int minQuantity = 1) const;
+    int GetEffectCount(const std::string &itemId) const;
+    const std::unordered_map<std::string, int> &GetEffects() const;
+    void ClearEffects();
 };
 class GameState
 {

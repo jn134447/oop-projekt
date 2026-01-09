@@ -48,6 +48,15 @@ namespace GameConsts
         const std::string DESCRIPTION_DEFAULT = "default_description";
 
     }
+    namespace effect{
+        const std::string EFFECT = "effect";
+        const std::string AMOUNT = "amount";
+        const int AMOUNT_DEFAULT = 1;
+
+        const std::string DISPLAY_NAME = "display_name";
+        const std::string DESCRIPTION = "description";
+        const std::string DESCRIPTION_DEFAULT = "default_description";
+    }
     namespace var
     {
         const std::string VARIABLE = "variable";
@@ -70,14 +79,16 @@ namespace GameConsts
         const std::string ITEMS = "./data/items.json";
         const std::string FLAGS = "./data/flags.json";
         const std::string VARIABLES = "./data/variables.json";
+        const std::string EFFECTS = "./data/effects.json";
     }
 
     namespace state
     {
-        const std::string STATES = "states";
+        // const std::string STATES = "states";
         const std::string ITEMS = "items";
         const std::string FLAGS = "flags";
         const std::string VARIABLES = "variables";
+        const std::string EFFECTS = "effects";
     }
     namespace condition
     {

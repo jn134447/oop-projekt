@@ -63,6 +63,7 @@ set(SOURCES
     src/text_adventure/databases/item_loader.cpp
     src/text_adventure/databases/flag_registry.cpp
     src/text_adventure/databases/variable_registry.cpp
+    src/text_adventure/databases/effect_loader.cpp
 
     src/text_adventure/helper.cpp
     src/text_adventure/ke_engine.cpp

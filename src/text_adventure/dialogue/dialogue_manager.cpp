@@ -5,6 +5,7 @@
 #include "condition_factory.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 DialogueManager::DialogueManager(GameState &state)
     : gameState(state) {}
@@ -23,7 +24,8 @@ void DialogueManager::LoadFromFile(const std::string &filename)
     if (!file.is_open())
     {
         std::cerr << "ERROR: Could not open file: " << filename << std::endl;
-        return;
+        throw std::runtime_error("");
+        // return;
     }
 
     try
@@ -34,6 +36,8 @@ void DialogueManager::LoadFromFile(const std::string &filename)
     catch (const nlohmann::json::exception &e)
     {
         std::cerr << "ERROR: JSON parsing failed in " << filename << ": " << e.what() << std::endl;
+        throw std::runtime_error("");
+        // return;
     }
 }
 
