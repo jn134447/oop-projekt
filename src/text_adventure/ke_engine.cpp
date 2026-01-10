@@ -9,13 +9,19 @@ Engine::Engine(bool debug)
 {
 }
 
-bool Engine::Init(const std::string &itemsFile, const std::string &flagsFile, const std::string &variablesFile, const std::string &storyFile, const std::string &configFile)
+bool Engine::Init(const std::string &itemsFile,
+                  const std::string &flagsFile,
+                  const std::string &variablesFile,
+                  const std::string &storyFile,
+                  const std::string &configFile,
+                  const std::string &effectsFile)
 {
     try
     {
         itemLoader.LoadFromFile(itemsFile);
         flagRegistry.LoadFromFile(flagsFile);
         varRegistry.LoadFromFile(variablesFile);
+        effectLoader.LoadFromFile(effectsFile);
 
         configLoader.LoadFromFile(configFile);
 

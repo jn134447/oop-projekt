@@ -47,12 +47,13 @@ public:
               const std::string &flagsFile = GameConsts::files::FLAGS,
               const std::string &variablesFile = GameConsts::files::VARIABLES,
               const std::string &storyFile = GameConsts::files::STORY,
-              const std::string &configFile = GameConsts::files::CONFIG);
+              const std::string &configFile = GameConsts::files::CONFIG,
+              const std::string &effectsFile = GameConsts::files::EFFECTS);
 
     // Getters
     GameState &GetGameState();
     DialogueManager &GetDialogueManager();
-    const DialogueManager &GetDialogueManager() const; 
+    const DialogueManager &GetDialogueManager() const;
 
     // Convenience methods
     void StartStory(const std::string &startNode);
@@ -61,9 +62,6 @@ public:
 
     // Input handling
     void HandleInput(); // Move your input logic here
-
-private:
-    bool LoadGameData(); // Internal loading helper
 };
 
 #endif

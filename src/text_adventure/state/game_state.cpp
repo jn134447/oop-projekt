@@ -187,7 +187,7 @@ void GameState::ModifyEffect(const std::string &effectId, int delta)
         return;
     }
 
-    player.ModifyItem(effectId, delta);
+    player.ModifyEffect(effectId, delta);
 }
 
 void CharacterData::ModifyItem(const std::string &itemId, const int delta)
@@ -227,11 +227,14 @@ void CharacterData::ModifyItem(const std::string &itemId, const int delta)
     if (newQuantity < 0)
     {
         inventory.erase(itemId);
+        std::cout << "[GameState] Removed item " << itemId << std::endl;
     }
-
-    inventory[itemId] += delta;
-    std::cout << "[GameState] Added " << delta << " " << itemId
-              << " (total: " << inventory[itemId] << ")" << std::endl;
+    else
+    {
+        inventory[itemId] += delta;
+        std::cout << "[GameState] Added " << delta << " " << itemId
+                  << " (total: " << inventory[itemId] << ")" << std::endl;
+    }
 }
 
 bool CharacterData::HasItem(const std::string &itemId, const int minQuantity) const
@@ -310,11 +313,14 @@ void CharacterData::ModifyEffect(const std::string &effectId, const int delta)
     if (newQuantity < 0)
     {
         effects.erase(effectId);
+        std::cout << "[GameState] Removed effect " << effectId << std::endl;
     }
-
-    effects[effectId] += delta;
-    std::cout << "[GameState] Added " << delta << " " << effectId
-              << " (total: " << effects[effectId] << ")" << std::endl;
+    else
+    {
+        effects[effectId] += delta;
+        std::cout << "[GameState] Inflicted " << delta << " " << effectId
+                  << " (total: " << effects[effectId] << ")" << std::endl;
+    }
 }
 
 bool CharacterData::HasEffect(const std::string &effectId, const int minQuantity) const
@@ -354,48 +360,4 @@ const std::unordered_map<std::string, int> &CharacterData::GetEffects() const
 void CharacterData::ClearEffects()
 {
     effects.clear();
-}
-
-void CharacterData::ModifyItem(const std::string &itemId, const int delta)
-{
-    if (itemId.empty())
-    {
-        std::cerr << "ERROR: Attempted to modify item with empty ID" << std::endl;
-        return;
-    }
-    if (delta == 0)
-    {
-
-        std::cerr << "WARNING: ModifyItem called with delta of 0 for item: " << itemId << std::endl;
-        return;
-    }
-
-    // Initialize if not present
-    if (inventory.find(itemId) == inventory.end())
-    {
-        if (delta < 0)
-        {
-            std::cerr << "ERROR: Cannot remove " << -delta
-                      << " of item " << itemId << " (not in inventory)" << std::endl;
-            return;
-        }
-        inventory[itemId] = 0;
-    }
-    // Check for overflow
-    if (delta > 0 && inventory[itemId] > INT_MAX - delta)
-    {
-        std::cerr << "ERROR: Arithmetic overflow adding item: " << itemId << std::endl;
-        return;
-    }
-
-    // Check for negative inventory (after removal)
-    int newQuantity = inventory[itemId] + delta;
-    if (newQuantity < 0)
-    {
-        inventory.erase(itemId);
-    }
-
-    inventory[itemId] += delta;
-    std::cout << "[GameState] Added " << delta << " " << itemId
-              << " (total: " << inventory[itemId] << ")" << std::endl;
 }

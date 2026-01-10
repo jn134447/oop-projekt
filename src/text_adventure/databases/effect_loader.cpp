@@ -60,7 +60,7 @@ void EffectLoader::LoadFromFile(const std::string &filename)
     }
 
     // Check structure
-    if (!data.contains(GameConsts::state::ITEMS))
+    if (!data.contains(GameConsts::state::EFFECTS))
     {
         std::cerr << "WARNING: effects.json missing 'effects' key" << std::endl;
         return;
@@ -80,7 +80,11 @@ void EffectLoader::LoadFromFile(const std::string &filename)
             effects.emplace(effectId, std::move(def));
             count++;
 
-            std::cout << "  Loaded: " << effectId << " -> " << effects.at(effectId).GetDisplayName() << std::endl;
+            std::cout << "  Loaded: " << effectId << " -> "
+                      << effects.at(effectId).GetDisplayName()
+                      << " ["
+                      << effects.at(effectId).GetDescription()
+                      << "]" << std::endl;
         }
 
         std::cout << "EffectLoader: Successfully loaded " << count << " effects" << std::endl;

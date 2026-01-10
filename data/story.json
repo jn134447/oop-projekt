@@ -25,6 +25,10 @@
           "target": "test_variables"
         },
         {
+          "text": "Test Effects System",
+          "target": "test_effects"
+        },
+        {
           "text": "Test All Conditions",
           "target": "test_conditions"
         }
@@ -208,6 +212,19 @@
             }
           ]
         }
+      ]
+    },
+    "test_effects": {
+      "texts": [
+        { "content": "Inflicting sadness", "actions": [{ "type": "modify_effect", "effect": "sad" }] },
+        { "content": "Inflicting happines", "actions": [{ "type": "modify_effect", "effect": "happy" }] },
+        { "content": "Inflicting more happines!", "actions": [{ "type": "modify_effect", "effect": "happy", "amount": 2 }] },
+        { "content": "Removing all happines...", "actions": [{ "type": "modify_effect", "effect": "happy", "amount": -99 }] },
+        { "content": "Now onto the choices..."}
+      ],
+      "choices": [
+        { "text": "Have 2 or more stacks of sadness", "target": "test_start", "conditions": [{ "type": "has_effect", "effect": "sad", "amount": 2 }] },
+        { "text": "Dont have any happines", "target": "test_start", "conditions": [{ "type": "has_effect", "effect": "happy", "comparison": "!=" }] }
       ]
     },
 

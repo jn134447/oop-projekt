@@ -80,7 +80,11 @@ void ItemLoader::LoadFromFile(const std::string &filename)
             items.emplace(itemId, std::move(def));
             count++;
 
-            std::cout << "  Loaded: " << itemId << " -> " << items.at(itemId).GetDisplayName() << std::endl;
+            std::cout << "  Loaded: " << itemId << " -> "
+                      << items.at(itemId).GetDisplayName()
+                      << " ["
+                      << items.at(itemId).GetDescription()
+                      << "]" << std::endl;
         }
 
         std::cout << "ItemLoader: Successfully loaded " << count << " items" << std::endl;

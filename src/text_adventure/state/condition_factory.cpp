@@ -38,7 +38,7 @@ ConditionPtr ConditionFactory::CreateFromJSON(const nlohmann::json &data)
         }
         else if (type == condition::HAS_EFFECT)
         {
-            return std::make_unique<VariableCondition>(
+            return std::make_unique<EffectCondition>(
                 data[effect::EFFECT],
                 data.value(effect::AMOUNT, effect::AMOUNT_DEFAULT),
                 data.value(condition::COMP, condition::comp::GREATER_EQUAL)

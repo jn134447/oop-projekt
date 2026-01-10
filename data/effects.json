@@ -1,12 +1,10 @@
 {
   "effects": {
     "happy": {
-      "display_name": "Happy",
-      "description": "temp"
+      "display_name": "Happy"
     },
     "sad": {
-      "display_name": "Sad",
-      "description": "temp2"
+      "display_name": "Sad"
     }
   }
 }
