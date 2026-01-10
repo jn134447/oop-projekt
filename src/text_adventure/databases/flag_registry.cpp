@@ -4,23 +4,55 @@
 
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 
 void FlagRegistry::LoadFromFile(const std::string &filename)
 {
-
     std::ifstream file(filename);
-    nlohmann::json data = nlohmann::json::parse(file);
-
+    if (!file.is_open())
     {
-        using namespace GameConsts;
+        throw std::runtime_error("Cannot open flags file: " + filename);
+    }
 
-        for (auto &[flagId, value] : data[state::FLAGS].items())
+    nlohmann::json data;
+    try
+    {
+        data = nlohmann::json::parse(file);
+    }
+    catch (const nlohmann::json::exception &e)
+    {
+        throw std::runtime_error("Invalid JSON in flags file: " + std::string(e.what()));
+    }
+
+    using namespace GameConsts;
+
+    if (!data.contains(state::FLAGS))
+    {
+        throw std::runtime_error("Missing 'flags' section in " + filename);
+    }
+
+    auto &flagsData = data[state::FLAGS];
+
+    for (auto &[flagId, value] : flagsData.items())
+    {
+        if (flagId.empty())
         {
-            registeredFlags.insert(flagId);
-            defaultValues[flagId] = value.get<bool>();
-            std::cout << "Registered flag: " << flagId
-                      << " (default: " << (value.get<bool>() ? "true" : "false") << ")" << std::endl;
+            std::cerr << "WARNING: Empty flag ID in file, skipping" << std::endl;
+            continue;
         }
+
+        if (!value.is_boolean())
+        {
+            std::cerr << "WARNING: Flag '" << flagId << "' value is not boolean, using false" << std::endl;
+        }
+
+        bool flagValue = value.is_boolean() ? value.get<bool>() : false;
+
+        registeredFlags.insert(flagId);
+        defaultValues[flagId] = flagValue;
+
+        std::cout << "Registered flag: " << flagId
+                  << " (default: " << (flagValue ? "true" : "false") << ")" << std::endl;
     }
 }
 

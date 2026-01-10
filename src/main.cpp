@@ -12,7 +12,7 @@ int main(void)
     const int screenHeight = 800;
     raylib::Window w(screenWidth, screenHeight, "Text Adventure");
 
-    Engine engine;
+    Engine engine(true);
     if (!engine.Init())
     {
         std::cerr << "Failed to initialize engine" << std::endl;

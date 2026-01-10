@@ -17,9 +17,9 @@ UIManager::UIManager(GameState &gameState, DialogueManager &dialogueManager, boo
       flagsStartY(50),
       variablesStartY(300),
       inventoryStartX(1000),
-      inventoryStartY(500),
-      effectsStartX(700),
-      effectsStartY(500),
+      inventoryStartY(700),
+      effectsStartX(800),
+      effectsStartY(700),
       debugSpacing(40),
       // Initialize colors
       backgroundColor(RAYWHITE),
@@ -169,7 +169,7 @@ void UIManager::DrawInventory()
             const auto &itemData = itemLoader.GetItem(item.first);
             std::string itemText = itemData.GetDisplayName() + " [" + std::to_string(item.second) + "]";
             raylib::DrawText(itemText, debugStartX, y, 20, inventoryColor);
-            y += debugSpacing;
+            y -= debugSpacing;
         }
     }
 }
@@ -187,8 +187,8 @@ void UIManager::DrawEffects()
         {
             const auto &effectData = effectLoader.GetEffect(effect.first);
             std::string effectText = effectData.GetDisplayName() + " x" + std::to_string(effect.second);
-            raylib::DrawText(effectText, debugStartX, y, 20, inventoryColor);
-            y += debugSpacing;
+            raylib::DrawText(effectText, effectsStartX, y, 20, effectsColor);
+            y -= debugSpacing;
         }
     }
 }

@@ -7,19 +7,44 @@
 
 void VariableRegistry::LoadFromFile(const std::string &filename)
 {
-
     std::ifstream file(filename);
-    nlohmann::json data = nlohmann::json::parse(file);
+    if (!file.is_open()) {
+        throw std::runtime_error("Cannot open variables file: " + filename);
+    }
+    
+    nlohmann::json data;
+    try {
+        data = nlohmann::json::parse(file);
+    } catch (const nlohmann::json::exception& e) {
+        throw std::runtime_error("Invalid JSON in variables file: " + std::string(e.what()));
+    }
+    
+    using namespace GameConsts;
+    
+    if (!data.contains(state::VARIABLES)) {
+        throw std::runtime_error("Missing 'variables' section in " + filename);
+    }
+    
+    auto& varsData = data[state::VARIABLES];
+    
+    for (auto &[varId, value] : varsData.items())
     {
-        using namespace GameConsts;
-
-        for (auto &[varId, value] : data[state::VARIABLES].items())
-        {
-            registeredVariables.insert(varId);
-            defaultValues[varId] = value.get<int>();
-            std::cout << "Registered variable: " << varId
-                      << " (default: " << value.get<int>() << ")" << std::endl;
+        if (varId.empty()) {
+            std::cerr << "WARNING: Empty variable ID in file, skipping" << std::endl;
+            continue;
         }
+        
+        if (!value.is_number_integer()) {
+            std::cerr << "WARNING: Variable '" << varId << "' value is not integer, using 0" << std::endl;
+        }
+        
+        int varValue = value.is_number_integer() ? value.get<int>() : 0;
+        
+        registeredVariables.insert(varId);
+        defaultValues[varId] = varValue;
+        
+        std::cout << "Registered variable: " << varId
+                  << " (default: " << varValue << ")" << std::endl;
     }
 }
 
