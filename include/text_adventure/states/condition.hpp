@@ -66,4 +66,20 @@ public:
     std::unique_ptr<Condition> Clone() const override;
 };
 
+class EffectCondition : public Condition
+{
+private:
+    std::string effectId;
+    int stacks;
+    std::string comparison;
+
+public:
+    EffectCondition(const std::string &effectId,
+                    const int stacks,
+                    const std::string &comp);
+
+    bool Evaluate(const GameState &gameState) const override;
+    std::unique_ptr<Condition> Clone() const override;
+};
+
 #endif

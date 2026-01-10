@@ -162,3 +162,52 @@ std::unique_ptr<Condition> VariableCondition::Clone() const
 {
     return std::make_unique<VariableCondition>(*this);
 }
+
+EffectCondition::EffectCondition(const std::string &effectId, const int stacks, const std::string &comp)
+    : effectId(effectId), stacks(stacks), comparison(comp)
+{
+    if (effectId.empty())
+    {
+        throw std::invalid_argument("EffectCondition: effectId cannot be empty");
+    }
+
+    if (stacks < 0)
+    {
+        throw std::invalid_argument("EffectCondition: stacks cannot be negative");
+    }
+
+    if (!IsValidComparison(comp, "int"))
+    {
+        std::stringstream ss;
+        ss << "EffectCondition: Invalid comparison operator '" << comp
+           << "' for numeric comparison";
+        throw std::invalid_argument(ss.str());
+    }
+}
+
+bool EffectCondition::Evaluate(const GameState &gameState) const
+{
+    if (!gameState.GetEffectLoader().EffectExists(effectId))
+    {
+        std::cerr << "WARNING: EffectCondition evaluating non-existent effect: "
+                  << effectId << std::endl;
+        return false;
+    }
+
+    try
+    {
+        int current = gameState.currentCharacter().GetEffectCount(effectId);
+        return Compare<int>(current, stacks, comparison);
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "ERROR: EffectCondition evaluation failed for effect "
+                  << effectId << ": " << e.what() << std::endl;
+        return false; 
+    }
+}
+
+std::unique_ptr<Condition> EffectCondition::Clone() const
+{
+    return std::make_unique<EffectCondition>(*this);
+}

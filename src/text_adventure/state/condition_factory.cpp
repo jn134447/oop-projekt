@@ -36,6 +36,14 @@ ConditionPtr ConditionFactory::CreateFromJSON(const nlohmann::json &data)
                 data.value(var::VALUE, var::VALUE_DEFAULT),
                 data.value(condition::COMP, condition::comp::GREATER_EQUAL));
         }
+        else if (type == condition::HAS_EFFECT)
+        {
+            return std::make_unique<VariableCondition>(
+                data[effect::EFFECT],
+                data.value(effect::AMOUNT, effect::AMOUNT_DEFAULT),
+                data.value(condition::COMP, condition::comp::GREATER_EQUAL)
+            );
+        }
         // Add more types...
     }
     catch (const nlohmann::json::exception &e)
