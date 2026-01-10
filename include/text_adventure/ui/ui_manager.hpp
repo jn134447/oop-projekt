@@ -27,7 +27,10 @@ private:
     int debugStartX;
     int flagsStartY;
     int variablesStartY;
+    int inventoryStartX;
     int inventoryStartY;
+    int effectsStartX;
+    int effectsStartY;
     int debugSpacing;
 
     float lineSpacingMultiplier; // Multiplier for font size
@@ -40,10 +43,11 @@ private:
     raylib::Color flagTrueColor;
     raylib::Color flagFalseColor;
     raylib::Color inventoryColor;
+    raylib::Color effectsColor;
     raylib::Color variableColor;
 
 public:
-    UIManager(GameState &gameState, DialogueManager &dialogueManager);
+    UIManager(GameState &gameState, DialogueManager &dialogueManager, bool debug = false);
 
     void SetLineSpacingMultiplier(float multiplier) { lineSpacingMultiplier = multiplier; }
     float GetLineSpacingMultiplier() const { return lineSpacingMultiplier; }
@@ -69,6 +73,7 @@ private:
     void DrawFlags();
     void DrawVariables();
     void DrawInventory();
+    void DrawEffects();
 };
 
 #endif

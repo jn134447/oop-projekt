@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-Engine::Engine()
-    : gameState(flagRegistry, itemLoader, varRegistry),
+Engine::Engine(bool debug)
+    : gameState(flagRegistry, itemLoader, varRegistry, effectLoader),
       dialogueManager(gameState),
-      uiManager(gameState, dialogueManager)
+      uiManager(gameState, dialogueManager, debug)
 {
 }
 

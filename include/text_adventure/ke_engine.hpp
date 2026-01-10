@@ -6,6 +6,7 @@
 #include "flag_registry.hpp"
 #include "variable_registry.hpp"
 #include "config_loader.hpp"
+#include "effect_loader.hpp"
 
 #include "action_factory.hpp"
 #include "choice.hpp"
@@ -31,12 +32,15 @@ class Engine
     FlagRegistry flagRegistry;
     ConfigLoader configLoader;
     VariableRegistry varRegistry;
+    EffectLoader effectLoader;
     GameState gameState;
     DialogueManager dialogueManager;
     UIManager uiManager;
 
+    bool debug;
+
 public:
-    Engine();
+    Engine(bool debug = false);
 
     // Initialize with file paths
     bool Init(const std::string &itemsFile = GameConsts::files::ITEMS,

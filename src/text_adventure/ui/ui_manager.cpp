@@ -2,10 +2,10 @@
 #include "ui_manager.hpp"
 #include <iostream>
 
-UIManager::UIManager(GameState &gameState, DialogueManager &dialogueManager)
+UIManager::UIManager(GameState &gameState, DialogueManager &dialogueManager, bool debug)
     : gameState(gameState),
       dialogueManager(dialogueManager),
-      showDebugInfo(true),
+      showDebugInfo(debug),
       // Initialize layout values
       textStartX(50),
       textStartY(50),
@@ -16,7 +16,10 @@ UIManager::UIManager(GameState &gameState, DialogueManager &dialogueManager)
       debugStartX(1000),
       flagsStartY(50),
       variablesStartY(300),
+      inventoryStartX(1000),
       inventoryStartY(500),
+      effectsStartX(700),
+      effectsStartY(500),
       debugSpacing(40),
       // Initialize colors
       backgroundColor(RAYWHITE),
@@ -26,6 +29,7 @@ UIManager::UIManager(GameState &gameState, DialogueManager &dialogueManager)
       flagTrueColor(GREEN),
       flagFalseColor(RED),
       inventoryColor(DARKBROWN),
+      effectsColor(DARKBLUE),
       variableColor(DARKBROWN),
       lineSpacingMultiplier(1.5f)
 {
@@ -36,6 +40,8 @@ void UIManager::Draw()
 {
     // Draw main dialogue text
     DrawCurrentDialogue();
+    DrawInventory();
+    DrawEffects();
 
     // Draw choices if available
     if (dialogueManager.isShowingChoices())
@@ -121,7 +127,7 @@ void UIManager::DrawDebugPanel()
 {
     DrawFlags();
     DrawVariables();
-    DrawInventory();
+    // DrawInventory();
 }
 
 void UIManager::DrawFlags()
@@ -163,6 +169,25 @@ void UIManager::DrawInventory()
             const auto &itemData = itemLoader.GetItem(item.first);
             std::string itemText = itemData.GetDisplayName() + " [" + std::to_string(item.second) + "]";
             raylib::DrawText(itemText, debugStartX, y, 20, inventoryColor);
+            y += debugSpacing;
+        }
+    }
+}
+
+void UIManager::DrawEffects()
+{
+    int y = effectsStartY;
+
+    const auto &effects = gameState.currentCharacter().GetEffects();
+    const auto &effectLoader = gameState.GetEffectLoader();
+
+    for (const auto &effect : effects)
+    {
+        if (effect.second > 0)
+        {
+            const auto &effectData = effectLoader.GetEffect(effect.first);
+            std::string effectText = effectData.GetDisplayName() + " x" + std::to_string(effect.second);
+            raylib::DrawText(effectText, debugStartX, y, 20, inventoryColor);
             y += debugSpacing;
         }
     }
