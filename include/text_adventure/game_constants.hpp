@@ -62,10 +62,8 @@ namespace GameConsts
     namespace var
     {
         const std::string VARIABLE = "variable";
-        const std::string VALUE = "value";
-        const int VALUE_DEFAULT = 0;
-
-        const std::string CHANGE = "change";
+        const std::string AMOUNT = "amount";
+        const int AMOUNT_DEFAULT = 0;
     }
     namespace config
     {

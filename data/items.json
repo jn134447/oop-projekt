@@ -1,12 +1,12 @@
 {
   "items": {
-    "rusty_key": {
-      "display_name": "Rusty Key",
-      "description": "An old key."
+    "coin": {
+      "display_name": "Shiny Coin",
+      "description": "Very shiny"
     },
-    "shilling": {
-      "display_name": "Shilling",
-      "description": "Currency of Prehevil"
+    "apple": {
+      "display_name": "Green Apple",
+      "description": "The most basic kind of a basic apple"
     }
   }
 }

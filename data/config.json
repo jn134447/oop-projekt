@@ -3,24 +3,24 @@
     "text_style": {
       "default": {
         "color": [0, 0, 0, 255],
-        "font_size": 20,
+        "font_size": 25,
         "speed": 10
       },
       "speakers": {
-        "narrative": {
-          "color": [180, 150, 100, 255],
-          "font_size": 80,
+        "title": {
+          "color": [100, 0, 100],
+          "font_size": 50,
+          "speed": 15
+        },
+        "sub_title":{
+          "color": [150, 0, 150],
+          "font_size": 35,
           "speed": 10
         },
-        "player": {
-          "color": [0, 180, 140, 255],
+        "dialogue_2":{
+          "color": [255, 0, 150],
           "font_size": 20,
-          "speed": 40
-        },
-        "room_narrative": {
-          "color": [20, 100, 20, 255],
-          "font_size": 60,
-          "speed": 30
+          "speed": 7
         }
       }
     }

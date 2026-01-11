@@ -19,7 +19,7 @@ int main(void)
         return 1;
     }
 
-    engine.StartStory("test_start");
+    engine.StartStory("start");
 
     SetTargetFPS(FPS);
 

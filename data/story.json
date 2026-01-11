@@ -1,261 +1,172 @@
 {
   "story": {
-    "test_start": {
+    "start": {
       "texts": [
-        {
-          "speaker": "narrative",
-          "content": "=== TESTING ENGINE ==="
-        },
-        {
-          "speaker": "player",
-          "content": "This tests all systems. Check console for logs."
-        }
+        { "speaker": "title", "content": "=== ENGINE SHOWCASE ===" },
+        { "speaker": "sub_title", "content": "Pick a module to showcase." }
+      ],
+      "choices": [
+        { "text": "Showcase Dialogue", "target": "sc_dialogue" },
+        { "text": "Showcase Items", "target": "sc_items" },
+        { "text": "Showcase Status Effects", "target": "sc_effects" },
+        { "text": "Showcase Variables", "target": "sc_variables" },
+        { "text": "Showcase Flags", "target": "sc_flags" }
+      ]
+    },
+    "sc_dialogue": {
+      "texts": [
+        { "content": "Default text" },
+        { "content": "Default text with font color change", "color": [0, 200, 100] },
+        { "content": "Default text with font size change", "font_size": 30 },
+        { "content": "Default text with speed change", "speed": 40 }
+      ],
+      "default_next": "sc_dialogue_2"
+    },
+    "sc_dialogue_2": {
+      "texts": [
+        { "speaker": "dialogue_2", "content": "Speaker \"dialogue_2\" text" },
+        { "speaker": "dialogue_2", "content": "Speaker text with font color change", "color": [0, 200, 100] },
+        { "speaker": "dialogue_2", "content": "Speaker text with font size change", "font_size": 30 },
+        { "speaker": "dialogue_2", "content": "Speaker text with speed change", "speed": 40 }
+      ],
+      "default_next": "start"
+    },
+    "sc_items": {
+      "texts": [
+        { "content": "Giving a coin", "actions": [{ "type": "modify_item", "item": "coin" }] },
+        { "content": "Giving 22 coins", "actions": [{ "type": "modify_item", "item": "coin", "amount": 22 }] },
+        { "content": "Giving an apple", "actions": [{ "type": "modify_item", "item": "apple" }] },
+        { "content": "Removing all coins", "actions": [{ "type": "modify_item", "item": "coin", "amount": -99 }] }
       ],
       "choices": [
         {
-          "text": "Test Items System",
-          "target": "test_items"
+          "text": "Use the apple",
+          "target": "src_items_apple",
+          "conditions": [{ "type": "has_item", "item": "apple" }]
         },
         {
-          "text": "Test Flags System",
-          "target": "test_flags"
-        },
-        {
-          "text": "Test Variables System",
-          "target": "test_variables"
-        },
-        {
-          "text": "Test Effects System",
-          "target": "test_effects"
-        },
-        {
-          "text": "Test All Conditions",
-          "target": "test_conditions"
+          "text": "Dont use the apple",
+          "target": "src_items_no_apple",
+          "conditions": [{ "type": "has_item", "item": "apple", "comparison": "!=" }]
         }
       ]
     },
-
-    "test_items": {
+    "src_items_no_apple": {
+      "texts": [{ "content": "Apple not used, going back" }],
+      "default_next": "start"
+    },
+    "src_items_apple": {
       "texts": [
-        {
-          "content": "Item Test: You have 0 keys.",
-          "actions": [
-            {
-              "type": "modify_item",
-              "item": "rusty_key"
-            }
-          ]
-        },
-        {
-          "content": "Now you have 1 key. Adding another...",
-          "actions": [
-            {
-              "type": "modify_item",
-              "item": "rusty_key"
-            }
-          ]
-        },
-        {
-          "content": "Giving you some shillings...",
-          "actions": [
-            {
-              "type": "modify_item",
-              "item": "shilling",
-              "amount": 23
-            }
-          ]
-        },
-        {
-          "content": "You dropped a key!",
-          "actions": [
-            {
-              "type": "modify_item",
-              "item": "rusty_key",
-              "amount": -1
-            }
-          ]
-        }
+        { "content": "Apple used, going back", "actions": [{ "type": "modify_item", "item": "apple", "amount": -1 }] }
       ],
-      "choices": [
-        {
-          "text": "Check inventory (should have 2 keys)",
-          "target": "test_items_check",
-          "conditions": [
-            {
-              "type": "has_item",
-              "item": "rusty_key",
-              "amount": 2
-            }
-          ]
-        },
-        {
-          "text": "Back to start",
-          "target": "test_start"
-        }
-      ]
+      "default_next": "start"
     },
-
-    "test_items_check": {
-      "texts": [
-        {
-          "content": "Item condition passed! You have exactly 2 keys."
-        }
-      ],
-      "choices": [
-        {
-          "text": "Try to pick up another (should fail)",
-          "target": "test_items_check_fail",
-          "conditions": [
-            {
-              "type": "has_item",
-              "item": "rusty_key",
-              "amount": 0,
-              "comparison": "=="
-            }
-          ]
-        },
-        {
-          "text": "Back to start",
-          "target": "test_start"
-        }
-      ]
-    },
-
-    "test_flags": {
-      "texts": [
-        {
-          "content": "Setting flag 'test_flag' to false.",
-          "actions": [{ "type": "set_flag", "flag": "test_flag", "value": false }]
-        },
-        {
-          "content": "Setting flag 'test_flag' to true.",
-          "actions": [
-            {
-              "type": "set_flag",
-              "flag": "test_flag",
-              "value": true
-            }
-          ]
-        }
-      ],
-      "choices": [
-        {
-          "text": "Check flag (should work)",
-          "target": "test_start",
-          "conditions": [
-            {
-              "type": "flag_set",
-              "flag": "test_flag",
-              "value": true
-            }
-          ]
-        },
-        {
-          "text": "Try wrong flag (should be greyed out)",
-          "target": "test_start",
-          "conditions": [
-            {
-              "type": "flag_set",
-              "flag": "test_flag",
-              "value": false
-            }
-          ]
-        }
-      ]
-    },
-
-    "test_variables": {
-      "texts": [
-        {
-          "content": "Setting karma to 75.",
-          "actions": [
-            {
-              "type": "set_variable",
-              "variable": "player_karma",
-              "value": 75
-            }
-          ]
-        },
-        {
-          "content": "Adding 25 gold.",
-          "actions": [
-            {
-              "type": "modify_variable",
-              "variable": "gold_amount",
-              "change": 25
-            }
-          ]
-        }
-      ],
-      "choices": [
-        {
-          "text": "Check karma >= 50 (should work)",
-          "target": "test_start",
-          "conditions": [
-            {
-              "type": "variable_compare",
-              "variable": "player_karma",
-              "value": 50,
-              "comparison": ">="
-            }
-          ]
-        },
-        {
-          "text": "Check gold > 125 (should fail, default 100 + 25 = 125)",
-          "target": "test_start",
-          "conditions": [
-            {
-              "type": "variable_compare",
-              "variable": "gold_amount",
-              "value": 125,
-              "comparison": ">"
-            }
-          ]
-        }
-      ]
-    },
-    "test_effects": {
+    "sc_effects": {
       "texts": [
         { "content": "Inflicting sadness", "actions": [{ "type": "modify_effect", "effect": "sad" }] },
+        {
+          "content": "Inflicting more sadness",
+          "actions": [{ "type": "modify_effect", "effect": "sad", "amount": 3 }]
+        },
         { "content": "Inflicting happines", "actions": [{ "type": "modify_effect", "effect": "happy" }] },
-        { "content": "Inflicting more happines!", "actions": [{ "type": "modify_effect", "effect": "happy", "amount": 2 }] },
-        { "content": "Removing all happines...", "actions": [{ "type": "modify_effect", "effect": "happy", "amount": -99 }] },
-        { "content": "Now onto the choices..."}
+        { "content": "Clearing sadness", "actions": [{ "type": "modify_effect", "effect": "sad", "amount": -99 }] }
       ],
       "choices": [
-        { "text": "Have 2 or more stacks of sadness", "target": "test_start", "conditions": [{ "type": "has_effect", "effect": "sad", "amount": 2 }] },
-        { "text": "Dont have any happines", "target": "test_start", "conditions": [{ "type": "has_effect", "effect": "happy", "comparison": "!=" }] }
+        {
+          "text": "Have happines",
+          "target": "start",
+          "conditions": [{ "type": "has_effect", "effect": "happy" }]
+        },
+        {
+          "text": "Don't have happines",
+          "target": "start",
+          "conditions": [{ "type": "has_effect", "effect": "happy", "comparison": "!=" }]
+        }
       ]
     },
-
-    "test_conditions": {
+    "sc_variables": {
       "texts": [
+        { "content": "Variables are hidden from the player" },
         {
-          "content": "Complex condition test."
+          "content": "Adding karma on top of the default amount",
+          "actions": [{ "type": "modify_variable", "variable": "karma", "amount": 10 }]
+        },
+        {
+          "content": "Setting karma to 40",
+          "actions": [{ "type": "set_variable", "variable": "karma", "amount": 40 }]
+        },
+        {
+          "content": "Modifying mind by -25",
+          "actions": [{ "type": "modify_variable", "variable": "mind", "amount": -25 }]
         }
       ],
       "choices": [
         {
-          "text": "Need key AND flag (should fail)",
-          "target": "test_start",
+          "text": "Have below 75 mind and 40 karma",
+          "target": "start",
           "conditions": [
-            {
-              "type": "has_item",
-              "item": "rusty_key",
-              "amount": 1
-            },
-            {
-              "type": "flag_set",
-              "flag": "test_flag",
-              "value": true
-            }
+            { "type": "variable_compare", "variable": "karma", "amount": 40, "comparison": "==" },
+            { "type": "variable_compare", "variable": "mind", "amount": 75, "comparison": "<" }
           ]
         },
         {
-          "text": "Back to start",
-          "target": "test_start"
+          "text": "Have above or and 75 mind and 40 karma",
+          "target": "start",
+          "conditions": [
+            { "type": "variable_compare", "variable": "karma", "amount": 40, "comparison": "==" },
+            { "type": "variable_compare", "variable": "mind", "amount": 75, "comparison": ">=" }
+          ]
+        },
+        {
+          "text": "Have above or and 75 mind and no karma",
+          "target": "start",
+          "conditions": [
+            { "type": "variable_compare", "variable": "karma", "comparison": "==" },
+            { "type": "variable_compare", "variable": "mind", "amount": 75, "comparison": ">=" }
+          ]
         }
       ]
+    },
+    "sc_flags": {
+      "texts": [
+        { "content": "dfalse_flag is defaulted to false" },
+        { "content": "dtrue_flag is defaulted to true" }
+      ],
+      "choices": [
+        {
+          "text": "dfalse_f == false",
+          "target": "sc_flags_df_choice",
+          "conditions": [{ "type": "flag_set", "flag": "dfalse_flag", "value": false }]
+        },
+        {
+          "text": "dfalse_f == true",
+          "target": "sc_flags_df_choice",
+          "conditions": [{ "type": "flag_set", "flag": "dfalse_flag" }]
+        },
+        {
+          "text": "dtrue_f == false",
+          "target": "sc_flags_df_choice",
+          "conditions": [{ "type": "flag_set", "flag": "dtrue_flag", "value": false }]
+        },
+        {
+          "text": "dtrue_f == true",
+          "target": "sc_flags_df_choice",
+          "conditions": [{ "type": "flag_set", "flag": "dtrue_flag" }]
+        }
+      ]
+    },
+    "sc_flags_df_choice": {
+      "texts": [
+        {
+          "content": "Flag dfalse_flag set to true",
+          "actions": [{ "type": "set_flag", "flag": "dfalse_flag" }]
+        },
+        {
+          "content": "Flag dtrue_flag set to false",
+          "actions": [{ "type": "set_flag", "flag": "dtrue_flag", "value": false }]
+        }
+      ],
+      "default_next": "start"
     }
   }
 }

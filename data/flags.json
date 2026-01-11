@@ -1,6 +1,6 @@
 {
   "flags": {
-    "test_flag": true,
-    "entered_inside": true
+    "dfalse_flag": false,
+    "dtrue_flag": true
   }
 }

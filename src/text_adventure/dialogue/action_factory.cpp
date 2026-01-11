@@ -21,7 +21,8 @@ ActionFunc ActionFactory::Create(const nlohmann::json &actionData)
             return CreateModifyEffect(actionData);
     }
     std::cerr << "WARNING: Unknown action type: " << type << std::endl;
-    return [](GameState &) {};
+    throw;
+    // return [](GameState &) {};
 }
 
 ActionFunc ActionFactory::CreateModifyItem(const nlohmann::json &data)
@@ -55,7 +56,7 @@ ActionFunc ActionFactory::CreateSetVariable(const nlohmann::json &data)
 {
     using namespace GameConsts::var;
     std::string varId = data[VARIABLE];
-    int value = data[VALUE];
+    int value = data[AMOUNT];
 
     return [varId, value](GameState &gameState)
     {
@@ -68,7 +69,7 @@ ActionFunc ActionFactory::CreateModifyVariable(const nlohmann::json &data)
 {
     using namespace GameConsts::var;
     std::string varId = data[VARIABLE];
-    int change = data[CHANGE];
+    int change = data[AMOUNT];
 
     return [varId, change](GameState &gameState)
     {
